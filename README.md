@@ -40,25 +40,39 @@ Claude Code will automatically detect the framework, customize it for your proje
 
 ### Cursor Installation  
 
-If you're using Cursor, follow the detailed setup instructions in [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md).
+If you're using Cursor, you have two options:
 
-**Quick Setup:**
+**Option 1: MCP Server (Recommended)**
+```bash
+npm install -g ai-software-architect
+```
+Then configure in Cursor settings (`settings.json`):
+```json
+{
+  "mcp.servers": {
+    "ai-software-architect": {
+      "command": "mcp",
+      "args": []
+    }
+  }
+}
+```
+
+**Option 2: Traditional Setup**
 ```
 Setup architecture using @https://github.com/codenamev/ai-software-architect
 ```
-
-Cursor will clone the framework and configure the Rule files in `.cursor/rules/` for seamless integration.
+See [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md) for detailed traditional setup instructions.
 
 ### GitHub Copilot / Codex Installation
 
-If you're using GitHub Copilot or OpenAI Codex, follow the detailed setup instructions in [USAGE-WITH-CODEX.md](USAGE-WITH-CODEX.md).
+**MCP Support**: GitHub Copilot and Codex currently have limited MCP support. Use the traditional setup method:
 
-**Quick Setup:**
 ```
 Setup architecture using: https://github.com/codenamev/ai-software-architect
 ```
 
-The framework will be configured with context files that GitHub Copilot and Codex can automatically understand.
+See [USAGE-WITH-CODEX.md](USAGE-WITH-CODEX.md) for detailed setup instructions. The framework will be configured with context files that GitHub Copilot and Codex can automatically understand.
 
 ## Getting Started
 
