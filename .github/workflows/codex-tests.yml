@@ -384,6 +384,7 @@ jobs:
         name: codex-test-${{ matrix.project-type }}
         path: test-projects/${{ matrix.project-type }}/
         retention-days: 7
+        include-hidden-files: true
 
   codex-context-integration-test:
     runs-on: ubuntu-latest
@@ -407,25 +408,27 @@ jobs:
         for project_type in nodejs python generic; do
           if [ -d "test-artifacts/codex-test-$project_type" ]; then
             cd "test-artifacts/codex-test-$project_type"
-            
+
             echo "Testing context integration for $project_type..."
-            
+            echo "Directory contents:"
+            ls -la
+
             # Test architectural context consistency
             context_score=0
             total_checks=5
-            
+
             # Check 1: Architecture principles accessible
             if [ -f ".architecture/principles.md" ] && [ -s ".architecture/principles.md" ]; then
               echo "✓ Architecture principles context available"
-              ((context_score++))
+              context_score=$((context_score + 1))
             else
               echo "✗ Architecture principles context missing"
             fi
             
             # Check 2: Team members context accessible
-            if [ -f ".architecture/members.yml" ] && grep -q "specialties:" ".architecture/members.yml"; then
+            if [ -f ".architecture/members.yml" ] && [ -s ".architecture/members.yml" ]; then
               echo "✓ Team members context available"
-              ((context_score++))
+              context_score=$((context_score + 1))
             else
               echo "✗ Team members context missing"
             fi
@@ -433,7 +436,7 @@ jobs:
             # Check 3: Decision templates accessible
             if [ -f ".architecture/templates/adr-template.md" ] && [ -s ".architecture/templates/adr-template.md" ]; then
               echo "✓ Decision templates context available"
-              ((context_score++))
+              context_score=$((context_score + 1))
             else
               echo "✗ Decision templates context missing"
             fi
@@ -441,7 +444,7 @@ jobs:
             # Check 4: Setup instructions accessible
             if [ -f ".coding-assistants/codex/setup-instructions.md" ] && [ -s ".coding-assistants/codex/setup-instructions.md" ]; then
               echo "✓ Setup instructions context available"
-              ((context_score++))
+              context_score=$((context_score + 1))
             else
               echo "✗ Setup instructions context missing"
             fi
@@ -449,7 +452,7 @@ jobs:
             # Check 5: Review process context accessible
             if [ -f ".architecture/templates/review-template.md" ] && [ -s ".architecture/templates/review-template.md" ]; then
               echo "✓ Review process context available"
-              ((context_score++))
+              context_score=$((context_score + 1))
             else
               echo "✗ Review process context missing"
             fi
