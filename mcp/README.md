@@ -158,9 +158,9 @@ Add this to your Cursor settings (`settings.json`):
 
 3. **Test and use** (same as steps 2-3 above)
 
-## Available Tools (7 Core Tools)
+## Available Tools (8 Core Tools)
 
-The MCP server provides 7 core tools corresponding to the framework's main capabilities:
+The MCP server provides 8 core tools corresponding to the framework's main capabilities:
 
 ### `setup_architecture`
 **Standard Command Equivalent**: "Setup ai-software-architect"
@@ -325,6 +325,65 @@ The Pragmatic Enforcer will:
 
 **Note**: This tool provides the same pragmatic mode capabilities available in Claude Skills via the `pragmatic-guard` skill.
 
+### `pragmatic_enforcer`
+**Standard Command Equivalent**: "Ask Pragmatic Enforcer to review..."
+
+Invokes the Pragmatic Enforcer to analyze proposals, code changes, designs, or architectural decisions for over-engineering and propose simpler alternatives. This tool allows selective pragmatic analysis independent of whether Pragmatic Mode is globally enabled.
+
+**What it does:**
+1. **Load Configuration** - Reads current pragmatic mode settings (intensity, exemptions, thresholds)
+2. **Provide Framework** - Presents structured analysis framework with key questions
+3. **Guide Analysis** - Guides through necessity assessment, complexity assessment, and ratio calculation
+4. **Template Output** - Provides structured template for consistent pragmatic reviews
+5. **Context-Aware** - Adapts guidance based on review type and configured intensity
+
+**Parameters:**
+- `projectPath` (string, required): Path to your project root directory
+- `reviewType` (string, required): Type of review - one of:
+  - `"proposal"` - Architectural recommendation or suggestion
+  - `"code"` - Code changes or implementation
+  - `"design"` - Existing design or architecture
+  - `"decision"` - Architectural decision or ADR
+  - `"implementation"` - Feature implementation plan
+- `target` (string, required): The content to review (proposal text, code snippet, design description, etc.)
+- `context` (string, optional): Additional context about current requirements, constraints, or problem being solved
+- `source` (string, optional): Source attribution (architect name, file path, PR number, etc.)
+
+**Output Provides:**
+- Key questions framework (necessity, simplicity, cost, alternatives, best practices)
+- Structured analysis template with scoring guidelines
+- Complexity-to-necessity ratio calculation guide (target < 1.5)
+- Recommendation options (Implement Now / Simplified Version / Defer / Skip)
+- Intensity-specific guidance based on configuration
+- Exemption checks for security, compliance, accessibility
+
+**Review Types Explained:**
+- **proposal**: Use for architectural recommendations from other architects or team members
+- **code**: Use for reviewing actual code changes or implementations for over-engineering
+- **design**: Use for analyzing existing architectural designs or patterns
+- **decision**: Use for reviewing architectural decisions before documenting in ADRs
+- **implementation**: Use for analyzing feature implementation plans or technical approaches
+
+**Example:**
+```javascript
+{
+  projectPath: "/path/to/project",
+  reviewType: "proposal",
+  target: "We should implement a microservices architecture with event sourcing, CQRS, and a service mesh for inter-service communication",
+  context: "Current system is a monolith with 50k LOC serving 500 users. Performance is acceptable.",
+  source: "Lead Architect"
+}
+```
+
+**Benefits:**
+- **Selective Application**: Use pragmatic analysis only when needed, without enabling globally
+- **Structured Reviews**: Consistent framework ensures thorough analysis
+- **Educational**: Helps teams learn YAGNI principles through guided analysis
+- **Flexible**: Works with any review type - proposals, code, designs, decisions, implementations
+- **Context-Aware**: Adapts to project's intensity settings and exemptions
+
+**Note**: This tool can be used even when Pragmatic Mode is disabled in config.yml. It provides the analysis framework and guidance, allowing you or your AI assistant to perform pragmatic reviews on-demand.
+
 ## Usage Examples
 
 Once configured, you can use these tools through your AI assistant:
@@ -370,6 +429,16 @@ Use the configure_pragmatic_mode tool with:
 - intensity: "balanced"
 ```
 
+### Use Pragmatic Enforcer
+```
+Use the pragmatic_enforcer tool with:
+- projectPath: /Users/me/projects/myapp
+- reviewType: "code"
+- target: "[paste code changes or proposal here]"
+- context: "This is for handling user uploads in our MVP"
+- source: "PR #123"
+```
+
 ### Example Workflow
 
 **Complete Setup and First Review**:
@@ -391,7 +460,7 @@ Use the configure_pragmatic_mode tool with:
 
 ## Feature Parity
 
-The MCP server provides all 7 core framework tools with full feature parity to Claude Skills:
+The MCP server provides all 8 core framework tools with full feature parity to Claude Skills:
 
 ### ✅ Fully Supported Features
 - **Setup Architecture**: With advanced project analysis and initial system analysis

@@ -20,7 +20,7 @@ class ArchitectureServer {
     this.server = new Server(
       {
         name: "ai-software-architect",
-        version: "1.0.0",
+        version: "1.1.0",
       },
       {
         capabilities: {
@@ -180,6 +180,37 @@ class ArchitectureServer {
               required: ["projectPath"],
             },
           },
+          {
+            name: "pragmatic_enforcer",
+            description: "Invoke the Pragmatic Enforcer to analyze proposals, code changes, designs, or architectural decisions for over-engineering and propose simpler alternatives",
+            inputSchema: {
+              type: "object",
+              properties: {
+                projectPath: {
+                  type: "string",
+                  description: "Path to the project root directory",
+                },
+                reviewType: {
+                  type: "string",
+                  description: "Type of review: 'proposal' (architectural recommendation), 'code' (code changes), 'design' (existing design), 'decision' (architectural decision), or 'implementation' (feature implementation)",
+                  enum: ["proposal", "code", "design", "decision", "implementation"],
+                },
+                target: {
+                  type: "string",
+                  description: "The content to review (proposal text, code snippet, design description, decision description, or implementation plan)",
+                },
+                context: {
+                  type: "string",
+                  description: "Optional context: current requirements, constraints, why this is being proposed, what problem it solves",
+                },
+                source: {
+                  type: "string",
+                  description: "Optional: Who/what is the source (architect name, file path, PR number, etc.)",
+                },
+              },
+              required: ["projectPath", "reviewType", "target"],
+            },
+          },
         ],
       };
     });
@@ -203,6 +234,8 @@ class ArchitectureServer {
             return await this.getArchitectureStatus(args);
           case "configure_pragmatic_mode":
             return await this.configurePragmaticMode(args);
+          case "pragmatic_enforcer":
+            return await this.pragmaticEnforcer(args);
           default:
             throw new Error(`Unknown tool: ${name}`);
         }
@@ -1263,6 +1296,251 @@ ${member.domains.map(d => `- ${d}`).join('\n')}
         {
           type: "text",
           text: `## Pragmatic Mode Configuration Updated\n\n**Status**: ${statusEnabled}\n**Intensity**: ${statusIntensity}\n**Deferrals Tracking**: ${deferralsTracking}\n\n### How Pragmatic Mode Works\n\nWhen enabled, the Pragmatic Enforcer will:\n- Challenge complexity and abstractions\n- Question "best practices" that may not apply\n- Propose simpler alternatives that meet current requirements\n- Score necessity vs. complexity (target ratio <1.5)\n- ${deferralsTracking === "Enabled" ? "Track deferred decisions in .architecture/deferrals.md" : "Not track deferrals"}\n\n### Intensity Levels\n\n**Strict**: Challenges aggressively, requires strong justification\n**Balanced**: Thoughtful challenges, accepts justified complexity (recommended)\n**Lenient**: Raises concerns without blocking\n\n### Configuration\n\nFull configuration saved to: \`.architecture/config.yml\`\n\nYou can manually edit this file to customize:\n- Exemptions (security, compliance, etc.)\n- Triggers (when to challenge)\n- Thresholds (complexity scores)\n- Review phases where Pragmatic Mode applies\n\n### Next Steps\n\n${config.pragmatic_mode.enabled ? "The Pragmatic Enforcer will now participate in:\n- Architecture reviews (start_architecture_review)\n- Specialist reviews (specialist_review)\n- ADR creation (create_adr)\n\nUse these tools and the Pragmatic Enforcer will challenge over-engineering." : "Pragmatic Mode is disabled. Set enabled=true to activate YAGNI enforcement."}`,
+        },
+      ],
+    };
+  }
+
+  async pragmaticEnforcer(args) {
+    const { projectPath, reviewType, target, context, source } = args;
+    const architecturePath = path.join(projectPath, ".architecture");
+
+    if (!(await fs.pathExists(architecturePath))) {
+      throw new Error("Architecture framework not set up. Run setup_architecture first.");
+    }
+
+    // Load pragmatic mode configuration
+    const configPath = path.join(architecturePath, "config.yml");
+    let config = null;
+    let intensity = "balanced";
+
+    if (await fs.pathExists(configPath)) {
+      const configContent = await fs.readFile(configPath, 'utf8');
+      config = yaml.parse(configContent);
+      intensity = config?.pragmatic_mode?.intensity || "balanced";
+    }
+
+    // Define intensity-specific behaviors
+    const intensityBehaviors = {
+      strict: {
+        stance: "Challenges aggressively, requires strong justification for any complexity",
+        threshold: "Very high bar - must be absolutely necessary",
+        defaultRecommendation: "Defer or Simplify"
+      },
+      balanced: {
+        stance: "Challenges thoughtfully, accepts justified complexity",
+        threshold: "Reasonable bar - should have clear current value",
+        defaultRecommendation: "Evaluate trade-offs"
+      },
+      lenient: {
+        stance: "Raises concerns without blocking, suggests alternatives",
+        threshold: "Low bar - raises awareness of simpler options",
+        defaultRecommendation: "Consider alternatives"
+      }
+    };
+
+    const behavior = intensityBehaviors[intensity];
+
+    // Build the analysis report
+    const reviewTypeLabels = {
+      proposal: "Architectural Proposal",
+      code: "Code Changes",
+      design: "Existing Design",
+      decision: "Architectural Decision",
+      implementation: "Implementation Plan"
+    };
+
+    const report = [];
+    report.push("# Pragmatic Enforcer Analysis");
+    report.push("");
+    report.push(`**Review Type**: ${reviewTypeLabels[reviewType]}`);
+    report.push(`**Intensity Mode**: ${intensity} (${behavior.stance})`);
+    if (source) report.push(`**Source**: ${source}`);
+    report.push("");
+    report.push("---");
+    report.push("");
+
+    // Show what's being reviewed
+    report.push("## Target Under Review");
+    report.push("");
+    report.push("```");
+    report.push(target);
+    report.push("```");
+    report.push("");
+
+    if (context) {
+      report.push("## Context");
+      report.push("");
+      report.push(context);
+      report.push("");
+    }
+
+    report.push("---");
+    report.push("");
+    report.push("## Pragmatic Analysis Framework");
+    report.push("");
+    report.push("The Pragmatic Enforcer will now analyze this through the YAGNI lens:");
+    report.push("");
+
+    report.push("### Key Questions to Answer");
+    report.push("");
+    report.push("**Necessity Questions:**");
+    report.push("- Do we need this right now?");
+    report.push("- What breaks if we don't implement this?");
+    report.push("- What current requirement does this address?");
+    report.push("");
+
+    report.push("**Simplicity Questions:**");
+    report.push("- What's the simplest thing that could work?");
+    report.push("- Can we solve this with less code/complexity?");
+    report.push("- What are we assuming about the future?");
+    report.push("");
+
+    report.push("**Cost Questions:**");
+    report.push("- What's the cost of implementing this now?");
+    report.push("- What's the cost of waiting until we actually need it?");
+    report.push("- What's the maintenance burden?");
+    report.push("");
+
+    report.push("**Alternative Questions:**");
+    report.push("- What if we just... [propose simpler alternative]?");
+    report.push("- Could we use an existing tool/pattern?");
+    report.push("- Can we defer part of this?");
+    report.push("");
+
+    report.push("**Best Practice Questions:**");
+    report.push("- Does this best practice apply to our context?");
+    report.push("- Is this over-engineering for our scale?");
+    report.push("- Are we cargo-culting?");
+    report.push("");
+
+    report.push("---");
+    report.push("");
+    report.push("## Analysis Template");
+    report.push("");
+    report.push("Please provide your analysis using this structure:");
+    report.push("");
+
+    report.push("### 1. Necessity Assessment (Score 0-10)");
+    report.push("");
+    report.push("**Current Need**: [Score /10]");
+    report.push("- Analysis: [Why is this needed RIGHT NOW?]");
+    report.push("- Requirements addressed: [List current requirements]");
+    report.push("");
+    report.push("**Future Need**: [Score /10]");
+    report.push("- Analysis: [What future scenarios need this?]");
+    report.push("- Likelihood: [How certain are these scenarios?]");
+    report.push("");
+    report.push("**Cost of Waiting**: [Low / Medium / High]");
+    report.push("- Analysis: [What happens if we defer this?]");
+    report.push("- Reversibility: [How hard to add later?]");
+    report.push("");
+    report.push("**Overall Necessity Score**: [0-10]");
+    report.push("");
+
+    report.push("### 2. Complexity Assessment (Score 0-10)");
+    report.push("");
+    report.push("**Added Complexity**: [Score /10]");
+    report.push("- New abstractions: [List]");
+    report.push("- New dependencies: [List]");
+    report.push("- Lines of code: [Estimate]");
+    report.push("- Files affected: [Count]");
+    report.push("");
+    report.push("**Maintenance Burden**: [Score /10]");
+    report.push("- Ongoing maintenance: [Description]");
+    report.push("- Testing requirements: [Description]");
+    report.push("- Documentation needs: [Description]");
+    report.push("");
+    report.push("**Learning Curve**: [Score /10]");
+    report.push("- New concepts to learn: [List]");
+    report.push("- Team familiarity: [Assessment]");
+    report.push("");
+    report.push("**Overall Complexity Score**: [0-10]");
+    report.push("");
+
+    report.push("### 3. Complexity-to-Necessity Ratio");
+    report.push("");
+    report.push("**Ratio**: [Complexity Score / Necessity Score]");
+    report.push("");
+    report.push("**Target**: < 1.5 (complexity should not exceed necessity by more than 50%)");
+    report.push("");
+    report.push("**Assessment**: ");
+    report.push("- ✅ Acceptable (< 1.5): Complexity is justified");
+    report.push("- ⚠️  Borderline (1.5 - 2.0): Question carefully");
+    report.push("- ❌ Over-engineered (> 2.0): Strong challenge");
+    report.push("");
+
+    report.push("### 4. Simpler Alternative");
+    report.push("");
+    report.push("**Proposal**: [Describe a concrete simpler approach]");
+    report.push("");
+    report.push("**What it includes**: [List]");
+    report.push("");
+    report.push("**What it excludes**: [List]");
+    report.push("");
+    report.push("**Why it's sufficient**: [Explanation]");
+    report.push("");
+
+    report.push("### 5. Recommendation");
+    report.push("");
+    report.push("Choose one:");
+    report.push("");
+    report.push("- **✅ Implement Now**: Complexity is justified, necessity is high, proceed as proposed");
+    report.push("- **🔧 Simplified Version**: Implement the simpler alternative described above");
+    report.push("- **⏸️  Defer**: Wait until we have evidence we need this");
+    report.push("- **❌ Skip**: Not needed, doesn't add value");
+    report.push("");
+    report.push("**Recommendation**: [Your choice]");
+    report.push("");
+
+    report.push("### 6. Justification");
+    report.push("");
+    report.push("[Provide clear reasoning for your recommendation]");
+    report.push("");
+
+    report.push("---");
+    report.push("");
+    report.push("## Exemption Check");
+    report.push("");
+
+    if (config?.pragmatic_mode?.exemptions) {
+      const exemptions = config.pragmatic_mode.exemptions;
+      report.push("The following areas are exempt from simplification (but may be phased):");
+      report.push("");
+      if (exemptions.security_critical) report.push("- ✅ Security-critical features");
+      if (exemptions.data_integrity) report.push("- ✅ Data integrity requirements");
+      if (exemptions.compliance_required) report.push("- ✅ Compliance requirements");
+      if (exemptions.accessibility) report.push("- ✅ Accessibility requirements");
+      report.push("");
+      report.push("If this review involves any exempt areas, note that in your analysis.");
+      report.push("");
+    }
+
+    report.push("---");
+    report.push("");
+    report.push("## Intensity-Specific Guidance");
+    report.push("");
+    report.push(`**Current Intensity: ${intensity}**`);
+    report.push("");
+    report.push(`**Stance**: ${behavior.stance}`);
+    report.push(`**Threshold**: ${behavior.threshold}`);
+    report.push(`**Default Lean**: ${behavior.defaultRecommendation}`);
+    report.push("");
+
+    if (config?.pragmatic_mode?.enabled === false) {
+      report.push("---");
+      report.push("");
+      report.push("⚠️  **Note**: Pragmatic Mode is currently disabled in config.yml");
+      report.push("");
+      report.push("To enable automatic pragmatic enforcement in reviews, use `configure_pragmatic_mode`");
+      report.push("");
+    }
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: report.join('\n'),
         },
       ],
     };
