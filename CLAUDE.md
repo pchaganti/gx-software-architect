@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## About This File
+
+**This file extends AGENTS.md with Claude Code-specific features.**
+
+The AI Software Architect framework provides instructions for all AI assistants in `AGENTS.md` (cross-platform instructions). This file (CLAUDE.md) adds Claude Code-specific enhancements including:
+
+- **Claude Skills**: Reusable skills for setup, reviews, ADR creation, and status checks
+- **MCP Server Integration**: Tools for architecture operations via Model Context Protocol
+- **Advanced Setup Process**: Intelligent project analysis and template customization
+- **Request Recognition Patterns**: Claude-optimized command patterns and workflows
+- **Hooks and Configuration**: Claude Code-specific settings and integrations
+
+**For core framework concepts** (architecture reviews, ADRs, pragmatic mode, principles), see `AGENTS.md`. This file focuses on how Claude Code implements and extends those concepts.
+
 ## Project Overview
 
 AI Software Architect is a framework for organizing and structuring software architecture design with support for multiple AI coding assistants. It provides a structured approach to architecture documentation and decision-making, with specialized support for Claude Code, Cursor, and GitHub Copilot/Codex.
@@ -27,6 +41,13 @@ When a user makes requests like "Setup .architecture", "Setup ai-software-archit
 3. **Framework Installation**
    - Move the actual framework from `.architecture/.architecture/` to `.architecture/`
    - Create `.coding-assistants/` directory structure in project root
+   - **Create AGENTS.md** from template at `.architecture/templates/AGENTS.md`:
+     - Customize [PROJECT_NAME] with actual project name
+     - Fill in [PROJECT_TECH_STACK] with identified languages/frameworks
+     - Add [PROJECT_BUILD_COMMANDS] based on project structure
+     - Add [PROJECT_TEST_COMMANDS] based on project testing setup
+     - Include [PROJECT_CONVENTIONS] for project-specific patterns
+     - Set [FRAMEWORK_VERSION] and [LAST_UPDATED] appropriately
    - **IMPORTANT**: Only append framework usage instructions to CLAUDE.md, NOT the setup instructions
    - Set up initial directory structure for decisions, reviews, and recalibration
 
@@ -56,6 +77,59 @@ When a user makes requests like "Setup .architecture", "Setup ai-software-archit
    - Show them how to use the framework with their specific project
    - Suggest immediate next steps for architectural documentation based on the analysis
    - Provide examples relevant to their tech stack and identified patterns
+
+### Update Framework Requests
+When a user requests to update their installed framework using phrases like "Update the software architect framework from https://github.com/codenamev/ai-software-architect" or "Update ai-software-architect from main", follow these steps:
+
+1. **Verify Current Installation**
+   - Check if `.architecture/` directory exists in the project
+   - Verify the installation method (Skills, MCP, or Traditional)
+   - Confirm the user wants to update (data will be preserved but framework files will change)
+
+2. **Identify Preservation Strategy**
+   - **Preserve**: All files in `.architecture/decisions/`, `.architecture/reviews/`, `.architecture/recalibration/`
+   - **Preserve if customized**: `.architecture/members.yml`, `.architecture/config.yml`
+   - **Update**: `.architecture/templates/`, base `.architecture/principles.md`, framework scripts
+
+3. **Fetch Latest Framework**
+   - Clone or fetch from the specified repository URL (default: https://github.com/codenamev/ai-software-architect)
+   - Use main branch unless user specifies otherwise
+   - Download to temporary location first
+
+4. **Selective Update Process**
+   - Backup user's architecture artifacts (decisions, reviews, recalibration, customized members/config)
+   - Update `.architecture/templates/` directory with latest templates
+   - Update `.architecture/principles.md` if user hasn't customized it (check for default content)
+   - Update any framework helper scripts or base configuration files
+   - Restore user's architecture artifacts
+   - Preserve `.architecture/.git/` if present (for traditional installations tracking their own changes)
+
+5. **Update Assistant-Specific Files**
+   - **If Claude Skills detected** (~/.claude/skills/): Prompt user to manually update skills or offer to update them
+   - **If MCP detected** (package.json reference): Remind user to run `npm update -g ai-software-architect`
+   - **If Traditional**: Framework files updated via git operations
+
+6. **Validate Update**
+   - Verify all preserved files remain intact
+   - Check that templates updated successfully
+   - Confirm directory structure is valid
+   - List what was updated and what was preserved
+
+7. **Report Changes**
+   - Summarize what was updated (templates, principles, scripts)
+   - Confirm what was preserved (ADRs, reviews, customizations)
+   - Note any new features or templates available
+   - Suggest reviewing CHANGELOG.md if available
+   - Recommend testing core workflows (reviews, ADRs)
+
+**Important Safeguards:**
+- Never delete or overwrite files in `.architecture/decisions/adrs/`
+- Never delete or overwrite files in `.architecture/reviews/`
+- Never delete or overwrite files in `.architecture/recalibration/`
+- Always preserve user's custom architecture members
+- Always preserve user's configuration settings
+- Ask before overwriting customized principles.md
+- Keep backup of critical files during update process
 
 ### Specific Architect Reviews
 When a user requests a review from a specific architect role, such as "Ask Security Architect to review these code changes", "Have Performance Specialist review this database schema", "Get Domain Expert's opinion on this API design", or "Ask Ruby Expert if my use of modules follows industry standards", follow these steps:

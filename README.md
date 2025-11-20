@@ -236,13 +236,68 @@ See [USAGE.md](USAGE.md) for detailed workflow instructions and platform-specifi
 
 ## Upgrading
 
-Already have AI Software Architect installed? Upgrade to get the latest features:
+Already have AI Software Architect installed? Update to get the latest features and improvements.
+
+### Quick Update (Recommended)
+
+For any AI assistant, simply ask:
 
 ```
-Upgrade my AI Software Architect framework from https://github.com/codenamev/ai-software-architect
+Update the software architect framework from https://github.com/codenamev/ai-software-architect
 ```
 
-See [UPGRADE.md](UPGRADE.md) for detailed upgrade instructions.
+Your AI assistant will fetch the latest framework files from the main branch while preserving your project's architecture artifacts (ADRs, reviews, recalibration plans).
+
+### Manual Update Methods
+
+**If using Claude Skills:**
+```bash
+# Update skills to latest version
+cd ~/.claude/skills
+rm -rf setup-architect architecture-review create-adr list-members architecture-status specialist-review
+git clone https://github.com/codenamev/ai-software-architect
+cp -r ai-software-architect/.claude/skills/* ./
+rm -rf ai-software-architect
+```
+
+**If using MCP Server:**
+```bash
+# Update to latest version
+npm update -g ai-software-architect
+
+# Or reinstall
+npm install -g ai-software-architect
+```
+
+**If using Traditional Setup:**
+```bash
+# From your project root
+cd .architecture
+git fetch origin main
+git reset --hard origin/main
+cd ..
+```
+
+**Note**: Updates preserve your project's custom architecture artifacts (ADRs, reviews, member customizations) while updating framework files (templates, base configuration, scripts).
+
+### What Gets Updated
+
+**✅ Updated Files:**
+- `.architecture/templates/` - Templates for ADRs, reviews, AGENTS.md
+- `.architecture/principles.md` - Core architectural principles (if not customized)
+- Framework scripts and helper files
+- MCP server (if using MCP installation)
+- Claude Skills (if using Skills installation)
+
+**✅ Preserved Files:**
+- `.architecture/decisions/adrs/` - Your architectural decision records
+- `.architecture/reviews/` - Your architecture review documents
+- `.architecture/recalibration/` - Your recalibration plans
+- `.architecture/members.yml` - Your customized team members
+- `.architecture/config.yml` - Your configuration settings
+- All your project-specific customizations
+
+See [UPGRADE.md](UPGRADE.md) for detailed upgrade instructions and troubleshooting.
 
 ## Directory Structure
 
