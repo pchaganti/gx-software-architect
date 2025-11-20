@@ -66,6 +66,7 @@ Append (don't include setup instructions, only usage):
 - Create ADR: "Create ADR for [decision]"
 - Architecture Review: "Start architecture review for version X.Y.Z"
 - Specialist Review: "Ask [role] to review [target]"
+- Implementation: "Implement [feature] as the architects"
 - List Members: "List architecture members"
 - Status: "What's our architecture status?"
 
@@ -95,7 +96,9 @@ Create `.architecture/reviews/initial-system-analysis.md`:
 Summarize:
 - Customizations made (which specialists added, why)
 - Key findings from initial analysis (top 2-3)
-- Configuration: pragmatic mode (enabled/disabled), intensity level
+- Configuration:
+  - Pragmatic mode (enabled/disabled), intensity level
+  - Implementation guidance (enabled/disabled), configured methodology
 - How to use framework with their stack
 - Suggested next steps based on analysis
 
