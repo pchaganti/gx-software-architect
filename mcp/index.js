@@ -211,6 +211,24 @@ class ArchitectureServer {
               required: ["projectPath", "reviewType", "target"],
             },
           },
+          {
+            name: "get_implementation_guidance",
+            description: "Get implementation methodology, influences, and practices configuration for 'Implement as the architects' command. Returns configured methodology (TDD, BDD, etc.), influences (Kent Beck, Sandi Metz, etc.), language-specific practices, testing approach, refactoring guidelines, and quality standards.",
+            inputSchema: {
+              type: "object",
+              properties: {
+                projectPath: {
+                  type: "string",
+                  description: "Path to the project root directory",
+                },
+                featureDescription: {
+                  type: "string",
+                  description: "Optional: Description of the feature being implemented (for context-specific guidance)",
+                },
+              },
+              required: ["projectPath"],
+            },
+          },
         ],
       };
     });
@@ -236,6 +254,8 @@ class ArchitectureServer {
             return await this.configurePragmaticMode(args);
           case "pragmatic_enforcer":
             return await this.pragmaticEnforcer(args);
+          case "get_implementation_guidance":
+            return await this.getImplementationGuidance(args);
           default:
             throw new Error(`Unknown tool: ${name}`);
         }
@@ -1535,6 +1555,252 @@ ${member.domains.map(d => `- ${d}`).join('\n')}
       report.push("To enable automatic pragmatic enforcement in reviews, use `configure_pragmatic_mode`");
       report.push("");
     }
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: report.join('\n'),
+        },
+      ],
+    };
+  }
+
+  async getImplementationGuidance(args) {
+    const { projectPath, featureDescription } = args;
+
+    // Validate project path
+    if (!fs.existsSync(projectPath)) {
+      throw new Error(`Project path does not exist: ${projectPath}`);
+    }
+
+    const archPath = path.join(projectPath, ".architecture");
+    if (!fs.existsSync(archPath)) {
+      throw new Error(`No .architecture directory found at ${projectPath}. Run setup_architecture first.`);
+    }
+
+    // Read config.yml
+    const configPath = path.join(archPath, "config.yml");
+    if (!fs.existsSync(configPath)) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "No config.yml found. Implementation guidance not configured.\n\nTo configure, add an 'implementation:' section to .architecture/config.yml with methodology, influences, and practices.",
+          },
+        ],
+      };
+    }
+
+    const configContent = fs.readFileSync(configPath, "utf8");
+    const config = yaml.parse(configContent);
+
+    // Check if implementation is configured
+    if (!config.implementation) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Implementation guidance not configured in config.yml.\n\nTo configure, add an 'implementation:' section with:\n- methodology: TDD, BDD, DDD, etc.\n- influences: List of thought leaders and sources\n- languages: Language-specific practices\n- testing, refactoring, quality standards\n\nSee .architecture/templates/config.yml for examples.",
+          },
+        ],
+      };
+    }
+
+    const impl = config.implementation;
+
+    // Check if enabled
+    if (impl.enabled === false) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Implementation guidance is disabled in config.yml.\n\nTo enable, set implementation.enabled: true",
+          },
+        ],
+      };
+    }
+
+    // Build implementation guidance report
+    const report = [];
+    report.push("# Implementation Guidance");
+    report.push("");
+
+    if (featureDescription) {
+      report.push(`**Feature**: ${featureDescription}`);
+      report.push("");
+    }
+
+    report.push("---");
+    report.push("");
+
+    // Methodology
+    if (impl.methodology) {
+      report.push("## Development Methodology");
+      report.push("");
+      report.push(`**Primary Approach**: ${impl.methodology}`);
+      report.push("");
+
+      const methodologies = {
+        TDD: "Test-Driven Development: Write tests first, red-green-refactor cycle",
+        BDD: "Behavior-Driven Development: Behavior-focused tests, outside-in development",
+        DDD: "Domain-Driven Design: Focus on domain modeling, bounded contexts, ubiquitous language",
+        "Test-Last": "Implementation first, comprehensive tests after",
+        Exploratory: "Experiment with approaches, iterate and learn, codify successful patterns"
+      };
+
+      if (methodologies[impl.methodology]) {
+        report.push(`**Description**: ${methodologies[impl.methodology]}`);
+        report.push("");
+      }
+    }
+
+    // Influences
+    if (impl.influences && impl.influences.length > 0) {
+      report.push("## Coding Influences");
+      report.push("");
+      report.push("Follow practices and principles from:");
+      report.push("");
+      impl.influences.forEach(influence => {
+        report.push(`- ${influence}`);
+      });
+      report.push("");
+    }
+
+    // Language-specific practices
+    if (impl.languages) {
+      report.push("## Language-Specific Practices");
+      report.push("");
+      Object.entries(impl.languages).forEach(([lang, practices]) => {
+        report.push(`### ${lang.charAt(0).toUpperCase() + lang.slice(1)}`);
+        report.push("");
+        if (practices.style_guide) {
+          report.push(`**Style Guide**: ${practices.style_guide}`);
+          report.push("");
+        }
+        if (practices.idioms) {
+          report.push(`**Idioms**: ${practices.idioms}`);
+          report.push("");
+        }
+        if (practices.frameworks) {
+          report.push("**Frameworks**:");
+          Object.entries(practices.frameworks).forEach(([framework, guidance]) => {
+            report.push(`- ${framework}: ${guidance}`);
+          });
+          report.push("");
+        }
+      });
+    }
+
+    // Testing
+    if (impl.testing) {
+      report.push("## Testing Approach");
+      report.push("");
+      if (impl.testing.framework) {
+        report.push(`**Framework**: ${impl.testing.framework}`);
+      }
+      if (impl.testing.style) {
+        report.push(`**Style**: ${impl.testing.style}`);
+      }
+      if (impl.testing.approach) {
+        report.push(`**Approach**: ${impl.testing.approach}`);
+      }
+      if (impl.testing.coverage) {
+        report.push(`**Coverage Goal**: ${impl.testing.coverage}`);
+      }
+      if (impl.testing.speed) {
+        report.push(`**Speed Targets**: ${impl.testing.speed}`);
+      }
+      report.push("");
+    }
+
+    // Refactoring
+    if (impl.refactoring) {
+      report.push("## Refactoring Guidelines");
+      report.push("");
+      if (impl.refactoring.when) {
+        report.push("**When to Refactor**:");
+        impl.refactoring.when.forEach(when => {
+          report.push(`- ${when}`);
+        });
+        report.push("");
+      }
+      if (impl.refactoring.principles) {
+        report.push("**Principles**:");
+        impl.refactoring.principles.forEach(principle => {
+          report.push(`- ${principle}`);
+        });
+        report.push("");
+      }
+    }
+
+    // Quality
+    if (impl.quality) {
+      report.push("## Quality Standards");
+      report.push("");
+      if (impl.quality.definition_of_done) {
+        report.push("**Definition of Done**:");
+        impl.quality.definition_of_done.forEach(item => {
+          report.push(`- ${item}`);
+        });
+        report.push("");
+      }
+      if (impl.quality.priorities) {
+        report.push("**Quality Priorities**:");
+        impl.quality.priorities.forEach(priority => {
+          report.push(`- ${priority}`);
+        });
+        report.push("");
+      }
+    }
+
+    // Security
+    if (impl.security?.mandatory_practices) {
+      report.push("## Security Practices");
+      report.push("");
+      report.push("**Mandatory** (always apply, exempt from YAGNI):");
+      impl.security.mandatory_practices.forEach(practice => {
+        report.push(`- ${practice}`);
+      });
+      report.push("");
+    }
+
+    // Performance
+    if (impl.performance?.critical) {
+      report.push("## Performance Considerations");
+      report.push("");
+      report.push("⚠️  **Performance-Critical System**: Extra attention to performance");
+      report.push("");
+      if (impl.performance.practices) {
+        report.push("**Practices**:");
+        impl.performance.practices.forEach(practice => {
+          report.push(`- ${practice}`);
+        });
+        report.push("");
+      }
+      if (impl.performance.influences) {
+        report.push("**Performance Influences**:");
+        impl.performance.influences.forEach(influence => {
+          report.push(`- ${influence}`);
+        });
+        report.push("");
+      }
+    }
+
+    report.push("---");
+    report.push("");
+    report.push("## Usage");
+    report.push("");
+    report.push("Apply this guidance during implementation:");
+    report.push("1. Follow the configured methodology");
+    report.push("2. Reference the listed influences for techniques and patterns");
+    report.push("3. Apply language-specific practices and idioms");
+    report.push("4. Structure tests according to testing approach");
+    report.push("5. Refactor at the specified times");
+    report.push("6. Meet quality standards before completion");
+    report.push("7. Always apply security practices");
+    report.push("");
+    report.push("**Tip**: This guidance is automatically applied when using 'Implement X as the architects' command in Claude Code.");
 
     return {
       content: [

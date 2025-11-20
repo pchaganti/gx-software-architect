@@ -131,6 +131,177 @@ When a user requests to update their installed framework using phrases like "Upd
 - Ask before overwriting customized principles.md
 - Keep backup of critical files during update process
 
+### Implementation Command Recognition
+
+When a user requests implementation using phrases like "Implement X as the architects", "Implement the authentication feature as the architects", or "Implement as the architects" (referring to prior context), follow these steps:
+
+1. **Recognize Command Pattern**
+   - "Implement [feature] as the architects"
+   - "Implement as the architects" (with prior context from review or recalibration)
+   - "Implement [feature]" (if implementation.enabled: true in config)
+   - "Implement [feature] as [specific architect]" (e.g., "as pragmatic_enforcer")
+
+2. **Read Configuration**
+   - Read `.architecture/config.yml` implementation section
+   - Check if implementation.enabled is true
+   - If false or missing: proceed with standard implementation without special guidance
+   - If config file doesn't exist: standard implementation
+
+3. **Extract Implementation Guidance**
+   - **Methodology**: TDD, BDD, DDD, Test-Last, Exploratory, or custom
+   - **Influences**: Thought leaders to follow (Kent Beck, Sandi Metz, Martin Fowler, etc.)
+   - **Language practices**: Language-specific idioms, conventions, style guides
+   - **Testing approach**: Framework, style, coverage goals, speed targets
+   - **Refactoring guidelines**: When to refactor, principles to follow
+   - **Quality standards**: Definition of done, priorities
+   - **Security practices**: Mandatory security requirements (always applied)
+   - **Performance considerations**: Critical flag, practices, influences
+
+4. **Apply During Implementation**
+
+   **Methodology Application:**
+   - **TDD (Test-Driven Development)**:
+     - Write test first (RED)
+     - Write minimal code to pass (GREEN)
+     - Refactor for clarity (REFACTOR)
+     - Repeat cycle
+     - Take inspiration from Kent Beck's "TDD by Example"
+
+   - **BDD (Behavior-Driven Development)**:
+     - Write behavior-focused tests
+     - Outside-in development
+     - Describe expected behavior before implementation
+
+   - **DDD (Domain-Driven Design)**:
+     - Focus on domain modeling
+     - Use ubiquitous language
+     - Define bounded contexts
+
+   - **Test-Last**:
+     - Implement feature first
+     - Write tests after
+     - Ensure coverage
+
+   - **Exploratory**:
+     - Experiment with approaches
+     - Iterate and learn
+     - Codify successful patterns
+
+   **Influences Application:**
+   - Reference specific techniques from their books/talks/articles
+   - Apply their principles and patterns
+   - Use their terminology and concepts
+
+   Examples:
+   - **Kent Beck**: Red-green-refactor, simple design, baby steps
+   - **Gary Bernhardt**: Fast isolated tests, functional core/imperative shell
+   - **Sandi Metz**: Small methods (≤5 lines), small classes (≤100 lines), few arguments (≤4), clear names
+   - **Martin Fowler**: Refactoring catalog, code smells identification, pattern application
+   - **Jeremy Evans**: Ruby idioms, pragmatic library design, performance awareness
+   - **Vladimir Dementyev**: Modern Ruby patterns, performance optimization, testing strategies
+
+   **Language Practices:**
+   - Apply language-specific idioms and conventions
+   - Follow configured style guides (Rubocop, ESLint, etc.)
+   - Use framework conventions appropriately
+   - Consider language-specific performance characteristics
+
+   **Testing:**
+   - Use specified testing framework
+   - Follow configured testing style
+   - Meet coverage goals
+   - Ensure tests meet speed targets
+
+   **Refactoring:**
+   - Refactor at configured times (after tests green, when smells emerge)
+   - Apply configured principles (small methods, clear names, etc.)
+   - Use Martin Fowler's refactoring catalog as reference
+   - Keep refactorings small and safe
+
+   **Quality Standards:**
+   - Verify against definition of done checklist
+   - Follow quality priorities (clarity → simplicity → performance)
+   - Ensure all standards met before completion
+
+   **Security:**
+   - Always apply mandatory security practices
+   - Input validation (whitelist approach)
+   - Output encoding (context-aware)
+   - Parameterized queries (no concatenation)
+   - Authentication and authorization checks
+   - Security practices are EXEMPT from pragmatic mode (never simplified)
+
+5. **Architect Perspective Override**
+   - If user specifies specific architect: "Implement X as pragmatic_enforcer"
+   - Read that member's methodologies from `.architecture/members.yml`
+   - Apply their specific approach instead of general config
+   - Example: pragmatic_enforcer → emphasize simplicity, YAGNI, minimal implementation
+   - Fall back to implementation config for details not in member profile
+
+6. **Integration with Pragmatic Mode**
+   - If pragmatic_mode.enabled: Apply YAGNI alongside methodology
+   - Balance best practices with simplicity
+   - Question complexity while following methodology
+   - Security practices exempt (always apply security)
+   - Refactoring guided by both pragmatic principles and configured influences
+
+7. **Implementation Documentation**
+   - Document methodology followed in commit messages
+   - Note which influences were applied
+   - Track any deviations with rationale
+   - Can include in PR descriptions
+
+**Example Application:**
+
+**Configuration:**
+```yaml
+implementation:
+  methodology: "TDD"
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR"
+    - "Jeremy Evans - Roda patterns"
+  languages:
+    ruby:
+      style_guide: "Rubocop"
+      idioms: "Blocks over loops, meaningful names"
+```
+
+**User Command:**
+```
+"Implement user authentication as the architects"
+```
+
+**AI Implementation Process:**
+1. Reads configuration (TDD, Kent Beck, Sandi Metz, Jeremy Evans)
+2. Writes authentication test first (Kent Beck TDD)
+3. Implements minimal code to pass test (TDD green phase)
+4. Refactors for clarity with small methods (Sandi Metz principles)
+5. Uses Ruby blocks and meaningful names (Jeremy Evans idioms)
+6. Follows Rubocop style guide
+7. Repeats red-green-refactor cycle for each auth aspect
+8. Ensures all tests passing before completion
+
+**Commit Message Example:**
+```
+Add user authentication with session-based login
+
+Implemented using TDD approach:
+- Tests written first for auth flow
+- Red-green-refactor cycle followed
+- Small methods per Sandi Metz (≤5 lines)
+- Ruby idioms applied (blocks, meaningful names)
+- Rubocop style guide followed
+
+All tests passing, code refactored.
+```
+
+**Integration Notes:**
+- Works seamlessly with architecture reviews and recalibration
+- Implementation approach can reference ADR decisions
+- Methodology can be specified in recalibration plans
+- Quality standards align with architecture principles
+
 ### Specific Architect Reviews
 When a user requests a review from a specific architect role, such as "Ask Security Architect to review these code changes", "Have Performance Specialist review this database schema", "Get Domain Expert's opinion on this API design", or "Ask Ruby Expert if my use of modules follows industry standards", follow these steps:
 

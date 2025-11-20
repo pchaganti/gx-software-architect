@@ -145,6 +145,94 @@ Once installed in your project, you can:
 - "Start architecture recalibration for version X.Y.Z"
 - "Recalibrate architecture for [feature]"
 
+**Implement Features with Methodology:**
+- "Implement [feature] as the architects"
+- "Implement as the architects" (with prior context)
+- "Implement [feature] as [specific architect]"
+
+**Configuring Implementation Guidance:**
+
+To have AI assistants automatically apply your development methodology, coding influences, and practices during implementation, configure the `implementation` section in `.architecture/config.yml`:
+
+```yaml
+implementation:
+  enabled: true
+  methodology: "TDD"  # or BDD, DDD, Test-Last, Exploratory
+
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR"
+    - "Martin Fowler - Refactoring"
+
+  languages:
+    ruby:
+      style_guide: "Rubocop"
+      idioms: "Blocks over loops, meaningful names"
+
+  quality:
+    definition_of_done:
+      - "Tests passing"
+      - "Code refactored"
+      - "Code reviewed"
+```
+
+**Usage Examples:**
+
+With the above configuration, when you say:
+```
+"Implement user authentication as the architects"
+```
+
+AI assistants will automatically:
+1. Follow TDD methodology (write tests first, red-green-refactor)
+2. Apply Kent Beck's TDD principles
+3. Refactor using Sandi Metz's patterns (small methods, clear names)
+4. Follow Martin Fowler's refactoring catalog
+5. Use Ruby idioms and Rubocop style guide
+6. Ensure definition of done is met
+
+**Common Configuration Examples:**
+
+**Ruby TDD with OO Focus:**
+```yaml
+implementation:
+  methodology: "TDD"
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Gary Bernhardt - Destroy All Software"
+    - "Sandi Metz - POODR, 99 Bottles"
+    - "Martin Fowler - Refactoring"
+    - "Jeremy Evans - Roda, Sequel patterns"
+    - "Vladimir Dementyev - Modern Ruby"
+```
+
+**JavaScript BDD with Functional Style:**
+```yaml
+implementation:
+  methodology: "BDD"
+  influences:
+    - "Dan North - BDD originator"
+    - "Kent C. Dodds - Testing Library"
+    - "Eric Elliott - Composing Software"
+  languages:
+    javascript:
+      style_guide: "ESLint (Airbnb)"
+      idioms: "Functional, immutable, declarative"
+```
+
+**Python with Pragmatic Testing:**
+```yaml
+implementation:
+  methodology: "Test-Last"
+  influences:
+    - "Brett Slatkin - Effective Python"
+    - "Luciano Ramalho - Fluent Python"
+  languages:
+    python:
+      style_guide: "Black + PEP 8"
+      idioms: "Pythonic patterns, comprehensions"
+```
+
 For detailed workflow instructions, see [CLAUDE.md](CLAUDE.md) for Claude Code or your assistant's configuration in `.coding-assistants/`.
 
 ## Framework Architecture
@@ -181,6 +269,7 @@ Framework design decisions are documented in `.architecture/decisions/adrs/`:
 - **ADR-001**: CLI Functional Requirements
 - **ADR-002**: Pragmatic Guard Mode (YAGNI Enforcement)
 - **ADR-003**: Adoption of Agents.md Standard
+- **ADR-004**: Implementation Command with Configuration
 
 ### Configuration
 
