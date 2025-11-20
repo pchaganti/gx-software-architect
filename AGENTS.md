@@ -509,9 +509,9 @@ git reset --hard origin/main
 
 ## Version Information
 
-**Framework Version**: 1.1.0
-**MCP Server Version**: 1.1.0
-**Last Updated**: 2025-11-20
+**Framework Version**: 1.2.0
+**MCP Server Version**: 1.2.0
+**Last Updated**: 2025-01-20
 **Maintained By**: AI Software Architect Framework Contributors
 **Repository**: https://github.com/codenamev/ai-software-architect
 **Issues**: https://github.com/codenamev/ai-software-architect/issues
