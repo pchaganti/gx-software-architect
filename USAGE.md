@@ -92,6 +92,11 @@ What's our architecture status?
 Enable pragmatic mode
 ```
 
+**Implement with Methodology**:
+```
+Implement [feature] as the architects
+```
+
 **Recalibration**:
 ```
 Start architecture recalibration for [target]
@@ -123,6 +128,63 @@ The AI will:
 2. Document context, decision drivers, and alternatives
 3. Outline implementation approach
 4. Define validation criteria
+
+**Implement with Methodology**: "Implement authentication as the architects"
+
+The AI will:
+1. Read `.architecture/config.yml` implementation section
+2. Apply configured methodology (TDD, BDD, DDD, Test-Last, Exploratory)
+3. Reference configured influences (Kent Beck, Sandi Metz, Martin Fowler, etc.)
+4. Use language-specific practices and style guides
+5. Follow testing approach and refactoring guidelines
+6. Apply security practices (always applied, exempt from YAGNI)
+7. Ensure quality standards and definition of done
+
+## Implementation Guidance
+
+Configure your team's development methodology once in `.architecture/config.yml`:
+
+```yaml
+implementation:
+  enabled: true
+  methodology: "TDD"  # or BDD, DDD, Test-Last, Exploratory
+
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR, 99 Bottles"
+    - "Martin Fowler - Refactoring"
+
+  languages:
+    ruby:
+      style_guide: "Rubocop"
+      idioms: "Blocks over loops, meaningful names"
+
+  testing:
+    framework: "RSpec"
+    style: "Outside-in TDD"
+
+  quality:
+    definition_of_done:
+      - "Tests passing"
+      - "Code refactored"
+      - "Code reviewed"
+```
+
+**Benefits**:
+- **90% prompt reduction**: Say "Implement X as the architects" instead of repeating 40+ word prompts
+- **Consistent quality**: Methodology applied systematically to all implementations
+- **Team standards**: Practices documented in version control
+- **Better onboarding**: New developers see documented approaches
+- **Cross-session persistence**: Configuration always applied
+
+**Usage**:
+```
+Implement authentication as the architects
+```
+
+The AI will automatically follow your configured TDD methodology, reference Kent Beck and Sandi Metz's principles, apply Ruby idioms, use RSpec with outside-in TDD style, and ensure your definition of done is met.
+
+See [ADR-004](.architecture/decisions/adrs/ADR-004-implementation-command-configuration.md) and the implementation section in `.architecture/templates/config.yml` for full configuration options.
 
 ## Best Practices
 

@@ -228,6 +228,12 @@ Enable pragmatic mode
 ```
 Example: "Enable pragmatic mode with balanced intensity"
 
+**Implement with Methodology**:
+```
+Implement [feature] as the architects
+```
+Examples: "Implement authentication as the architects" or "Implement user registration as the architects"
+
 **Recalibration** (Traditional method):
 ```
 Start architecture recalibration for [target]
@@ -444,6 +450,46 @@ Enable pragmatic mode
 ```
 
 See [ADR-002](/.architecture/decisions/adrs/ADR-002-pragmatic-guard-mode.md) and [Pragmatic Mode Summary](/.architecture/decisions/PRAGMATIC-MODE-SUMMARY.md) for details.
+
+### Implementation Guidance
+
+Configuration-driven implementation that applies your team's methodology and best practices automatically:
+
+**Configure once**:
+```yaml
+implementation:
+  enabled: true
+  methodology: "TDD"
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR"
+    - "Martin Fowler - Refactoring"
+```
+
+**Then simply say**:
+```
+Implement authentication as the architects
+```
+
+**Benefits**:
+- **90% prompt reduction**: 4 words instead of 40+
+- **Consistent quality**: Methodology applied systematically
+- **Team standards**: Documented practices in version control
+- **Cross-session persistence**: Configuration always applied
+
+**Supports**:
+- Multiple methodologies (TDD, BDD, DDD, Test-Last, Exploratory)
+- Coding influences (Kent Beck, Sandi Metz, Martin Fowler, Gary Bernhardt, etc.)
+- Language-specific practices and style guides
+- Security practices (always applied, exempt from YAGNI)
+- Quality standards and refactoring guidelines
+
+Use with:
+```
+Implement [feature] as the architects
+```
+
+See [ADR-004](/.architecture/decisions/adrs/ADR-004-implementation-command-configuration.md) for details.
 
 ### Feature-Based Architecture Management
 

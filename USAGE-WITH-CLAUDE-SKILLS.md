@@ -197,6 +197,14 @@ Enable pragmatic mode
 ```
 Example: "Enable pragmatic mode with balanced intensity"
 
+**Implement with Methodology**:
+```
+Implement [feature] as the architects
+```
+Example: "Implement authentication as the architects"
+
+**Note**: This command works through CLAUDE.md reading (not a separate skill). Configure in `.architecture/config.yml` to automatically apply your methodology (TDD, BDD, etc.), coding influences, and practices.
+
 ## Quick Start
 
 ```bash
@@ -214,6 +222,10 @@ What's our architecture status?
 
 # 4. Optional: Enable pragmatic mode to prevent over-engineering
 Enable pragmatic mode
+
+# 5. Optional: Configure and use implementation guidance
+# Edit .architecture/config.yml to add implementation settings
+Implement authentication as the architects
 ```
 
 ## Typical Workflow
@@ -410,6 +422,39 @@ You: Ask Performance Specialist to review the N+1 query issue
 Claude: [Deep-dive on query performance]
         [Identifies 3 problem areas]
         [Provides specific fixes with code examples]
+```
+
+### Implementation with Methodology
+
+```
+# 1. Configure once in .architecture/config.yml
+implementation:
+  enabled: true
+  methodology: "TDD"
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR"
+
+# 2. Document decision
+You: Create ADR for authentication approach
+
+Claude: [Creates ADR-002-authentication.md with JWT decision]
+
+# 3. Implement with automatic methodology application
+You: Implement authentication as the architects
+
+Claude: [Writes tests first (TDD)]
+        [Implements minimal code to pass]
+        [Refactors using Sandi Metz principles]
+        [Applies configured language practices]
+        [Ensures definition of done]
+
+# 4. Review implementation
+You: Ask Security Specialist to review authentication
+
+Claude: [Reviews from security perspective]
+        [Validates JWT implementation]
+        [Suggests additional hardening]
 ```
 
 ## Migration from MCP

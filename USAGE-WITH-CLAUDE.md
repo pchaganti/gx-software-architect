@@ -132,6 +132,23 @@ Enable pragmatic mode
 
 **Note**: Available when using CLAUDE.md integration. This mode adds a Pragmatic Enforcer who challenges over-engineering and proposes simpler alternatives.
 
+### Implementation with Methodology
+
+**Primary Command**:
+```
+Implement [feature] as the architects
+```
+
+**Examples**:
+- "Implement user authentication as the architects"
+- "Implement payment processing as the architects"
+- "Implement as the architects" (with prior context from review)
+
+**Alternative Phrases**:
+- "Implement [feature] as [specific architect]" (e.g., "as pragmatic_enforcer")
+
+**Note**: Requires configuration in `.architecture/config.yml`. When enabled, Claude will automatically apply your team's methodology (TDD, BDD, etc.), coding influences (Kent Beck, Sandi Metz, Martin Fowler, etc.), language-specific practices, and quality standards. This reduces prompt length by 90% while ensuring consistent, high-quality implementations.
+
 ### Recalibration
 
 **Primary Command**:
@@ -230,6 +247,38 @@ Create an implementation roadmap for the architectural changes identified in our
 3. "Create ADR for key decisions identified in review"
 4. "Start architecture recalibration for version 2.0.0"
 ```
+
+### Implementation with Configured Methodology
+
+```
+1. Configure implementation guidance in .architecture/config.yml
+2. "Create ADR for authentication approach"
+3. "Implement authentication as the architects"
+4. (Claude applies TDD, references Kent Beck and Sandi Metz, uses configured language practices)
+5. "Ask Security Specialist to review authentication implementation"
+```
+
+**Example Configuration**:
+```yaml
+implementation:
+  enabled: true
+  methodology: "TDD"
+  influences:
+    - "Kent Beck - TDD by Example"
+    - "Sandi Metz - POODR"
+    - "Martin Fowler - Refactoring"
+  languages:
+    ruby:
+      style_guide: "Rubocop"
+      idioms: "Blocks over loops, meaningful names"
+```
+
+**Usage**:
+```
+Implement user authentication as the architects
+```
+
+Claude will write tests first (TDD), refactor using Sandi Metz's principles, apply Ruby idioms, and follow Martin Fowler's refactoring catalog—all automatically from your configuration.
 
 ## Remember
 
