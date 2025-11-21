@@ -27,9 +27,10 @@ Claude Skills are modular capabilities that extend Claude through organized prom
 Use across all projects:
 
 ```bash
-git clone https://github.com/codenamev/ai-software-architect
-cp -r ai-software-architect/.claude/skills ~/.claude/
-rm -rf ai-software-architect
+git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
+cp -r /tmp/ai-architect-$$/.claude/skills ~/.claude/
+# Temporary directory will be cleaned up automatically, or you can remove it:
+# rm -rf /tmp/ai-architect-$$
 ```
 
 ### Project-Specific Skills
@@ -38,9 +39,10 @@ For one project only:
 
 ```bash
 mkdir -p .claude/skills
-git clone https://github.com/codenamev/ai-software-architect temp
-cp -r temp/.claude/skills/* .claude/skills/
-rm -rf temp
+git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
+cp -r /tmp/ai-architect-$$/.claude/skills/* .claude/skills/
+# Temporary directory will be cleaned up automatically, or you can remove it:
+# rm -rf /tmp/ai-architect-$$
 ```
 
 ### Quick Install Script
@@ -58,11 +60,13 @@ else
 fi
 
 mkdir -p "$TARGET"
-git clone https://github.com/codenamev/ai-software-architect /tmp/arch
-cp -r /tmp/arch/.claude/skills/* "$TARGET/"
-rm -rf /tmp/arch
+TEMP_DIR="/tmp/ai-architect-$$"
+git clone https://github.com/codenamev/ai-software-architect "$TEMP_DIR"
+cp -r "$TEMP_DIR/.claude/skills/"* "$TARGET/"
 
 echo "✅ Installed to $TARGET"
+echo "Temporary files in $TEMP_DIR can be safely removed if you want."
+echo "They will be automatically cleaned up on system restart."
 ```
 
 Usage:
@@ -351,13 +355,18 @@ Or be explicit:
 ### Update Skills
 
 ```bash
-# Backup current
-mv ~/.claude/skills ~/.claude/skills.backup
+# Backup current with timestamp
+mkdir -p ~/.ai-architect-backups
+mv ~/.claude/skills ~/.ai-architect-backups/skills-$(date +%Y%m%d-%H%M%S)
 
 # Reinstall
-git clone https://github.com/codenamev/ai-software-architect /tmp/arch
-cp -r /tmp/arch/.claude/skills ~/.claude/
-rm -rf /tmp/arch
+TEMP_DIR="/tmp/ai-architect-$$"
+git clone https://github.com/codenamev/ai-software-architect "$TEMP_DIR"
+cp -r "$TEMP_DIR/.claude/skills" ~/.claude/
+
+echo "Backup created at ~/.ai-architect-backups/skills-TIMESTAMP/"
+echo "You can safely remove this backup once you've verified the update works correctly."
+echo "Temporary files in $TEMP_DIR will be automatically cleaned up on system restart."
 ```
 
 ## Best Practices

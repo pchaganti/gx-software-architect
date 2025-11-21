@@ -37,9 +37,10 @@ Install as reusable skills that work across all your projects:
 
 ```bash
 # Clone and install skills
-git clone https://github.com/codenamev/ai-software-architect
-cp -r ai-software-architect/.claude/skills ~/.claude/
-rm -rf ai-software-architect
+git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
+cp -r /tmp/ai-architect-$$/.claude/skills ~/.claude/
+# Temporary directory will be cleaned up automatically, or you can remove it:
+# rm -rf /tmp/ai-architect-$$
 ```
 
 Then in any project:
@@ -252,12 +253,18 @@ Your AI assistant will fetch the latest framework files from the main branch whi
 
 **If using Claude Skills:**
 ```bash
-# Update skills to latest version
+# Update skills to latest version - backup old versions first
+mkdir -p ~/.ai-architect-backups/skills-$(date +%Y%m%d-%H%M%S)
 cd ~/.claude/skills
-rm -rf setup-architect architecture-review create-adr list-members architecture-status specialist-review
-git clone https://github.com/codenamev/ai-software-architect
-cp -r ai-software-architect/.claude/skills/* ./
-rm -rf ai-software-architect
+mv setup-architect architecture-review create-adr list-members architecture-status specialist-review ~/.ai-architect-backups/skills-$(date +%Y%m%d-%H%M%S)/ 2>/dev/null || true
+
+# Install from latest
+git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
+cp -r /tmp/ai-architect-$$/.claude/skills/* ./
+
+echo "Backup created at ~/.ai-architect-backups/skills-TIMESTAMP/"
+echo "You can safely remove this backup once you've verified the update works correctly."
+echo "Temporary files will be automatically cleaned up on system restart."
 ```
 
 **If using MCP Server:**

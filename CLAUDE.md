@@ -58,10 +58,16 @@ When a user makes requests like "Setup .architecture", "Setup ai-software-archit
    - Create initial ADR structure in `.architecture/decisions/adrs/`
 
 5. **Cleanup & Finalize**
-   - Remove template repository files (README.md, USAGE*.md, INSTALL.md, etc.)
-   - **CRITICAL**: Remove `.architecture/.git/` directory specifically (never touch project root .git)
-   - Remove the now-empty cloned repository structure
+   - Create a timestamped backup directory: `mkdir -p ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)`
+   - Move (don't delete) template repository files to backup:
+     - `mv README.md USAGE*.md INSTALL.md ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)/` (if they exist)
+   - **Move .architecture/.git/ to backup** (NEVER touch project root .git):
+     - Verify target exists: `[ -d .architecture/.git ]`
+     - Move to backup: `mv .architecture/.git ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)/architecture-git`
+     - Verify project .git remains intact: `[ -d .git ]`
+   - Move the now-empty cloned repository structure to backup (if it exists)
    - Verify all framework files are properly located
+   - Inform user: "Backup created at ~/.ai-architect-backups/setup-TIMESTAMP/. You can safely remove this backup directory once you've verified everything works correctly."
 
 6. **Collaborative Architectural Analysis**
    - Conduct a comprehensive analysis of the codebase from multiple architectural perspectives
@@ -97,11 +103,15 @@ When a user requests to update their installed framework using phrases like "Upd
    - Download to temporary location first
 
 4. **Selective Update Process**
-   - Backup user's architecture artifacts (decisions, reviews, recalibration, customized members/config)
+   - Create timestamped backup directory: `mkdir -p ~/.ai-architect-backups/update-$(date +%Y%m%d-%H%M%S)`
+   - Copy (don't move) user's architecture artifacts to backup:
+     - `cp -r .architecture/decisions ~/.ai-architect-backups/update-$(date +%Y%m%d-%H%M%S)/`
+     - `cp -r .architecture/reviews ~/.ai-architect-backups/update-$(date +%Y%m%d-%H%M%S)/`
+     - `cp -r .architecture/recalibration ~/.ai-architect-backups/update-$(date +%Y%m%d-%H%M%S)/`
+     - Copy customized members.yml and config.yml if they exist
    - Update `.architecture/templates/` directory with latest templates
    - Update `.architecture/principles.md` if user hasn't customized it (check for default content)
    - Update any framework helper scripts or base configuration files
-   - Restore user's architecture artifacts
    - Preserve `.architecture/.git/` if present (for traditional installations tracking their own changes)
 
 5. **Update Assistant-Specific Files**
@@ -121,6 +131,7 @@ When a user requests to update their installed framework using phrases like "Upd
    - Note any new features or templates available
    - Suggest reviewing CHANGELOG.md if available
    - Recommend testing core workflows (reviews, ADRs)
+   - Inform user: "Backup created at ~/.ai-architect-backups/update-TIMESTAMP/. You can safely remove this backup directory once you've verified the update works correctly."
 
 **Important Safeguards:**
 - Never delete or overwrite files in `.architecture/decisions/adrs/`
@@ -129,7 +140,8 @@ When a user requests to update their installed framework using phrases like "Upd
 - Always preserve user's custom architecture members
 - Always preserve user's configuration settings
 - Ask before overwriting customized principles.md
-- Keep backup of critical files during update process
+- Always create timestamped backups in ~/.ai-architect-backups/ before making changes
+- Never automatically delete backup directories - let users remove them when ready
 
 ### Implementation Command Recognition
 

@@ -40,10 +40,16 @@ When a user requests setup using any of the recognized phrases, follow this 6-st
 - Create initial ADR structure in `.architecture/decisions/adrs/`
 
 ### 5. Cleanup & Finalize
-- Remove template repository files (README.md, USAGE*.md, INSTALL.md, etc.)
-- Remove `.architecture/.git/` directory specifically (never touch project root .git)
-- Remove the now-empty cloned repository structure
+- Create a timestamped backup directory: `mkdir -p ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)`
+- Move (don't delete) template repository files to backup:
+  - `mv README.md USAGE*.md INSTALL.md ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)/` (if they exist)
+- **Move .architecture/.git/ to backup** (NEVER touch project root .git):
+  - Verify target exists: `[ -d .architecture/.git ]`
+  - Move to backup: `mv .architecture/.git ~/.ai-architect-backups/setup-$(date +%Y%m%d-%H%M%S)/architecture-git`
+  - Verify project .git remains intact: `[ -d .git ]`
+- Move the now-empty cloned repository structure to backup (if it exists)
 - Verify all framework files are properly located
+- Inform user: "Backup created at ~/.ai-architect-backups/setup-TIMESTAMP/. You can safely remove this backup directory once you've verified everything works correctly."
 
 ### 6. Guide Next Steps
 - Explain what customizations you've made and why
