@@ -20,7 +20,7 @@ class ArchitectureServer {
     this.server = new Server(
       {
         name: "ai-software-architect",
-        version: "1.1.0",
+        version: "1.2.0",
       },
       {
         capabilities: {
@@ -464,7 +464,7 @@ class ArchitectureServer {
     await fs.ensureDir(path.join(architecturePath, "reviews"));
     await fs.ensureDir(path.join(architecturePath, "recalibration"));
     await fs.ensureDir(path.join(architecturePath, "comparisons"));
-    await fs.ensureDir(path.join(architecturePath, "docs"));
+    await fs.ensureDir(path.join(architecturePath, "agent_docs"));
     await fs.ensureDir(path.join(architecturePath, "templates"));
   }
   
