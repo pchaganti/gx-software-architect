@@ -37,13 +37,15 @@ Quarterly review of framework documentation to ensure we maintain instruction ca
 **Tasks**:
 
 - [ ] **Count AGENTS.md instructions**
-  - Method: Use [instruction-counting-methodology.md](instruction-counting-methodology.md)
+  - Method: Run `cd tools && npm run count`
+  - Alternative: Manual count using [instruction-counting-methodology.md](instruction-counting-methodology.md)
   - Target: < 150 instructions
   - Record: Current count, change from last review
   - Action if over: Identify candidates for agent_docs/ migration
 
 - [ ] **Count CLAUDE.md instructions**
-  - Method: Use [instruction-counting-methodology.md](instruction-counting-methodology.md)
+  - Method: Run `cd tools && npm run count`
+  - Alternative: Manual count using [instruction-counting-methodology.md](instruction-counting-methodology.md)
   - Target: < 30 instructions
   - Record: Current count, change from last review
   - Action if over: Remove or consolidate instructions
@@ -74,10 +76,9 @@ Quarterly review of framework documentation to ensure we maintain instruction ca
   - Action: Consolidate or remove
 
 - [ ] **Validate all internal links**
-  - Links to .architecture/ files
-  - Links to agent_docs/
-  - Links between ADRs and reviews
-  - Tool: Manual check or markdown link validator
+  - Method: Run `cd tools && npm run validate`
+  - Alternative: Manual check of links
+  - Checks: Links to .architecture/, agent_docs/, between ADRs and reviews
   - Action: Fix broken links immediately
 
 - [ ] **Review examples for staleness**
@@ -398,8 +399,12 @@ This process should evolve based on experience:
 - Terminal (for `wc -l` line counting)
 - GitHub issue tracker access
 
+**Automated Tools** (in `tools/` directory):
+- `npm run validate` - Validates markdown links
+- `npm run count` - Counts instructions with target checking
+- See [tools/README.md](../tools/README.md) for full documentation
+
 **Helpful**:
-- Markdown link validator
 - Diff tool for comparing changes
 - User feedback collection system
 - Analytics (if available)
