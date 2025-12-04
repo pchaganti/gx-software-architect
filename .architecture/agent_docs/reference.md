@@ -2,7 +2,7 @@
 
 This document covers advanced framework features, pragmatic mode details, and troubleshooting guidance.
 
-**👉 For framework overview, see [../AGENTS.md](../AGENTS.md)**
+**👉 For framework overview, see [../../AGENTS.md](../../AGENTS.md)**
 
 ---
 
@@ -378,7 +378,7 @@ The framework works with any AI assistant that can:
 **Issue**: AI assistant seems slow or confused
 - **Possible Cause**: Instruction capacity exceeded
 - **Solution**: Ensure documentation follows progressive disclosure pattern
-- **See**: [ADR-005](../.architecture/decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)
+- **See**: [ADR-005](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)
 
 **Issue**: AI provides generic responses
 - **Possible Cause**: Not reading framework files
@@ -464,16 +464,16 @@ The framework works with any AI assistant that can:
 
 ### Usage Questions
 
-- Review [AGENTS.md](../AGENTS.md) for framework overview
+- Review [AGENTS.md](../../AGENTS.md) for framework overview
 - Check `agent_docs/workflows.md` for step-by-step procedures
 - Examine example ADRs in `.architecture/decisions/adrs/`
 - Study example reviews in `.architecture/reviews/`
 
 ### Customization Help
 
-- Read [.architecture/principles.md](../.architecture/principles.md) for architectural guidance
-- Review [.architecture/members.yml](../.architecture/members.yml) for member examples
-- Check [.architecture/config.yml](../.architecture/config.yml) for configuration options
+- Read [.architecture/principles.md](../principles.md) for architectural guidance
+- Review [.architecture/members.yml](../members.yml) for member examples
+- Check [.architecture/config.yml](../config.yml) for configuration options
 - Examine templates in `.architecture/templates/`
 
 ---

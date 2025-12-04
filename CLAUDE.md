@@ -20,7 +20,7 @@ The AI Software Architect framework uses a **progressive disclosure** pattern to
 
 - **AGENTS.md**: Cross-platform core documentation (~150 instructions)
 - **CLAUDE.md**: Claude Code-specific enhancements (this file, ~30 instructions)
-- **agent_docs/**: Detailed task-specific guidance (loaded as needed)
+- **.architecture/agent_docs/**: Detailed task-specific guidance (loaded as needed)
 
 ## Claude Code-Specific Features
 

@@ -79,7 +79,7 @@ cd mcp && npm test
 
 ## Using the Framework in Your Project
 
-**👉 For detailed installation procedures, see [agent_docs/workflows.md § Setup Procedures](agent_docs/workflows.md#setup-procedures)**
+**👉 For detailed installation procedures, see [.architecture/agent_docs/workflows.md § Setup Procedures](.architecture/agent_docs/workflows.md#setup-procedures)**
 
 ### Installation Options (Quick Reference)
 
@@ -95,11 +95,11 @@ cd mcp && npm test
 - Install: `npm install -g ai-software-architect`
 - Configure in `claude_desktop_config.json`
 
-**See [agent_docs/workflows.md § Setup Procedures](agent_docs/workflows.md#setup-procedures) for complete installation instructions.**
+**See [.architecture/agent_docs/workflows.md § Setup Procedures](.architecture/agent_docs/workflows.md#setup-procedures) for complete installation instructions.**
 
 ### Core Workflows
 
-**👉 For detailed workflow procedures, see [agent_docs/workflows.md](agent_docs/workflows.md)**
+**👉 For detailed workflow procedures, see [.architecture/agent_docs/workflows.md](.architecture/agent_docs/workflows.md)**
 
 Once installed in your project, you can:
 
@@ -116,22 +116,22 @@ Once installed in your project, you can:
 - "Enable pragmatic mode"
 - "Turn on YAGNI enforcement"
 - "Challenge complexity"
-- **See**: [agent_docs/reference.md § Pragmatic Guard Mode](agent_docs/reference.md#pragmatic-guard-mode)
+- **See**: [.architecture/agent_docs/reference.md § Pragmatic Guard Mode](.architecture/agent_docs/reference.md#pragmatic-guard-mode)
 
 **Architecture Recalibration:**
 - "Start architecture recalibration for version X.Y.Z"
 - "Recalibrate architecture for [feature]"
-- **See**: [agent_docs/reference.md § Architecture Recalibration](agent_docs/reference.md#architecture-recalibration)
+- **See**: [.architecture/agent_docs/reference.md § Architecture Recalibration](.architecture/agent_docs/reference.md#architecture-recalibration)
 
 **Implement Features with Methodology:**
 - "Implement [feature] as the architects"
 - "Implement as the architects" (with prior context)
 - "Implement [feature] as [specific architect]"
-- **See**: [agent_docs/workflows.md § Implementation with Methodology](agent_docs/workflows.md#implementation-with-methodology)
+- **See**: [.architecture/agent_docs/workflows.md § Implementation with Methodology](.architecture/agent_docs/workflows.md#implementation-with-methodology)
 
 **Configuring Implementation Guidance:**
 
-**👉 For complete details and examples, see [agent_docs/workflows.md § Implementation with Methodology](agent_docs/workflows.md#implementation-with-methodology)**
+**👉 For complete details and examples, see [.architecture/agent_docs/workflows.md § Implementation with Methodology](.architecture/agent_docs/workflows.md#implementation-with-methodology)**
 
 Configure AI assistants to automatically apply your development methodology via `.architecture/config.yml`:
 
@@ -368,7 +368,7 @@ The framework works with any AI assistant that can:
 
 ## Updating the Framework
 
-**👉 For detailed update procedures, see [agent_docs/workflows.md § Update Procedures](agent_docs/workflows.md#update-procedures)**
+**👉 For detailed update procedures, see [.architecture/agent_docs/workflows.md § Update Procedures](.architecture/agent_docs/workflows.md#update-procedures)**
 
 ### Quick Reference
 
@@ -381,14 +381,14 @@ The framework works with any AI assistant that can:
 - Direct Clone: Ask assistant or manually fetch/reset
 - Preserves your ADRs and reviews automatically
 
-**See [agent_docs/workflows.md § Update Procedures](agent_docs/workflows.md#update-procedures) for complete instructions.**
+**See [.architecture/agent_docs/workflows.md § Update Procedures](.architecture/agent_docs/workflows.md#update-procedures) for complete instructions.**
 
 ## Additional Resources
 
 ### Detailed Documentation
-- **Workflow Procedures**: [agent_docs/workflows.md](agent_docs/workflows.md)
-- **Advanced Topics**: [agent_docs/reference.md](agent_docs/reference.md)
-- **Documentation Guide**: [agent_docs/README.md](agent_docs/README.md)
+- **Workflow Procedures**: [.architecture/agent_docs/workflows.md](.architecture/agent_docs/workflows.md)
+- **Advanced Topics**: [.architecture/agent_docs/reference.md](.architecture/agent_docs/reference.md)
+- **Documentation Guide**: [.architecture/agent_docs/README.md](.architecture/agent_docs/README.md)
 
 ### Framework Files
 - **Framework Principles**: [.architecture/principles.md](.architecture/principles.md)

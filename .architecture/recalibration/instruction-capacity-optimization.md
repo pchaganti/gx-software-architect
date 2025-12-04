@@ -19,7 +19,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Week 1 Completed (2025-12-04):**
 - ✅ CLAUDE.md refactored: 572 → 126 lines (78% reduction, ~14 instructions)
 - ✅ AGENTS.md updated: 524 → 418 lines (20% reduction, pointers added)
-- ✅ agent_docs/ structure created (workflows.md, reference.md, README.md)
+- ✅ .architecture/agent_docs/ structure created (workflows.md, reference.md, README.md)
 - ✅ All content preserved and reorganized
 - ✅ ADRs documented and accepted
 - ✅ Committed to main branch (commit 8ffc22c)
@@ -59,7 +59,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 - Cross-platform compatibility maintained via AGENTS.md
 
 **Pragmatic Enforcer:**
-- Start with consolidated agent_docs/ (2-3 files)
+- Start with consolidated .architecture/agent_docs/ (2-3 files)
 - Split files only when justified by usage (> 300 lines)
 - Avoid premature modularization
 - Current CLAUDE.md refactor appropriate
@@ -84,7 +84,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 ### Critical Priority (Week 1)
 
-#### C1: Create agent_docs/ Directory Structure
+#### C1: Create .architecture/agent_docs/ Directory Structure
 
 **Owner**: Systems Architect
 **Status**: ✅ COMPLETE (2025-12-04)
@@ -92,14 +92,14 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Target**: Week 1, Day 1
 
 **Action Items:**
-1. ✅ Create `agent_docs/` directory in project root
+1. ✅ Create `.architecture/agent_docs/` directory in project root
 2. ✅ Follow Pragmatic Enforcer's recommendation: start consolidated
 3. ✅ Initial file structure:
    ```
-   agent_docs/
+   .architecture/agent_docs/
    ├── workflows.md (387 lines)      # Setup, reviews, ADRs, implementation
    ├── reference.md (485 lines)      # Pragmatic mode, troubleshooting, advanced
-   └── README.md (186 lines)         # Navigation guide for agent_docs/
+   └── README.md (186 lines)         # Navigation guide for .architecture/agent_docs/
    ```
 
 **Success Criteria:**
@@ -125,7 +125,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 **Action Items:**
 1. ✅ Identify setup and update procedures in AGENTS.md
-2. ✅ Extract to `agent_docs/workflows.md` with proper structure:
+2. ✅ Extract to `.architecture/agent_docs/workflows.md` with proper structure:
    - Setup procedures (3 installation options with detailed steps)
    - Update procedures (for all installation methods)
    - Include examples and troubleshooting
@@ -136,7 +136,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 - [x] Setup procedures extracted to workflows.md
 - [x] Update procedures extracted to workflows.md
 - [x] AGENTS.md updated with clear pointers
-- [x] All internal links validated (13 references to agent_docs/)
+- [x] All internal links validated (13 references to .architecture/agent_docs/)
 - [x] AGENTS.md reduced by ~106 lines (524 → 418)
 
 **Actual Impact:**
@@ -155,15 +155,15 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 **Action Items:**
 1. ✅ Review implementation guidance in AGENTS.md
-2. ✅ Determine what stays in AGENTS.md (configuration overview) vs. agent_docs/ (detailed methodology explanation)
-3. ✅ Extract detailed methodology explanations to `agent_docs/workflows.md`
+2. ✅ Determine what stays in AGENTS.md (configuration overview) vs. .architecture/agent_docs/ (detailed methodology explanation)
+3. ✅ Extract detailed methodology explanations to `.architecture/agent_docs/workflows.md`
 4. ✅ Keep configuration examples and quick reference in AGENTS.md
-5. ✅ Add pointers in AGENTS.md to agent_docs/workflows.md
+5. ✅ Add pointers in AGENTS.md to .architecture/agent_docs/workflows.md
 
 **Success Criteria:**
 - [x] Methodology details extracted (6 methodologies documented: TDD, BDD, DDD, Test-Last, Exploratory)
 - [x] Configuration examples remain in AGENTS.md (concise YAML example)
-- [x] Clear pointers added (to agent_docs/workflows.md § Implementation)
+- [x] Clear pointers added (to .architecture/agent_docs/workflows.md § Implementation)
 - [x] User journey supports both "quick config" and "deep understanding"
 
 **Actual Impact:**
@@ -173,7 +173,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 ---
 
-#### C4: Create Quick Start Guide in agent_docs/README.md
+#### C4: Create Quick Start Guide in .architecture/agent_docs/README.md
 
 **Owner**: Domain Expert
 **Status**: ✅ COMPLETE (2025-12-04)
@@ -181,7 +181,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Target**: Week 1, Day 4
 
 **Action Items:**
-1. ✅ Create navigation guide for agent_docs/
+1. ✅ Create navigation guide for .architecture/agent_docs/
 2. ✅ Explain progressive disclosure structure
 3. ✅ Map common user tasks to specific sections (10 common tasks mapped)
 4. ✅ Include "New User Path" and "Returning User Path"
@@ -194,7 +194,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 - [ ] Testing: 3 users can find task guidance in < 60 seconds (pending user feedback)
 
 **Actual Content:**
-- Progressive disclosure explained (AGENTS.md → CLAUDE.md → agent_docs/)
+- Progressive disclosure explained (AGENTS.md → CLAUDE.md → .architecture/agent_docs/)
 - Quick navigation table (10 common tasks)
 - Documentation structure diagram
 - Best practices for AI assistants and humans
@@ -202,7 +202,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 **Content Structure:**
 ```markdown
-# agent_docs/ - Detailed Framework Guidance
+# .architecture/agent_docs/ - Detailed Framework Guidance
 
 ## What's Here
 - workflows.md: Step-by-step procedures
@@ -232,13 +232,13 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Action Items:**
 1. Update AGENTS.md template in `.architecture/templates/AGENTS.md`
 2. Reflect progressive disclosure structure
-3. Include agent_docs/ references
-4. Update setup instructions to create agent_docs/
+3. Include .architecture/agent_docs/ references
+4. Update setup instructions to create .architecture/agent_docs/
 5. Add instruction capacity guidance to template comments
 
 **Success Criteria:**
 - [ ] Template updated with new structure
-- [ ] Setup process creates agent_docs/
+- [ ] Setup process creates .architecture/agent_docs/
 - [ ] Template includes instruction capacity warnings
 - [ ] Template includes progressive disclosure examples
 
@@ -280,15 +280,15 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Target**: Week 2, Day 4-5
 
 **Action Items:**
-1. Update `setup-architect` skill to create agent_docs/
-2. Populate agent_docs/ with content during setup
+1. Update `setup-architect` skill to create .architecture/agent_docs/
+2. Populate .architecture/agent_docs/ with content during setup
 3. Update MCP server's `setup_architecture` tool
 4. Test setup process creates correct structure
 5. Update setup documentation
 
 **Success Criteria:**
-- [ ] Skills create agent_docs/ structure
-- [ ] MCP tools create agent_docs/ structure
+- [ ] Skills create .architecture/agent_docs/ structure
+- [ ] MCP tools create .architecture/agent_docs/ structure
 - [ ] Templates populated correctly
 - [ ] Setup tested in sample project
 - [ ] Documentation updated
@@ -321,7 +321,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Target Metrics:**
 - CLAUDE.md: < 100 lines, < 30 instructions
 - AGENTS.md: < 500 lines, < 150 instructions
-- agent_docs/ files: < 300 lines each (split if exceeded)
+- .architecture/agent_docs/ files: < 300 lines each (split if exceeded)
 
 ---
 
@@ -389,7 +389,7 @@ All architecture members unanimously agreed on the critical need to restructure 
 
 **Action Items:**
 1. Determine feedback collection method
-2. Track which agent_docs/ sections accessed most
+2. Track which .architecture/agent_docs/ sections accessed most
 3. Measure task completion times
 4. Collect user satisfaction metrics
 5. Iterate on structure based on data
@@ -409,8 +409,8 @@ All architecture members unanimously agreed on the critical need to restructure 
 **Target**: v1.3.0+
 
 **Action Items:**
-1. Test agent_docs/ structure with Cursor
-2. Test agent_docs/ structure with Copilot
+1. Test .architecture/agent_docs/ structure with Cursor
+2. Test .architecture/agent_docs/ structure with Copilot
 3. Identify assistant-specific needs
 4. Create assistant-specific supplements if needed
 5. Update cross-platform documentation
@@ -428,7 +428,7 @@ Items identified in the review that won't be addressed immediately but should be
 
 | ID | Description | Impact | Potential Resolution | Notes |
 |----|-------------|--------|---------------------|-------|
-| TD1 | AGENTS.md still at 524 lines (target < 500) | Medium | Extract more content to agent_docs/ | Monitor in Q1 2025 review |
+| TD1 | AGENTS.md still at 524 lines (target < 500) | Medium | Extract more content to .architecture/agent_docs/ | Monitor in Q1 2025 review |
 | TD2 | No automated instruction counting | Low | Create script to count instructions | Consider if maintenance burden justifies automation |
 | TD3 | Pointer drift risk | Medium | Establish validation process | Add to quarterly review checklist |
 | TD4 | No A/B testing capability | Low | User feedback as proxy | Implement if usage grows significantly |
@@ -453,12 +453,12 @@ ADRs created or updated based on this recalibration:
 
 **Day 1-2:**
 - ✅ CLAUDE.md refactored (completed)
-- Create agent_docs/ structure (C1)
+- Create .architecture/agent_docs/ structure (C1)
 - Extract setup/update procedures (C2)
 
 **Day 3-4:**
 - Extract implementation details (C3)
-- Create agent_docs/README.md (C4)
+- Create .architecture/agent_docs/README.md (C4)
 
 **Day 5:**
 - Validation and testing
@@ -511,7 +511,7 @@ ADRs created or updated based on this recalibration:
 
 **Simplification Recommendations**:
 
-1. **C1 (agent_docs/ structure)**: ✅ Already simplified to 2-3 files per my recommendation
+1. **C1 (.architecture/agent_docs/ structure)**: ✅ Already simplified to 2-3 files per my recommendation
 2. **H2 (Instruction counting)**: Could be simpler - start with manual counting, automate ONLY if burden justifies
 3. **M2 (Quarterly review)**: Good, but keep lightweight - avoid over-process
 4. **L1-L2 (Analytics, cross-assistant)**: ✅ Appropriately deferred
@@ -541,7 +541,7 @@ The plan correctly prioritizes solving the immediate problem (instruction capaci
 - ✅ CLAUDE.md: < 100 lines (currently 126, target achieved)
 - ✅ CLAUDE.md: < 30 instructions (currently ~14, target achieved)
 - 🎯 AGENTS.md: < 500 lines (currently 524, target: -24 lines)
-- 🎯 agent_docs/ files: < 300 lines each (target for future)
+- 🎯 .architecture/agent_docs/ files: < 300 lines each (target for future)
 
 **Performance:**
 - Average time-to-find guidance: < 60 seconds (baseline to be established)
@@ -573,13 +573,13 @@ The plan correctly prioritizes solving the immediate problem (instruction capaci
 
 **Key Points:**
 - ✅ Progressive disclosure pattern aligns with existing .architecture/ modularity
-- ✅ Clear separation: AGENTS.md (what), CLAUDE.md (how for Claude), agent_docs/ (details)
+- ✅ Clear separation: AGENTS.md (what), CLAUDE.md (how for Claude), .architecture/agent_docs/ (details)
 - ⚠️ Monitor AGENTS.md size - may need further extraction
 - ✅ Cross-platform compatibility maintained
 
 **Action Items for Team:**
-1. Ensure agent_docs/ integrates cleanly with existing .architecture/ structure
-2. Maintain clear navigation between AGENTS.md, CLAUDE.md, and agent_docs/
+1. Ensure .architecture/agent_docs/ integrates cleanly with existing .architecture/ structure
+2. Maintain clear navigation between AGENTS.md, CLAUDE.md, and .architecture/agent_docs/
 3. Document architectural principles that led to this structure
 
 ---
@@ -685,7 +685,7 @@ The plan correctly prioritizes solving the immediate problem (instruction capaci
 **Vigilance Points:**
 1. Keep quarterly reviews lightweight (avoid checklist bloat)
 2. Don't automate instruction counting until burden justifies
-3. Split agent_docs/ files ONLY when usage data or length (> 300 lines) justifies
+3. Split .architecture/agent_docs/ files ONLY when usage data or length (> 300 lines) justifies
 4. Resist urge to add more governance without evidence of need
 
 ---
@@ -720,10 +720,10 @@ The plan correctly prioritizes solving the immediate problem (instruction capaci
 ### This Week (Week 1):
 
 1. **✅ Day 1 (Completed)**: CLAUDE.md refactored to reference AGENTS.md
-2. **📋 Day 2**: Create agent_docs/ directory structure (C1)
+2. **📋 Day 2**: Create .architecture/agent_docs/ directory structure (C1)
 3. **📋 Day 2-3**: Extract setup/update procedures from AGENTS.md (C2)
 4. **📋 Day 3-4**: Extract implementation methodology details (C3)
-5. **📋 Day 4**: Create agent_docs/README.md with navigation (C4)
+5. **📋 Day 4**: Create .architecture/agent_docs/README.md with navigation (C4)
 6. **📋 Day 5**: Validation, testing, and internal review
 
 ### Next Week (Week 2):

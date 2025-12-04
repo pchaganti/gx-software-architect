@@ -1,20 +1,40 @@
 # AGENTS.md - AI Software Architect Framework
 
-> **For [AI Assistant] Users**: This file contains cross-platform instructions for the AI Software Architect framework. For assistant-specific features, see the references at the end of this file.
+<!--
+TEMPLATE USAGE NOTES:
+- Replace [PROJECT_NAME] with your project name
+- Replace [PROJECT_TECH_STACK] with your technologies
+- Replace [PROJECT_BUILD_COMMANDS] with your build process
+- Replace [PROJECT_TEST_COMMANDS] with your test commands
+- Replace [PROJECT_CONVENTIONS] with your code conventions
+- Replace [FRAMEWORK_VERSION] with current framework version
+- Replace [LAST_UPDATED] with current date
+
+INSTRUCTION CAPACITY GUIDANCE (ADR-005):
+- Keep this file < 500 lines, target ~400 lines
+- Estimated instruction count: aim for < 150 instructions
+- Detailed procedures belong in .architecture/agent_docs/ (created during setup)
+- Use pointers to .architecture/agent_docs/ for task-specific guidance
+- Only include always-relevant content here
+-->
+
+> **For [AI Assistant] Users**: This file contains cross-platform instructions for the AI Software Architect framework. For assistant-specific features and detailed procedures, see [.architecture/agent_docs/README.md](.architecture/agent_docs/README.md).
 
 ## Project Overview
 
-[PROJECT_NAME] uses the AI Software Architect framework to implement rigorous software architecture practices with AI assistant collaboration. The framework provides structured architecture documentation, multi-perspective reviews, and architectural decision tracking.
+[PROJECT_NAME] uses the AI Software Architect framework to implement rigorous software architecture practices with AI assistant collaboration.
 
-## Framework Setup
+**Technology Stack**: [PROJECT_TECH_STACK]
 
-The AI Software Architect framework is installed in the `.architecture/` directory and provides:
-
+The framework provides:
 - **Architecture Documentation**: Centralized repository of architectural decisions and reviews
 - **Multi-Perspective Reviews**: Specialized reviewers from different architectural domains
 - **Decision Records (ADRs)**: Structured documentation of architectural decisions
 - **Recalibration Process**: Translating architectural reviews into implementation plans
 - **Pragmatic Mode**: Optional YAGNI enforcement to prevent over-engineering
+- **Progressive Disclosure**: Detailed procedures in `.architecture/agent_docs/` directory
+
+## Framework Setup
 
 ### Directory Structure
 
@@ -28,102 +48,68 @@ The AI Software Architect framework is installed in the `.architecture/` directo
 ├── reviews/                 # Architecture review documents
 ├── recalibration/          # Implementation planning documents
 └── templates/              # Templates for ADRs, reviews, etc.
+
+.architecture/agent_docs/                  # Detailed AI assistant procedures
+├── README.md               # Navigation guide
+├── workflows.md            # Step-by-step procedures
+└── reference.md            # Advanced topics and troubleshooting
 ```
+
+**👉 For detailed setup procedures, see [.architecture/agent_docs/workflows.md § Setup Procedures](.architecture/agent_docs/workflows.md#setup-procedures)**
 
 ## Core Workflows
 
+**👉 For detailed workflow procedures, see [.architecture/agent_docs/workflows.md](.architecture/agent_docs/workflows.md)**
+
 ### Requesting Architecture Reviews
 
-Architecture reviews provide multi-perspective analysis of architectural decisions. Use phrases like:
+Architecture reviews provide multi-perspective analysis of architectural decisions.
 
+**Command patterns:**
 - "Start architecture review for version X.Y.Z"
 - "Start architecture review for [feature name]"
-- "Review architecture for [component description]"
+- "Ask [Specialist] to review [component]"
 
-The review process includes:
-1. **Individual Review Phase**: Each architecture member reviews independently
-2. **Collaborative Discussion Phase**: Members discuss findings and trade-offs
-3. **Final Report Phase**: Consolidated recommendations and action items
+Review documents created in `.architecture/reviews/`.
 
-Review documents are created in `.architecture/reviews/` using version numbers (e.g., `1-0-0.md`) or feature names (e.g., `feature-name.md`).
-
-### Requesting Specialist Reviews
-
-For focused architectural feedback from a specific specialist, use phrases like:
-
-- "Ask [Specialist Role] to review [target]"
-- "Get [Specialist]'s opinion on [topic]"
-- "Have [Role] review these changes"
-
-Example: "Ask Security Specialist to review authentication implementation"
-
-Available specialists are defined in `.architecture/members.yml`. Common roles include:
-- Systems Architect (overall system coherence)
-- Domain Expert (business logic representation)
-- Security Specialist (security implications)
-- Performance Specialist (performance optimization)
-- Maintainability Expert (code quality and technical debt)
-- AI Engineer (AI/ML integration patterns)
-- Pragmatic Enforcer (YAGNI and simplicity advocacy)
-
-Specialist review documents are created in `.architecture/reviews/` with format: `[role]-[topic].md`.
+**See**: [.architecture/agent_docs/workflows.md § Architecture Review Workflows](.architecture/agent_docs/workflows.md#architecture-review-workflows)
 
 ### Creating Architectural Decision Records (ADRs)
 
-ADRs document significant architectural decisions. To create an ADR:
+ADRs document significant architectural decisions.
 
-1. Use phrases like: "Create ADR for [topic]" or "Document architectural decision for [topic]"
-2. Provide context about the decision being made
-3. Include alternatives considered
-4. Document consequences (positive, negative, neutral)
+**Command patterns:**
+- "Create ADR for [topic]"
+- "Document architectural decision for [topic]"
 
-ADRs are stored in `.architecture/decisions/adrs/` with sequential numbering: `ADR-001-topic.md`, `ADR-002-topic.md`, etc.
+ADRs stored in `.architecture/decisions/adrs/` with sequential numbering.
 
-ADR template is available at `.architecture/templates/adr-template.md`.
+**See**: [.architecture/agent_docs/workflows.md § ADR Creation Workflow](.architecture/agent_docs/workflows.md#adr-creation-workflow)
 
 ### Enabling Pragmatic Mode
 
-Pragmatic mode adds YAGNI enforcement to prevent over-engineering. Enable it with phrases like:
+Pragmatic mode adds YAGNI enforcement to prevent over-engineering.
+
+**Command patterns:**
 
 - "Enable pragmatic mode"
 - "Turn on YAGNI enforcement"
-- "Activate simplicity guard"
-- "Challenge complexity"
 
-Configuration is stored in `.architecture/config.yml`. Three intensity modes:
-- **Strict**: Aggressive challenges, require strong justification, default to defer/simplify
-- **Balanced**: Thoughtful challenges, accept justified complexity, seek middle ground
-- **Lenient**: Raise concerns without blocking, suggest alternatives as options
+Configuration in `.architecture/config.yml` with three intensity modes: Strict, Balanced, Lenient.
 
-When enabled, the Pragmatic Enforcer member participates in reviews and ADR creation, challenging:
-- Unnecessary abstractions
-- Premature optimization
-- Speculative features
-- Over-engineered solutions
-
-Pragmatic analysis includes:
-- **Necessity Assessment** (0-10): Current need, future need, cost of waiting
-- **Complexity Assessment** (0-10): Added complexity, maintenance burden, learning curve
-- **Simpler Alternatives**: Concrete proposals for simpler approaches
-- **Recommendations**: Implement now / Simplified version / Defer / Skip
-
-Deferred decisions are tracked in `.architecture/deferrals.md` with trigger conditions for future implementation.
+**See**: [.architecture/agent_docs/reference.md § Pragmatic Guard Mode](.architecture/agent_docs/reference.md#pragmatic-guard-mode)
 
 ### Architectural Recalibration
 
-After architecture reviews, conduct recalibration to translate findings into action:
+Translate architecture review findings into actionable implementation plans.
 
+**Command patterns:**
 - "Start architecture recalibration for version X.Y.Z"
 - "Recalibrate architecture for [feature name]"
 
-Recalibration includes:
-1. **Review Analysis & Prioritization**: Categorize and prioritize recommendations
-2. **Architectural Plan Update**: Update ADRs and documentation
-3. **Documentation Refresh**: Ensure docs reflect new direction
-4. **Implementation Roadmapping**: Create detailed implementation plans
-5. **Progress Tracking**: Monitor implementation progress
+Recalibration documents stored in `.architecture/recalibration/`.
 
-Recalibration documents are stored in `.architecture/recalibration/` using version numbers or feature names.
+**See**: [.architecture/agent_docs/reference.md § Architecture Recalibration](.architecture/agent_docs/reference.md#architecture-recalibration)
 
 ## Architecture Principles
 
@@ -223,9 +209,17 @@ The framework works with any AI assistant that can read markdown files and follo
 
 ## Additional Resources
 
+### Detailed Documentation
+- **Workflow Procedures**: `.architecture/agent_docs/workflows.md`
+- **Advanced Topics**: `.architecture/agent_docs/reference.md`
+- **Documentation Guide**: `.architecture/agent_docs/README.md`
+
+### Framework Files
 - **Framework Principles**: `.architecture/principles.md`
 - **Architecture Members**: `.architecture/members.yml`
 - **Configuration**: `.architecture/config.yml`
+
+### Templates & Examples
 - **ADR Template**: `.architecture/templates/adr-template.md`
 - **Review Template**: `.architecture/templates/review-template.md`
 - **Recalibration Template**: `.architecture/templates/recalibration_plan.md`
@@ -235,5 +229,16 @@ The framework works with any AI assistant that can read markdown files and follo
 ---
 
 **Framework Version**: [FRAMEWORK_VERSION]
+**Documentation Version**: 2.0.0 (Progressive Disclosure - ADR-006)
 **Last Updated**: [LAST_UPDATED]
 **Maintained By**: AI Software Architect Framework
+
+<!--
+REMINDER FOR AI ASSISTANTS:
+During setup, ensure .architecture/agent_docs/ directory is created with:
+- workflows.md (setup, reviews, ADRs, implementation procedures)
+- reference.md (pragmatic mode, recalibration, troubleshooting)
+- README.md (navigation guide)
+
+See ADR-005 and ADR-006 for progressive disclosure pattern rationale.
+-->

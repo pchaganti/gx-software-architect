@@ -2,7 +2,7 @@
 
 This document provides step-by-step procedures for common AI Software Architect framework workflows.
 
-**👉 For framework overview, see [../AGENTS.md](../AGENTS.md)**
+**👉 For framework overview, see [../../AGENTS.md](../../AGENTS.md)**
 
 ---
 
@@ -381,7 +381,7 @@ After completing workflows, consider:
 5. **Share with Team**: Ensure all team members understand the framework
 
 **For more information, see:**
-- [AGENTS.md](../AGENTS.md) - Framework overview
-- [.architecture/principles.md](../.architecture/principles.md) - Architectural principles
-- [.architecture/members.yml](../.architecture/members.yml) - Team members
-- [.architecture/config.yml](../.architecture/config.yml) - Configuration
+- [AGENTS.md](../../AGENTS.md) - Framework overview
+- [.architecture/principles.md](../principles.md) - Architectural principles
+- [.architecture/members.yml](../members.yml) - Team members
+- [.architecture/config.yml](../config.yml) - Configuration

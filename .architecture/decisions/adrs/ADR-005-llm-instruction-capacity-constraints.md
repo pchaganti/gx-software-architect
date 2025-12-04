@@ -45,7 +45,7 @@ Claude Code injects a system reminder stating context "may or may not be relevan
 We formally recognize and adopt LLM instruction capacity constraints as a foundational principle for all AI assistant documentation in the AI Software Architect framework.
 
 **Core Principle:**
-All documentation intended for AI assistant consumption (CLAUDE.md, AGENTS.md, agent_docs/) must respect the ~150-200 instruction capacity limit, accounting for the ~50 instructions already used by Claude Code's system prompt.
+All documentation intended for AI assistant consumption (CLAUDE.md, AGENTS.md, .architecture/agent_docs/) must respect the ~150-200 instruction capacity limit, accounting for the ~50 instructions already used by Claude Code's system prompt.
 
 **Specific Constraints:**
 1. **CLAUDE.md Target**: < 30 discrete instructions (budget for 100-line file)
@@ -56,7 +56,7 @@ All documentation intended for AI assistant consumption (CLAUDE.md, AGENTS.md, a
 **Architectural Components Affected:**
 * CLAUDE.md (primary impact)
 * AGENTS.md (secondary review needed)
-* Future agent_docs/ structure (guided by this constraint)
+* Future .architecture/agent_docs/ structure (guided by this constraint)
 * Documentation templates and guidelines
 
 **Interface Changes:**
@@ -108,7 +108,7 @@ All documentation intended for AI assistant consumption (CLAUDE.md, AGENTS.md, a
 **Phase 3: Refactor to Meet Constraints (Week 1-2)**
 * Implement progressive disclosure pattern (ADR-006)
 * Reduce CLAUDE.md to < 30 instructions
-* Move task-specific content to agent_docs/
+* Move task-specific content to .architecture/agent_docs/
 * Validate instruction counts in refactored structure
 
 **Phase 4: Establish Ongoing Governance (Week 2+)**
@@ -237,7 +237,7 @@ This represents appropriate engineering for a current need. The constraint drive
 - [x] Instruction capacity limits defined
 - [x] Impact on current documentation assessed
 - [x] CLAUDE.md refactored to meet constraints (572 → 126 lines, ~14 instructions)
-- [x] agent_docs/ structure implemented (workflows.md, reference.md, README.md)
+- [x] .architecture/agent_docs/ structure implemented (workflows.md, reference.md, README.md)
 - [ ] Instruction counting methodology defined (Week 2, H2)
 - [ ] Documentation guidelines updated (Week 3, M1)
 - [ ] Quarterly review process established (Week 3, M2)

@@ -12,7 +12,7 @@ This directory contains in-depth, step-by-step procedures and advanced topics fo
 
 ## Why This Structure?
 
-Based on research (see [ADR-005](../.architecture/decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)), LLMs have limited instruction-following capacity (~150-200 instructions). This structure:
+Based on research (see [ADR-005](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)), LLMs have limited instruction-following capacity (~150-200 instructions). This structure:
 
 1. **AGENTS.md**: Core concepts, always-relevant (~150 instructions)
 2. **CLAUDE.md**: Claude Code-specific features (~14 instructions)
@@ -41,10 +41,10 @@ This approach keeps the main documentation concise while providing deep details 
 
 **Start here:**
 
-1. **Read**: [../AGENTS.md](../AGENTS.md) - Framework overview and core concepts
+1. **Read**: [../../AGENTS.md](../../AGENTS.md) - Framework overview and core concepts
 2. **Install**: [workflows.md § Setup Procedures](workflows.md#setup-procedures)
-3. **Configure**: Set up [.architecture/config.yml](../.architecture/config.yml)
-4. **Explore**: Review [example ADRs](../.architecture/decisions/adrs/) and [reviews](../.architecture/reviews/)
+3. **Configure**: Set up [.architecture/config.yml](../config.yml)
+4. **Explore**: Review [example ADRs](../decisions/adrs/) and [reviews](../reviews/)
 5. **Practice**: Request your first architecture review
 
 **Recommended Reading Order:**
@@ -60,8 +60,8 @@ This approach keeps the main documentation concise while providing deep details 
 
 - Need detailed steps? → [workflows.md](workflows.md)
 - Need advanced config? → [reference.md](reference.md)
-- Need framework overview? → [../AGENTS.md](../AGENTS.md)
-- Need Claude-specific? → [../CLAUDE.md](../CLAUDE.md)
+- Need framework overview? → [../../AGENTS.md](../../AGENTS.md)
+- Need Claude-specific? → [../../CLAUDE.md](../../CLAUDE.md)
 
 ## Common Workflows
 
@@ -162,16 +162,16 @@ Enable pragmatic mode
 **Check these resources:**
 1. [workflows.md](workflows.md) - Step-by-step task procedures
 2. [reference.md](reference.md) - Advanced topics and troubleshooting
-3. [../AGENTS.md](../AGENTS.md) - Framework overview
-4. [../.architecture/principles.md](../.architecture/principles.md) - Architectural guidance
-5. [../.architecture/config.yml](../.architecture/config.yml) - Configuration options
+3. [../../AGENTS.md](../../AGENTS.md) - Framework overview
+4. [../principles.md](../principles.md) - Architectural guidance
+5. [../config.yml](../config.yml) - Configuration options
 
 ### Still Need Help?
 
 - **Repository**: https://github.com/codenamev/ai-software-architect
 - **Issues**: https://github.com/codenamev/ai-software-architect/issues
-- **Examples**: Check [../.architecture/decisions/adrs/](../.architecture/decisions/adrs/) for example ADRs
-- **Examples**: Check [../.architecture/reviews/](../.architecture/reviews/) for example reviews
+- **Examples**: Check [../decisions/adrs/](../decisions/adrs/) for example ADRs
+- **Examples**: Check [../reviews/](../reviews/) for example reviews
 
 ## Version Information
 

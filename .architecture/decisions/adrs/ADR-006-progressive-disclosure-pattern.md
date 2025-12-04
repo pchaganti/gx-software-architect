@@ -61,7 +61,7 @@ We adopt the **Progressive Disclosure Pattern** for all AI assistant documentati
 
 **Core Pattern:**
 1. **Primary File (CLAUDE.md)**: Minimal, always-relevant content with clear pointers to detailed guides
-2. **Secondary Files (agent_docs/)**: Task-specific, detailed procedural guidance
+2. **Secondary Files (.architecture/agent_docs/)**: Task-specific, detailed procedural guidance
 3. **Pointer References**: Brief descriptions in primary file, full details in secondary files
 4. **Frequency-Based Prioritization**: Content organized by usage frequency
 
@@ -73,7 +73,7 @@ CLAUDE.md (< 100 lines, < 30 instructions)
   ├── Quick reference with pointers
   └── Critical always-relevant guidelines
 
-agent_docs/
+.architecture/agent_docs/
   ├── setup-guide.md (setup procedures, detailed)
   ├── review-workflows.md (architecture review processes)
   ├── adr-creation.md (ADR creation guidance)
@@ -87,9 +87,9 @@ agent_docs/
 | Content Category | Inclusion Rule | Destination |
 |-----------------|----------------|-------------|
 | Always Relevant (100% of interactions) | Include fully | CLAUDE.md |
-| Frequently Relevant (>50% of interactions) | Include summary + pointer | CLAUDE.md + agent_docs/ |
-| Occasionally Relevant (10-50% of interactions) | Pointer only | agent_docs/ |
-| Rarely Relevant (<10% of interactions) | Pointer only | agent_docs/ |
+| Frequently Relevant (>50% of interactions) | Include summary + pointer | CLAUDE.md + .architecture/agent_docs/ |
+| Occasionally Relevant (10-50% of interactions) | Pointer only | .architecture/agent_docs/ |
+| Rarely Relevant (<10% of interactions) | Pointer only | .architecture/agent_docs/ |
 
 **CLAUDE.md Content (Always-Relevant Only):**
 - Project overview (WHAT: framework purpose)
@@ -98,7 +98,7 @@ agent_docs/
 - Quick reference table (WHERE: pointers to guides)
 - Critical guidelines (cross-cutting concerns)
 
-**agent_docs/ Content (Task-Specific Details):**
+**.architecture/agent_docs/ Content (Task-Specific Details):**
 - Step-by-step procedures
 - Detailed examples
 - Edge cases and troubleshooting
@@ -111,21 +111,21 @@ agent_docs/
 
 | Task | Guide | Quick Description |
 |------|-------|-------------------|
-| Setup Framework | [agent_docs/setup-guide.md](agent_docs/setup-guide.md) | Initial framework installation and customization |
-| Architecture Reviews | [agent_docs/review-workflows.md](agent_docs/review-workflows.md) | Multi-perspective architectural analysis |
-| Create ADRs | [agent_docs/adr-creation.md](agent_docs/adr-creation.md) | Document architectural decisions |
+| Setup Framework | [.architecture/agent_docs/setup-guide.md](.architecture/agent_docs/setup-guide.md) | Initial framework installation and customization |
+| Architecture Reviews | [.architecture/agent_docs/review-workflows.md](.architecture/agent_docs/review-workflows.md) | Multi-perspective architectural analysis |
+| Create ADRs | [.architecture/agent_docs/adr-creation.md](.architecture/agent_docs/adr-creation.md) | Document architectural decisions |
 ```
 
 **Architectural Components Affected:**
 * CLAUDE.md (major refactoring)
-* New agent_docs/ directory structure
+* New .architecture/agent_docs/ directory structure
 * Documentation templates
 * Setup/onboarding process
 * User documentation
 
 **Interface Changes:**
 * CLAUDE.md becomes index/quick-reference rather than comprehensive guide
-* New agent_docs/ directory must be created during framework setup
+* New .architecture/agent_docs/ directory must be created during framework setup
 * Documentation update process changes to multi-file model
 
 ## Consequences
@@ -159,21 +159,21 @@ agent_docs/
 * **Maintenance Process Changes**: Different workflow for documentation updates
 * **Pointer Management**: New responsibility to keep references accurate
 * **Version Coordination**: Multiple files must stay in sync
-* **Search Impact**: Searching within CLAUDE.md finds less, must search agent_docs/
+* **Search Impact**: Searching within CLAUDE.md finds less, must search .architecture/agent_docs/
 
 ## Implementation
 
 **Phase 1: Create Infrastructure (Week 1)**
 
-**Step 1.1: Create agent_docs/ Directory Structure**
+**Step 1.1: Create .architecture/agent_docs/ Directory Structure**
 ```bash
 mkdir -p agent_docs
-touch agent_docs/setup-guide.md
-touch agent_docs/review-workflows.md
-touch agent_docs/adr-creation.md
-touch agent_docs/implementation-guide.md
-touch agent_docs/pragmatic-mode-guide.md
-touch agent_docs/troubleshooting.md
+touch .architecture/agent_docs/setup-guide.md
+touch .architecture/agent_docs/review-workflows.md
+touch .architecture/agent_docs/adr-creation.md
+touch .architecture/agent_docs/implementation-guide.md
+touch .architecture/agent_docs/pragmatic-mode-guide.md
+touch .architecture/agent_docs/troubleshooting.md
 ```
 
 **Step 1.2: Extract Content from CLAUDE.md**
@@ -198,11 +198,11 @@ architecture design with support for multiple AI coding assistants.
 
 ## Quick Reference
 
-[Table of common workflows with pointers to agent_docs/]
+[Table of common workflows with pointers to .architecture/agent_docs/]
 
 ## Directory Structure
 
-[Brief explanation of .architecture/, .coding-assistants/, agent_docs/]
+[Brief explanation of .architecture/, .coding-assistants/, .architecture/agent_docs/]
 
 ## Critical Guidelines
 
@@ -216,23 +216,23 @@ Target: < 100 lines total
 **Step 2.1: Validate Instruction Counts**
 - Count discrete instructions in new CLAUDE.md
 - Verify < 30 instructions
-- Audit agent_docs/ files for clarity and completeness
+- Audit .architecture/agent_docs/ files for clarity and completeness
 
 **Step 2.2: Test User Workflows**
-- Verify each common workflow has clear path from CLAUDE.md to agent_docs/
+- Verify each common workflow has clear path from CLAUDE.md to .architecture/agent_docs/
 - Ensure pointers are accurate
 - Test that content is findable
 
 **Step 2.3: Validate Cross-References**
 - Check all internal links work
 - Verify references to .architecture/ files are accurate
-- Ensure consistency across agent_docs/ files
+- Ensure consistency across .architecture/agent_docs/ files
 
 **Phase 3: Documentation and Communication (Week 1-2)**
 
 **Step 3.1: Update Templates**
-- Update setup process to create agent_docs/
-- Add agent_docs/ structure to templates
+- Update setup process to create .architecture/agent_docs/
+- Add .architecture/agent_docs/ structure to templates
 - Document new documentation structure
 
 **Step 3.2: Create Migration Guide**
@@ -241,7 +241,7 @@ Target: < 100 lines total
 - Provide examples of how to find content
 
 **Step 3.3: Update AGENTS.md**
-- Ensure AGENTS.md references agent_docs/ appropriately
+- Ensure AGENTS.md references .architecture/agent_docs/ appropriately
 - Maintain cross-platform compatibility
 - Update any pointers to CLAUDE.md sections
 
@@ -260,7 +260,7 @@ Target: < 100 lines total
 
 **Step 4.3: User Feedback Loop**
 - Collect feedback on documentation structure
-- Identify commonly-accessed agent_docs/ files
+- Identify commonly-accessed .architecture/agent_docs/ files
 - Adjust quick reference based on usage patterns
 
 ## Alternatives Considered
@@ -285,9 +285,9 @@ Target: < 100 lines total
 
 **Decision:** Rejected. Cannot achieve < 30 instruction target without progressive disclosure.
 
-### Alternative 2: Comprehensive agent_docs/ with Minimal CLAUDE.md
+### Alternative 2: Comprehensive .architecture/agent_docs/ with Minimal CLAUDE.md
 
-**Description:** Extreme progressive disclosure - CLAUDE.md is only 20-30 lines with project overview and pointer table. All guidance in agent_docs/.
+**Description:** Extreme progressive disclosure - CLAUDE.md is only 20-30 lines with project overview and pointer table. All guidance in .architecture/agent_docs/.
 
 **Pros:**
 * Maximum instruction capacity available
@@ -305,7 +305,7 @@ Target: < 100 lines total
 
 ### Alternative 3: Dynamic Context Loading via Task Tool
 
-**Description:** Ultra-minimal CLAUDE.md, rely entirely on Task tool launching sub-agents that load appropriate agent_docs/ context.
+**Description:** Ultra-minimal CLAUDE.md, rely entirely on Task tool launching sub-agents that load appropriate .architecture/agent_docs/ context.
 
 **Pros:**
 * Maximum flexibility
@@ -350,7 +350,7 @@ This decision addresses a current, measurable problem (instruction capacity exce
 
 **Decision Challenge**:
 
-**Proposed Decision**: "Adopt Progressive Disclosure Pattern with CLAUDE.md as index and agent_docs/ for detailed guidance"
+**Proposed Decision**: "Adopt Progressive Disclosure Pattern with CLAUDE.md as index and .architecture/agent_docs/ for detailed guidance"
 
 **Necessity Assessment**: 9/10
 - **Current need**: CRITICAL - We exceed instruction capacity right now
@@ -381,8 +381,8 @@ The "do nothing" alternative was evaluated and rejected on evidence.
 **Could we simplify further?**
 
 Instead of 6+ separate agent_docs files, consider:
-- **agent_docs/workflows.md**: All workflow procedures (setup, reviews, ADRs, implementation)
-- **agent_docs/guides.md**: All conceptual guides (pragmatic mode, troubleshooting)
+- **.architecture/agent_docs/workflows.md**: All workflow procedures (setup, reviews, ADRs, implementation)
+- **.architecture/agent_docs/guides.md**: All conceptual guides (pragmatic mode, troubleshooting)
 
 **Pros of simpler approach:**
 - Only 2-3 files instead of 6+
@@ -411,12 +411,12 @@ Core progressive disclosure pattern is sound and necessary. However:
 2. **Pattern Appropriate**: Progressive disclosure solves the problem correctly
 3. **Simplification Opportunity**: Start with fewer, consolidated files:
    - **CLAUDE.md**: Index and quick reference (< 100 lines)
-   - **agent_docs/workflows.md**: All workflow procedures
-   - **agent_docs/guides.md**: Conceptual content
+   - **.architecture/agent_docs/workflows.md**: All workflow procedures
+   - **.architecture/agent_docs/guides.md**: Conceptual content
    - Split further only when files grow beyond 300 lines
 
 4. **Phased Implementation**:
-   - Phase 1: Create consolidated agent_docs/ (2-3 files)
+   - Phase 1: Create consolidated .architecture/agent_docs/ (2-3 files)
    - Phase 2: Monitor which sections are frequently accessed
    - Phase 3: Split specific files ONLY if usage patterns or length justify it
 
@@ -429,8 +429,8 @@ This balances:
 - **Trigger for splitting files**: File exceeds 300 lines OR user feedback indicates discoverability issues
 - **Minimal viable alternative**:
   - CLAUDE.md (< 100 lines)
-  - agent_docs/workflows.md (setup, reviews, ADRs, implementation)
-  - agent_docs/reference.md (pragmatic mode, troubleshooting, advanced topics)
+  - .architecture/agent_docs/workflows.md (setup, reviews, ADRs, implementation)
+  - .architecture/agent_docs/reference.md (pragmatic mode, troubleshooting, advanced topics)
 - **Migration path**: Easy to split files later when justified by usage data
 
 **Pragmatic Score**:
@@ -446,15 +446,15 @@ This represents appropriate engineering with a minor over-engineering tendency. 
 ## Validation
 
 **Acceptance Criteria:**
-- [x] agent_docs/ directory created with initial file structure (workflows.md, reference.md, README.md)
+- [x] .architecture/agent_docs/ directory created with initial file structure (workflows.md, reference.md, README.md)
 - [x] CLAUDE.md reduced to < 100 lines (achieved: 126 lines, close to target)
 - [x] CLAUDE.md instruction count < 30 (achieved: ~14 instructions)
-- [x] All content from old CLAUDE.md preserved in new structure (agent_docs/)
+- [x] All content from old CLAUDE.md preserved in new structure (.architecture/agent_docs/)
 - [x] Quick reference table with clear pointers (in AGENTS.md and CLAUDE.md)
-- [x] All internal links validated (13 references to agent_docs/)
+- [x] All internal links validated (13 references to .architecture/agent_docs/)
 - [ ] User testing confirms findability (pending user feedback)
 - [x] Documentation updated to reflect new structure (AGENTS.md updated)
-- [ ] Setup process creates agent_docs/ directory (Week 2, H3)
+- [ ] Setup process creates .architecture/agent_docs/ directory (Week 2, H3)
 - [ ] Templates updated for new structure (Week 2, H1)
 
 **Testing Approach:**

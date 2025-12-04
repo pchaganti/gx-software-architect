@@ -26,9 +26,37 @@ cp -r .architecture/.architecture/* .architecture/
 rm -rf .architecture/.architecture
 mkdir -p .coding-assistants/{claude,cursor,codex}
 mkdir -p .architecture/decisions/adrs
-mkdir -p .architecture/{reviews,recalibration,comparisons}
+mkdir -p .architecture/{reviews,recalibration,comparisons,agent_docs}
 cp .architecture/templates/config.yml .architecture/config.yml
 ```
+
+### 3.1. Create .architecture/agent_docs/ Structure (Progressive Disclosure - ADR-006)
+Create detailed procedural documentation following progressive disclosure pattern:
+
+**Copy from framework if available:**
+```bash
+# If framework has .architecture/agent_docs/, copy as templates
+if [ -d .architecture/agent_docs ]; then
+  cp .architecture/agent_docs/workflows.md .architecture/agent_docs/workflows.md.template
+  cp .architecture/agent_docs/reference.md .architecture/agent_docs/reference.md.template
+  cp .architecture/agent_docs/README.md .architecture/agent_docs/README.md.template
+fi
+```
+
+**Create .architecture/agent_docs/ files:**
+- `.architecture/agent_docs/workflows.md`: Setup procedures, architecture reviews, ADR creation, implementation with methodology
+- `.architecture/agent_docs/reference.md`: Pragmatic mode details, recalibration process, advanced configuration, troubleshooting
+- `.architecture/agent_docs/README.md`: Navigation guide explaining progressive disclosure structure and how to find information
+
+**Content should include:**
+- Installation options (Claude Skills, Direct Clone, MCP Server)
+- Step-by-step workflow procedures
+- Methodology configuration examples
+- Pragmatic mode intensity levels
+- Troubleshooting common issues
+- Quick navigation table mapping tasks to sections
+
+**Key principle:** AGENTS.md contains always-relevant overview (~400 lines), .architecture/agent_docs/ contains task-specific details (loaded as needed).
 
 ### 4. Customize Members
 Update `.architecture/members.yml` with specialists for detected tech stack:
