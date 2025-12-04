@@ -238,9 +238,9 @@ This represents appropriate engineering for a current need. The constraint drive
 - [x] Impact on current documentation assessed
 - [x] CLAUDE.md refactored to meet constraints (572 → 126 lines, ~14 instructions)
 - [x] .architecture/agent_docs/ structure implemented (workflows.md, reference.md, README.md)
-- [ ] Instruction counting methodology defined (Week 2, H2)
-- [ ] Documentation guidelines updated (Week 3, M1)
-- [ ] Quarterly review process established (Week 3, M2)
+- [x] Instruction counting methodology defined (instruction-counting-methodology.md)
+- [x] Documentation guidelines updated (documentation-guidelines.md)
+- [x] Quarterly review process established (quarterly-review-process.md)
 
 **Testing Approach:**
 * Manual instruction counting in CLAUDE.md

@@ -5,6 +5,9 @@
  * ignoring external URLs and anchor-only links.
  */
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 /**
@@ -45,4 +48,29 @@ export function validateLinks(content, filePath) {
   });
 
   return links;
+}
+
+/**
+ * Checks if link targets exist on filesystem
+ *
+ * @param {Array<{target: string, line: number, file: string}>} links - Links to check
+ * @param {string} baseDir - Base directory for resolving relative paths
+ * @returns {{valid: Array, broken: Array}} Categorized links
+ */
+export function checkLinks(links, baseDir) {
+  const valid = [];
+  const broken = [];
+
+  for (const link of links) {
+    const sourceDir = path.dirname(link.file);
+    const targetPath = path.resolve(baseDir, sourceDir, link.target);
+
+    if (fs.existsSync(targetPath)) {
+      valid.push(link);
+    } else {
+      broken.push(link);
+    }
+  }
+
+  return { valid, broken };
 }

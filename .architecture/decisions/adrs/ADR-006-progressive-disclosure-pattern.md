@@ -452,10 +452,12 @@ This represents appropriate engineering with a minor over-engineering tendency. 
 - [x] All content from old CLAUDE.md preserved in new structure (.architecture/agent_docs/)
 - [x] Quick reference table with clear pointers (in AGENTS.md and CLAUDE.md)
 - [x] All internal links validated (13 references to .architecture/agent_docs/)
-- [ ] User testing confirms findability (pending user feedback)
+- [ ] User testing confirms findability (pending user feedback - ongoing)
 - [x] Documentation updated to reflect new structure (AGENTS.md updated)
-- [ ] Setup process creates .architecture/agent_docs/ directory (Week 2, H3)
-- [ ] Templates updated for new structure (Week 2, H1)
+- [x] Setup process creates .architecture/agent_docs/ directory (setup-architect skill + MCP server)
+- [x] Templates updated for new structure (AGENTS.md template includes agent_docs references and instruction guidance)
+- [x] Documentation guidelines created (documentation-guidelines.md)
+- [x] Quarterly review process established (quarterly-review-process.md)
 
 **Testing Approach:**
 
