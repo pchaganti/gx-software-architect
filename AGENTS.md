@@ -79,52 +79,27 @@ cd mcp && npm test
 
 ## Using the Framework in Your Project
 
-To use this framework in your own project:
+**👉 For detailed installation procedures, see [agent_docs/workflows.md § Setup Procedures](agent_docs/workflows.md#setup-procedures)**
 
-### Installation Options
+### Installation Options (Quick Reference)
 
 **Option 1: Claude Skills (Recommended for Claude Code)**
-```bash
-# Install as reusable skills
-git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
-cp -r /tmp/ai-architect-$$/.claude/skills ~/.claude/
-# Temporary directory will be cleaned up automatically, or you can remove it:
-# rm -rf /tmp/ai-architect-$$
-```
-
-Then in any project with Claude Code:
-```
-Setup ai-software-architect
-```
+- Install skills to `~/.claude/skills/`
+- Run: `Setup ai-software-architect`
 
 **Option 2: Direct Clone (For any AI assistant)**
-```bash
-# In your project root
-git clone https://github.com/codenamev/ai-software-architect .architecture
-```
-
-Then ask your AI assistant:
-```
-Setup software architect
-```
+- Clone to `.architecture/` in your project
+- Run: `Setup software architect`
 
 **Option 3: MCP Server (For MCP-compatible assistants)**
-```bash
-# Install globally
-npm install -g ai-software-architect
+- Install: `npm install -g ai-software-architect`
+- Configure in `claude_desktop_config.json`
 
-# Or add to claude_desktop_config.json
-{
-  "mcpServers": {
-    "ai-software-architect": {
-      "command": "npx",
-      "args": ["ai-software-architect"]
-    }
-  }
-}
-```
+**See [agent_docs/workflows.md § Setup Procedures](agent_docs/workflows.md#setup-procedures) for complete installation instructions.**
 
 ### Core Workflows
+
+**👉 For detailed workflow procedures, see [agent_docs/workflows.md](agent_docs/workflows.md)**
 
 Once installed in your project, you can:
 
@@ -141,100 +116,40 @@ Once installed in your project, you can:
 - "Enable pragmatic mode"
 - "Turn on YAGNI enforcement"
 - "Challenge complexity"
+- **See**: [agent_docs/reference.md § Pragmatic Guard Mode](agent_docs/reference.md#pragmatic-guard-mode)
 
 **Architecture Recalibration:**
 - "Start architecture recalibration for version X.Y.Z"
 - "Recalibrate architecture for [feature]"
+- **See**: [agent_docs/reference.md § Architecture Recalibration](agent_docs/reference.md#architecture-recalibration)
 
 **Implement Features with Methodology:**
 - "Implement [feature] as the architects"
 - "Implement as the architects" (with prior context)
 - "Implement [feature] as [specific architect]"
+- **See**: [agent_docs/workflows.md § Implementation with Methodology](agent_docs/workflows.md#implementation-with-methodology)
 
 **Configuring Implementation Guidance:**
 
-To have AI assistants automatically apply your development methodology, coding influences, and practices during implementation, configure the `implementation` section in `.architecture/config.yml`:
+**👉 For complete details and examples, see [agent_docs/workflows.md § Implementation with Methodology](agent_docs/workflows.md#implementation-with-methodology)**
+
+Configure AI assistants to automatically apply your development methodology via `.architecture/config.yml`:
 
 ```yaml
 implementation:
   enabled: true
   methodology: "TDD"  # or BDD, DDD, Test-Last, Exploratory
-
   influences:
     - "Kent Beck - TDD by Example"
     - "Sandi Metz - POODR"
-    - "Martin Fowler - Refactoring"
-
   languages:
     ruby:
       style_guide: "Rubocop"
-      idioms: "Blocks over loops, meaningful names"
-
-  quality:
-    definition_of_done:
-      - "Tests passing"
-      - "Code refactored"
-      - "Code reviewed"
 ```
 
-**Usage Examples:**
+Then say: `"Implement [feature] as the architects"`
 
-With the above configuration, when you say:
-```
-"Implement user authentication as the architects"
-```
-
-AI assistants will automatically:
-1. Follow TDD methodology (write tests first, red-green-refactor)
-2. Apply Kent Beck's TDD principles
-3. Refactor using Sandi Metz's patterns (small methods, clear names)
-4. Follow Martin Fowler's refactoring catalog
-5. Use Ruby idioms and Rubocop style guide
-6. Ensure definition of done is met
-
-**Common Configuration Examples:**
-
-**Ruby TDD with OO Focus:**
-```yaml
-implementation:
-  methodology: "TDD"
-  influences:
-    - "Kent Beck - TDD by Example"
-    - "Gary Bernhardt - Destroy All Software"
-    - "Sandi Metz - POODR, 99 Bottles"
-    - "Martin Fowler - Refactoring"
-    - "Jeremy Evans - Roda, Sequel patterns"
-    - "Vladimir Dementyev - Modern Ruby"
-```
-
-**JavaScript BDD with Functional Style:**
-```yaml
-implementation:
-  methodology: "BDD"
-  influences:
-    - "Dan North - BDD originator"
-    - "Kent C. Dodds - Testing Library"
-    - "Eric Elliott - Composing Software"
-  languages:
-    javascript:
-      style_guide: "ESLint (Airbnb)"
-      idioms: "Functional, immutable, declarative"
-```
-
-**Python with Pragmatic Testing:**
-```yaml
-implementation:
-  methodology: "Test-Last"
-  influences:
-    - "Brett Slatkin - Effective Python"
-    - "Luciano Ramalho - Fluent Python"
-  languages:
-    python:
-      style_guide: "Black + PEP 8"
-      idioms: "Pythonic patterns, comprehensions"
-```
-
-For detailed workflow instructions, see [CLAUDE.md](CLAUDE.md) for Claude Code or your assistant's configuration in `.coding-assistants/`.
+AI will automatically apply configured methodology, influences, and language practices.
 
 ## Framework Architecture
 
@@ -453,63 +368,41 @@ The framework works with any AI assistant that can:
 
 ## Updating the Framework
 
-To update an existing installation to the latest version:
+**👉 For detailed update procedures, see [agent_docs/workflows.md § Update Procedures](agent_docs/workflows.md#update-procedures)**
 
-### For Framework Repository
+### Quick Reference
 
-```bash
-# Pull latest changes
-git pull origin main
+**For Framework Repository:**
+- `git pull origin main`
+- Reinstall MCP dependencies if needed
 
-# Reinstall MCP dependencies if updated
-cd mcp && npm install
-```
+**For Installed Projects:**
+- Claude Skills: Backup and reinstall skills from latest
+- Direct Clone: Ask assistant or manually fetch/reset
+- Preserves your ADRs and reviews automatically
 
-### For Installed Projects
-
-**If using Claude Skills:**
-```bash
-# Update skills - backup old versions first
-mkdir -p ~/.ai-architect-backups/skills-$(date +%Y%m%d-%H%M%S)
-cd ~/.claude/skills
-mv setup-architect architecture-review create-adr list-members architecture-status specialist-review ~/.ai-architect-backups/skills-$(date +%Y%m%d-%H%M%S)/ 2>/dev/null || true
-
-# Install from latest
-git clone https://github.com/codenamev/ai-software-architect /tmp/ai-architect-$$
-cp -r /tmp/ai-architect-$$/.claude/skills/* ./
-# Temporary directory will be cleaned up automatically, or you can remove it:
-# rm -rf /tmp/ai-architect-$$
-
-echo "Backup created at ~/.ai-architect-backups/skills-TIMESTAMP/"
-echo "You can safely remove this backup once you've verified the update works correctly."
-```
-
-**If using direct clone:**
-
-Ask your AI assistant:
-```
-Update the software architect framework from main branch
-```
-
-Or manually:
-```bash
-cd .architecture
-git fetch origin main
-git reset --hard origin/main
-```
-
-**Note**: Manual updates preserve your project's architecture artifacts (ADRs, reviews) while updating framework files (templates, base configuration).
+**See [agent_docs/workflows.md § Update Procedures](agent_docs/workflows.md#update-procedures) for complete instructions.**
 
 ## Additional Resources
 
+### Detailed Documentation
+- **Workflow Procedures**: [agent_docs/workflows.md](agent_docs/workflows.md)
+- **Advanced Topics**: [agent_docs/reference.md](agent_docs/reference.md)
+- **Documentation Guide**: [agent_docs/README.md](agent_docs/README.md)
+
+### Framework Files
 - **Framework Principles**: [.architecture/principles.md](.architecture/principles.md)
 - **Architecture Members**: [.architecture/members.yml](.architecture/members.yml)
 - **Framework Configuration**: [.architecture/config.yml](.architecture/config.yml)
+
+### Templates & Examples
 - **ADR Template**: [.architecture/templates/adr-template.md](.architecture/templates/adr-template.md)
 - **Review Template**: [.architecture/templates/review-template.md](.architecture/templates/review-template.md)
 - **AGENTS.md Template**: [.architecture/templates/AGENTS.md](.architecture/templates/AGENTS.md)
 - **Example ADRs**: [.architecture/decisions/adrs/](.architecture/decisions/adrs/)
 - **Example Reviews**: [.architecture/reviews/](.architecture/reviews/)
+
+### Integration Guides
 - **MCP Server Docs**: [mcp/README.md](mcp/README.md)
 - **Usage Guide**: [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md)
 - **Skills Guide**: [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILLS.md)
@@ -517,8 +410,9 @@ git reset --hard origin/main
 ## Version Information
 
 **Framework Version**: 1.2.0
+**Documentation Version**: 2.0.0 (Progressive Disclosure - ADR-006)
 **MCP Server Version**: 1.2.0
-**Last Updated**: 2025-01-20
+**Last Updated**: 2025-12-04
 **Maintained By**: AI Software Architect Framework Contributors
 **Repository**: https://github.com/codenamev/ai-software-architect
 **Issues**: https://github.com/codenamev/ai-software-architect/issues
