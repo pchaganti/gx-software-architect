@@ -8,19 +8,26 @@ This document outlines the implementation roadmap for ADR-005 (LLM Instruction C
 - **Review Date**: 2025-12-04
 - **Review Document**: [claude-md-best-practices-humanlayer-article.md](../reviews/claude-md-best-practices-humanlayer-article.md)
 - **Related ADRs**:
-  - [ADR-005: LLM Instruction Capacity Constraints](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)
-  - [ADR-006: Progressive Disclosure Pattern](../decisions/adrs/ADR-006-progressive-disclosure-pattern.md)
-- **Current Status**: CLAUDE.md refactored from 572 lines to 126 lines, now references AGENTS.md
+  - [ADR-005: LLM Instruction Capacity Constraints](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md) - ACCEPTED
+  - [ADR-006: Progressive Disclosure Pattern](../decisions/adrs/ADR-006-progressive-disclosure-pattern.md) - ACCEPTED
+- **Current Status**: Week 1 COMPLETE (2025-12-04)
 
 ## Executive Summary
 
-All architecture members unanimously agreed on the critical need to restructure our AI assistant documentation to respect LLM instruction capacity constraints. The current implementation has successfully reduced CLAUDE.md from 572 to 126 lines (80% reduction) by referencing AGENTS.md for core content.
+All architecture members unanimously agreed on the critical need to restructure our AI assistant documentation to respect LLM instruction capacity constraints.
 
-**Remaining Work:**
-- Create agent_docs/ structure for detailed procedural guidance
-- Extract detailed procedures from AGENTS.md where appropriate
+**Week 1 Completed (2025-12-04):**
+- ✅ CLAUDE.md refactored: 572 → 126 lines (78% reduction, ~14 instructions)
+- ✅ AGENTS.md updated: 524 → 418 lines (20% reduction, pointers added)
+- ✅ agent_docs/ structure created (workflows.md, reference.md, README.md)
+- ✅ All content preserved and reorganized
+- ✅ ADRs documented and accepted
+- ✅ Committed to main branch (commit 8ffc22c)
+
+**Week 2 In Progress:**
 - Update templates to reflect new documentation structure
-- Establish measurement and maintenance processes
+- Establish instruction counting methodology
+- Update setup skills and MCP tools
 
 ---
 
@@ -80,106 +87,118 @@ All architecture members unanimously agreed on the critical need to restructure 
 #### C1: Create agent_docs/ Directory Structure
 
 **Owner**: Systems Architect
-**Status**: Pending
+**Status**: ✅ COMPLETE (2025-12-04)
 **Dependencies**: None
 **Target**: Week 1, Day 1
 
 **Action Items:**
-1. Create `agent_docs/` directory in project root
-2. Follow Pragmatic Enforcer's recommendation: start consolidated
-3. Initial file structure:
+1. ✅ Create `agent_docs/` directory in project root
+2. ✅ Follow Pragmatic Enforcer's recommendation: start consolidated
+3. ✅ Initial file structure:
    ```
    agent_docs/
-   ├── workflows.md      # Setup, reviews, ADRs, implementation
-   ├── reference.md      # Pragmatic mode, troubleshooting, advanced
-   └── README.md         # Navigation guide for agent_docs/
+   ├── workflows.md (387 lines)      # Setup, reviews, ADRs, implementation
+   ├── reference.md (485 lines)      # Pragmatic mode, troubleshooting, advanced
+   └── README.md (186 lines)         # Navigation guide for agent_docs/
    ```
 
 **Success Criteria:**
-- [ ] Directory created
-- [ ] Initial files created with headers
-- [ ] README.md provides clear navigation
+- [x] Directory created
+- [x] Initial files created with headers
+- [x] README.md provides clear navigation
 
 **Rationale:** Pragmatic approach - start with 2-3 consolidated files, split later if justified by usage patterns.
+
+**Actual Metrics:**
+- workflows.md: 387 lines (comprehensive procedures)
+- reference.md: 485 lines (advanced topics)
+- README.md: 186 lines (navigation guide)
 
 ---
 
 #### C2: Extract Setup and Update Procedures from AGENTS.md
 
 **Owner**: Maintainability Expert
-**Status**: Pending
+**Status**: ✅ COMPLETE (2025-12-04)
 **Dependencies**: C1
 **Target**: Week 1, Day 2
 
 **Action Items:**
-1. Identify setup and update procedures in AGENTS.md
-2. Extract to `agent_docs/workflows.md` with proper structure:
-   - Setup procedures (currently AGENTS.md lines 80-126)
-   - Update procedures (currently AGENTS.md lines 454-501)
+1. ✅ Identify setup and update procedures in AGENTS.md
+2. ✅ Extract to `agent_docs/workflows.md` with proper structure:
+   - Setup procedures (3 installation options with detailed steps)
+   - Update procedures (for all installation methods)
    - Include examples and troubleshooting
-3. Replace in AGENTS.md with pointer references
-4. Validate all references work
+3. ✅ Replace in AGENTS.md with pointer references
+4. ✅ Validate all references work
 
 **Success Criteria:**
-- [ ] Setup procedures extracted to workflows.md
-- [ ] Update procedures extracted to workflows.md
-- [ ] AGENTS.md updated with clear pointers
-- [ ] All internal links validated
-- [ ] AGENTS.md reduced by ~100 lines
+- [x] Setup procedures extracted to workflows.md
+- [x] Update procedures extracted to workflows.md
+- [x] AGENTS.md updated with clear pointers
+- [x] All internal links validated (13 references to agent_docs/)
+- [x] AGENTS.md reduced by ~106 lines (524 → 418)
 
-**Expected Impact:**
-- AGENTS.md: ~450 lines (from 524)
+**Actual Impact:**
+- AGENTS.md: 418 lines (from 524, 20% reduction)
 - Clearer separation between "always relevant" and "task-specific"
-- Better maintainability
+- Better maintainability achieved
 
 ---
 
 #### C3: Extract Implementation Methodology Details
 
 **Owner**: Domain Expert
-**Status**: Pending
+**Status**: ✅ COMPLETE (2025-12-04)
 **Dependencies**: C1
 **Target**: Week 1, Day 3
 
 **Action Items:**
-1. Review implementation guidance in AGENTS.md (lines 149-237)
-2. Determine what stays in AGENTS.md (configuration overview) vs. agent_docs/ (detailed methodology explanation)
-3. Extract detailed methodology explanations to `agent_docs/workflows.md`
-4. Keep configuration examples and quick reference in AGENTS.md
-5. Add pointers in AGENTS.md to agent_docs/workflows.md
+1. ✅ Review implementation guidance in AGENTS.md
+2. ✅ Determine what stays in AGENTS.md (configuration overview) vs. agent_docs/ (detailed methodology explanation)
+3. ✅ Extract detailed methodology explanations to `agent_docs/workflows.md`
+4. ✅ Keep configuration examples and quick reference in AGENTS.md
+5. ✅ Add pointers in AGENTS.md to agent_docs/workflows.md
 
 **Success Criteria:**
-- [ ] Methodology details extracted
-- [ ] Configuration examples remain in AGENTS.md
-- [ ] Clear pointers added
-- [ ] User journey supports both "quick config" and "deep understanding"
+- [x] Methodology details extracted (6 methodologies documented: TDD, BDD, DDD, Test-Last, Exploratory)
+- [x] Configuration examples remain in AGENTS.md (concise YAML example)
+- [x] Clear pointers added (to agent_docs/workflows.md § Implementation)
+- [x] User journey supports both "quick config" and "deep understanding"
 
-**Expected Impact:**
-- AGENTS.md: ~400 lines (from ~450)
-- Users can configure quickly without reading methodology details
-- Deep details available when needed
+**Actual Impact:**
+- AGENTS.md: 418 lines (condensed implementation section with pointer)
+- Users can configure quickly without reading methodology details ✓
+- Deep details available in workflows.md (comprehensive methodology guide)
 
 ---
 
 #### C4: Create Quick Start Guide in agent_docs/README.md
 
 **Owner**: Domain Expert
-**Status**: Pending
+**Status**: ✅ COMPLETE (2025-12-04)
 **Dependencies**: C2, C3
 **Target**: Week 1, Day 4
 
 **Action Items:**
-1. Create navigation guide for agent_docs/
-2. Explain progressive disclosure structure
-3. Map common user tasks to specific sections
-4. Include "New User Path" and "Returning User Path"
-5. Link to AGENTS.md and CLAUDE.md
+1. ✅ Create navigation guide for agent_docs/
+2. ✅ Explain progressive disclosure structure
+3. ✅ Map common user tasks to specific sections (10 common tasks mapped)
+4. ✅ Include "New User Path" and "Returning User Path"
+5. ✅ Link to AGENTS.md and CLAUDE.md
 
 **Success Criteria:**
-- [ ] README.md created with clear navigation
-- [ ] Common tasks mapped to sections
-- [ ] User paths documented
-- [ ] Testing: 3 users can find task guidance in < 60 seconds
+- [x] README.md created with clear navigation (186 lines)
+- [x] Common tasks mapped to sections (Quick Navigation table with 10 tasks)
+- [x] User paths documented (New User and Returning User sections)
+- [ ] Testing: 3 users can find task guidance in < 60 seconds (pending user feedback)
+
+**Actual Content:**
+- Progressive disclosure explained (AGENTS.md → CLAUDE.md → agent_docs/)
+- Quick navigation table (10 common tasks)
+- Documentation structure diagram
+- Best practices for AI assistants and humans
+- Getting help section with resources
 
 **Content Structure:**
 ```markdown
