@@ -63,7 +63,9 @@ export function checkLinks(links, baseDir) {
 
   for (const link of links) {
     const sourceDir = path.dirname(link.file);
-    const targetPath = path.resolve(baseDir, sourceDir, link.target);
+    // Strip anchor if present (we only check file existence, not anchor validity)
+    const targetFile = link.target.split('#')[0];
+    const targetPath = path.resolve(baseDir, sourceDir, targetFile);
 
     if (fs.existsSync(targetPath)) {
       valid.push(link);
