@@ -6,11 +6,422 @@ This document contains reusable patterns referenced by AI Software Architect ski
 
 ## Table of Contents
 
-1. [Input Validation & Sanitization](#input-validation--sanitization)
-2. [Error Handling](#error-handling)
-3. [File Loading](#file-loading)
-4. [Reporting Format](#reporting-format)
-5. [Skill Workflow Template](#skill-workflow-template)
+1. [Tool Permission Pattern](#tool-permission-pattern)
+2. [Progressive Disclosure Pattern](#progressive-disclosure-pattern)
+3. [Input Validation & Sanitization](#input-validation--sanitization)
+4. [Error Handling](#error-handling)
+5. [File Loading](#file-loading)
+6. [Reporting Format](#reporting-format)
+7. [Skill Workflow Template](#skill-workflow-template)
+
+---
+
+## Tool Permission Pattern
+
+**Status**: ✅ Implemented across all skills (2025-12-04)
+**Reference**: [ADR-007](../../.architecture/decisions/adrs/ADR-007-tool-permission-restrictions-for-skills.md)
+
+All skills MUST declare tool permissions via `allowed-tools` in YAML frontmatter. This implements principle of least privilege and limits blast radius of skill malfunctions.
+
+### Available Tools
+
+- **Read**: Read files from filesystem
+- **Write**: Create new files
+- **Edit**: Modify existing files
+- **Glob**: Pattern-based file searching
+- **Grep**: Content searching within files
+- **Bash**: Execute bash commands (can be scoped)
+
+### Permission Guidelines
+
+**Principle of Least Privilege**: Only grant tools actually required for skill operation.
+
+**Bash Scoping**: Use wildcards to restrict bash commands:
+- `Bash(git:*)` - Only git commands
+- `Bash(ls:*,grep:*)` - Only ls and grep
+- `Bash(npm:*,node:*)` - Only npm and node
+- `Bash` - Full bash access (use sparingly)
+
+### Permission Levels by Skill Type
+
+**Read-Only Skills** (listing, status checks):
+```yaml
+allowed-tools: Read
+```
+
+**Search & Analysis Skills** (scanning, reporting):
+```yaml
+allowed-tools: Read,Glob,Grep
+```
+
+**Document Creation Skills** (ADRs, reviews):
+```yaml
+allowed-tools: Read,Write,Bash(ls:*,grep:*)
+```
+
+**Document Modification Skills** (updates, edits):
+```yaml
+allowed-tools: Read,Write,Edit,Glob,Grep
+```
+
+**Review & Analysis Skills** (comprehensive reviews):
+```yaml
+allowed-tools: Read,Write,Glob,Grep,Bash(git:*)
+```
+
+**Configuration Skills** (mode toggles):
+```yaml
+allowed-tools: Read,Edit
+```
+
+**Setup & Installation Skills** (framework setup):
+```yaml
+allowed-tools: Read,Write,Edit,Glob,Grep,Bash
+```
+
+### Current Skill Permissions
+
+| Skill | Tools | Rationale |
+|-------|-------|-----------|
+| `list-members` | `Read` | Only reads members.yml |
+| `architecture-status` | `Read,Glob,Grep` | Scans files and searches |
+| `create-adr` | `Read,Write,Bash(ls:*,grep:*)` | Creates ADRs, scans for numbering |
+| `specialist-review` | `Read,Write,Glob,Grep` | Reviews code, writes reports |
+| `architecture-review` | `Read,Write,Glob,Grep,Bash(git:*)` | Full reviews + git status |
+| `pragmatic-guard` | `Read,Edit` | Reads/modifies config |
+| `setup-architect` | `Read,Write,Edit,Glob,Grep,Bash` | Full installation access |
+
+### Adding Permissions to New Skills
+
+When creating a new skill, determine required tools:
+
+1. **List required operations**:
+   - Need to read files? → `Read`
+   - Need to create files? → `Write`
+   - Need to modify files? → `Edit`
+   - Need to search by pattern? → `Glob`
+   - Need to search content? → `Grep`
+   - Need bash commands? → `Bash(scoped:*)` or `Bash`
+
+2. **Apply minimum necessary set**:
+   - Start with minimal permissions
+   - Add only when operation actually requires it
+   - Scope Bash to specific command families
+
+3. **Add to frontmatter**:
+   ```yaml
+   ---
+   name: skill-name
+   description: ...
+   allowed-tools: Read,Write,Grep
+   ---
+   ```
+
+4. **Test thoroughly**:
+   - Verify skill can perform all operations
+   - Confirm no permission errors
+   - Test edge cases
+
+### Security Considerations
+
+**Path Traversal**: Tools like Read, Write, Edit are bounded by Claude Code's security model, but skills should still validate user inputs.
+
+**Command Injection**: When using Bash, always sanitize user inputs using filename sanitization patterns.
+
+**Wildcard Safety**: Bash scoping reduces but doesn't eliminate risks. Still apply input validation.
+
+**Audit Regularly**: Review tool permissions when modifying skills to ensure they still follow least privilege.
+
+### Troubleshooting Permission Errors
+
+**Error: "Tool X not allowed"**
+- Check skill's `allowed-tools` frontmatter
+- Add required tool if operation is legitimate
+- Consider if operation can be done with allowed tools
+
+**Error: "Bash command not allowed"**
+- If using `Bash(scoped:*)`, ensure command matches scope
+- Consider broadening scope: `Bash(git:*,npm:*)`
+- As last resort, use full `Bash` access (document why)
+
+**Permission Too Broad?**
+- Review actual tool usage in skill
+- Remove unused tools from `allowed-tools`
+- Narrow Bash scoping if possible
+
+---
+
+## Progressive Disclosure Pattern
+
+**Status**: ✅ Implemented (Phase 2 Complete - 2025-12-04)
+**Reference**: [ADR-008](../../.architecture/decisions/adrs/ADR-008-progressive-disclosure-pattern-for-large-skills.md)
+
+Organize complex skills into modular structure: high-level workflow + detailed references + templates. This pattern improves token efficiency, enables content expansion, and dramatically improves maintainability.
+
+### When to Use Progressive Disclosure
+
+**Apply pattern when:**
+- Skill has distinct workflow vs detailed guidance sections
+- Skill >2K words or contains extensive procedural detail
+- Skill includes templates that could be extracted
+- Future expansion anticipated (tech stacks, examples, checklists)
+- Clear separation would improve navigability
+
+**Keep as flat file when:**
+- Skill <2K words with homogeneous content
+- Simple reporting or trivial operation
+- No clear workflow vs detail separation
+- Overhead exceeds benefits
+
+### Pattern Structure
+
+```
+skill-name/
+├── SKILL.md                    # High-level workflow (always loaded)
+├── references/                 # Detailed docs (loaded on-demand)
+│   ├── detailed-process.md     # Step-by-step procedures
+│   └── integration-guide.md    # Configuration and customization
+└── assets/                     # Templates and static files
+    └── template.md             # Ready-to-use templates
+```
+
+### SKILL.md (Base Workflow)
+
+**Purpose**: High-level workflow that's always injected into context
+
+**Content**:
+- YAML frontmatter (name, description, allowed-tools)
+- Overview of skill purpose
+- High-level workflow steps (numbered)
+- Clear references to detailed docs
+- Related skills and workflow examples
+
+**Size Target**: Keep concise - aim for 500-1000 words
+
+**Example Structure**:
+```markdown
+---
+name: skill-name
+description: Clear description with trigger phrases
+allowed-tools: Read,Write,Glob,Grep
+---
+
+# Skill Title
+
+Brief description of what this skill does.
+
+## Overview
+
+High-level summary (3-5 bullets)
+
+**Detailed guidance**: [references/detailed-process.md](references/detailed-process.md)
+**Template**: [assets/template.md](assets/template.md)
+
+## High-Level Workflow
+
+### 1. [Step Name]
+Brief description
+- Key action
+- Key action
+
+**Detailed procedures**: See [references/detailed-process.md § Step 1]
+
+### 2. [Step Name]
+Brief description
+
+[Continue with high-level steps]
+
+## Related Skills
+[References to before/after skills]
+```
+
+### references/ (Detailed Documentation)
+
+**Purpose**: Comprehensive guidance loaded only when needed
+
+**Content Types**:
+- **Process details**: Step-by-step procedures with verification
+- **Integration guides**: Configuration options and customization
+- **Specialist guidance**: Expert perspectives and checklists
+- **Best practices**: Industry standards and patterns
+- **Examples**: Code samples, scenarios, use cases
+
+**Organization**:
+- 1-3 focused reference files per skill
+- Each file covers a distinct aspect
+- Clear section headers for easy navigation
+- Cross-reference to templates when relevant
+
+**Example references/detailed-process.md**:
+```markdown
+# Detailed Process: [Skill Name]
+
+## Prerequisites
+
+[Requirements and verification steps]
+
+## Step 1: [Name]
+
+**Purpose**: [Why this step]
+
+**Procedure**:
+1. [Action]
+2. [Action with bash example if needed]
+3. [Verification step]
+
+**Common Issues**:
+- [Issue]: [Solution]
+
+**Example**:
+[Code or command example]
+
+[Continue with remaining steps in detail]
+```
+
+### assets/ (Templates)
+
+**Purpose**: Ready-to-use templates and static files
+
+**Content Types**:
+- Document templates (ADRs, reviews, reports)
+- Configuration templates (YAML, JSON)
+- Code snippets or boilerplate
+
+**Format**:
+- Complete, fillable templates
+- Include placeholder text in [brackets]
+- Add comments explaining each section
+- Provide examples where helpful
+
+**Example assets/template.md**:
+```markdown
+# [Template Title]
+
+**[Field]**: [Value or placeholder]
+**[Field]**: [Value]
+
+## [Section Name]
+
+[Guidance for filling this section]
+
+[Example or placeholder content]
+
+[Continue with complete template structure]
+```
+
+### Phase 2 Results (Proven Benefits)
+
+**Skills Refactored**: 3 (architecture-review, setup-architect, specialist-review)
+
+**Token Efficiency**:
+- Variable by starting optimization: 0-34% base reduction
+- Average: 13% base reduction across 3 skills
+- Annual savings: ~18,380 tokens/year (estimated)
+
+**Content Expansion**:
+- Consistent 300%+ increase per skill
+- architecture-review: +375% (791 → 3,757 words)
+- setup-architect: +494% (813 → 4,837 words)
+- specialist-review: +332% (826 → 3,571 words)
+- Average: +400% content expansion
+
+**Maintainability**:
+- 9 new reference and asset files created
+- Clear separation: workflow vs procedures vs templates
+- Isolated updates without affecting core workflow
+- Dramatically improved navigation
+
+**Key Insight**: Pattern delivers value through multiple dimensions beyond token savings. Even skills with no base reduction gain significant value through content expansion and improved maintainability.
+
+### Implementation Guidelines
+
+**1. Analyze Current Skill**:
+- Identify workflow steps (high-level)
+- Identify detailed procedures (low-level)
+- Identify templates embedded inline
+- Determine natural separation points
+
+**2. Create Directory Structure**:
+```bash
+mkdir -p .claude/skills/skill-name/references
+mkdir -p .claude/skills/skill-name/assets
+```
+
+**3. Extract Content**:
+- **To SKILL.md**: Keep workflow, overview, high-level steps
+- **To references/**: Move detailed procedures, comprehensive guides
+- **To assets/**: Extract templates, configurations
+
+**4. Add References**:
+- Link from SKILL.md to references with relative paths
+- Use descriptive section anchors: `references/file.md § Section`
+- Keep references concise and navigable
+
+**5. Test Loading**:
+- Verify all reference links work
+- Test skill execution with minimal loading
+- Test skill execution with full reference loading
+- Confirm templates are accessible
+
+**6. Measure Results**:
+- Count words: before vs after (base and total)
+- Estimate token savings
+- Assess maintainability improvement
+- Document in comparisons/
+
+### Refactoring Checklist
+
+- [ ] Skill has clear workflow vs detail separation
+- [ ] Created /references/ and /assets/ directories
+- [ ] Extracted detailed procedures to references/
+- [ ] Extracted templates to assets/
+- [ ] Streamlined SKILL.md to high-level workflow
+- [ ] Added clear references from SKILL.md to detailed docs
+- [ ] Updated YAML frontmatter (name, description, allowed-tools)
+- [ ] Tested skill execution
+- [ ] Verified reference links work
+- [ ] Measured before/after metrics (words, tokens)
+- [ ] Documented results in .architecture/comparisons/
+- [ ] Updated ARCHITECTURE.md with new structure
+
+### Best Practices
+
+**Do**:
+- Keep SKILL.md focused on workflow
+- Make references/  comprehensive and detailed
+- Extract templates to assets/ for reusability
+- Use clear, descriptive file names
+- Cross-reference between files appropriately
+- Test all links after refactoring
+
+**Don't**:
+- Duplicate content between SKILL.md and references/
+- Over-fragment (too many small reference files)
+- Break mid-workflow (keep logical steps together)
+- Forget to update allowed-tools in frontmatter
+- Skip measuring and documenting results
+
+### Migration Path
+
+**Existing flat file skill** → **Progressive disclosure**:
+
+1. Read current SKILL.md and analyze content
+2. Create directory structure (references/, assets/)
+3. Extract detailed content to references/
+4. Extract templates to assets/
+5. Rewrite SKILL.md as high-level workflow with references
+6. Test and verify
+7. Measure and document results
+
+**Estimated effort**: 2-3 hours per skill
+
+### References
+
+- [Phase 2 PoC Results](../../.architecture/comparisons/progressive-disclosure-poc-results.md)
+- [Phase 2A Results](../../.architecture/comparisons/phase-2a-setup-architect-results.md)
+- [Phase 2B Results](../../.architecture/comparisons/phase-2b-specialist-review-results.md)
+- [Phase 2 Complete Summary](../../.architecture/comparisons/phase-2-complete-summary.md)
+- [ADR-008](../../.architecture/decisions/adrs/ADR-008-progressive-disclosure-pattern-for-large-skills.md)
 
 ---
 
@@ -479,6 +890,22 @@ Don't extract when:
 ---
 
 ## Version History
+
+**v1.2** (2025-12-04)
+- Added progressive disclosure pattern (ADR-008)
+- Documented modular skill structure (SKILL.md + /references/ + /assets/)
+- Included Phase 2 proven results and metrics
+- Added implementation guidelines and refactoring checklist
+- Provided best practices for applying pattern
+- Added migration path for existing skills
+
+**v1.1** (2025-12-04)
+- Added tool permission pattern (ADR-007)
+- Documented `allowed-tools` frontmatter requirement
+- Added permission guidelines by skill type
+- Added Bash scoping examples
+- Added security considerations for tool permissions
+- Added troubleshooting guide for permission errors
 
 **v1.0** (2025-11-12)
 - Initial patterns document

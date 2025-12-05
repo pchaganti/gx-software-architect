@@ -1,6 +1,7 @@
 ---
 name: pragmatic-guard
 description: Enables and configures Pragmatic Guard Mode (YAGNI Enforcement) to prevent over-engineering. Use when the user requests "Enable pragmatic mode", "Turn on YAGNI enforcement", "Activate simplicity guard", "Challenge complexity", or similar phrases.
+allowed-tools: Read,Edit
 ---
 
 # Pragmatic Guard Mode

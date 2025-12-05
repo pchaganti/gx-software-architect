@@ -1,7 +1,7 @@
 ---
 name: list-members
 description: Displays the roster of architecture team members with their specialties and expertise areas. Use when the user asks "Who's on the architecture team?", "List architecture members", "Show me the architects", "What specialists are available?", "Who can I ask for reviews?", or wants to discover available experts. Do NOT use for requesting reviews (use specialist-review or architecture-review) or checking documentation status (use architecture-status).
-allowed-tools: [Read, Glob, Grep]
+allowed-tools: Read
 ---
 
 # List Architecture Members

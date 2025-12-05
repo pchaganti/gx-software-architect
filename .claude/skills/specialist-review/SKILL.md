@@ -1,41 +1,54 @@
 ---
 name: specialist-review
 description: Conducts a focused review from ONE specific specialist's perspective (e.g., Security Specialist, Performance Expert). Use when the user requests "Ask [specialist role] to review [target]", "Get [specialist]'s opinion on [topic]", "Have [role] review [code/component]", or when they want deep expertise in ONE specific domain. Do NOT use for comprehensive multi-perspective reviews (use architecture-review instead) or for listing available specialists (use list-members instead).
+allowed-tools: Read,Write,Glob,Grep
 ---
 
 # Specialist Review
 
 Conducts focused reviews from a specific specialist's perspective.
 
-## Process
+## Overview
+
+This skill performs a deep-dive review from one specialist's expertise:
+1. Parses which specialist and what target to review
+2. Loads or creates the specialist in the team
+3. Analyzes the target from that specialist's unique lens
+4. Conducts expert-level review with specific findings
+5. Generates detailed review document
+6. Reports key findings and recommendations
+
+**Specialist guidance**: [references/specialist-perspectives.md](references/specialist-perspectives.md)
+**Review template**: [assets/specialist-review-template.md](assets/specialist-review-template.md)
+
+## High-Level Workflow
 
 ### 1. Parse Request
-Extract:
-- **Specialist role**: Which expert? (e.g., "Security Specialist", "Performance Expert", "Ruby Expert")
-- **Target**: What to review? (e.g., "API authentication", "database queries", "ActiveRecord models")
 
-**Validate and Sanitize Input**:
-- **Specialist role**: Convert to kebab-case for filename, validate alphanumeric + spaces/hyphens only
-- **Target**: Remove `..`, `/`, `\`, null bytes, control characters
-- Convert to lowercase kebab-case: spaces → hyphens, remove special chars
-- Limit combined length: max 100 characters for filename
-- Validate result: [a-z0-9-] only
+Extract from user request:
+- **Specialist role**: Which expert? (e.g., "Security Specialist", "Performance Expert")
+- **Target**: What to review? (e.g., "API authentication", "database queries")
+
+**Input validation**: Apply sanitization from `_patterns.md`:
+- Specialist role: Alphanumeric + spaces/hyphens only, convert to kebab-case for filename
+- Target: Remove dangerous characters, convert to kebab-case
+- Combined filename length: max 100 characters
 
 **Examples**:
-- Valid: "Security Specialist" + "API authentication" → `security-specialist-api-authentication.md`
-- Valid: "Ruby Expert" + "ActiveRecord models" → `ruby-expert-activerecord-models.md`
-- Invalid blocked: "../../../passwd" → sanitized or rejected
+- "Security Specialist" + "API authentication" → `security-specialist-api-authentication.md`
+- "Ruby Expert" + "ActiveRecord models" → `ruby-expert-activerecord-models.md`
 
 ### 2. Load or Create Specialist
-Check `.architecture/members.yml` for the specialist.
+
+Check `.architecture/members.yml` for the requested specialist.
 
 **If exists**: Load their profile (specialties, disciplines, domains, perspective)
 
-**If doesn't exist**: Create new member and add to members.yml:
+**If doesn't exist**: Create new member and add to `members.yml`:
 ```yaml
-- id: [role_id]
+- id: [specialist_id]
   name: "[Person Name]"
-  title: "[Role Title]"
+  title: "[Specialist Title]"
   specialties: ["[Specialty 1]", "[Specialty 2]", "[Specialty 3]"]
   disciplines: ["[Discipline 1]", "[Discipline 2]"]
   skillsets: ["[Skill 1]", "[Skill 2]"]
@@ -45,178 +58,142 @@ Check `.architecture/members.yml` for the specialist.
 
 Inform user: "I've added [Name] ([Title]) to your architecture team."
 
+**Specialist guidance**: See [references/specialist-perspectives.md § Creating New Specialists](references/specialist-perspectives.md#creating-new-specialists)
+
 ### 3. Analyze Target
-- Locate relevant files/components
-- Understand current implementation
-- Identify dependencies and context
-- Check for related ADRs
 
-### 4. Conduct Review
-Adopt specialist's persona. Create review document:
+Use available tools to examine the target:
+- `Glob` to find relevant files
+- `Grep` to search for patterns
+- `Read` to examine code, configs, documentation
 
-```markdown
-# [Specialist Title] Review: [Target]
+**Understand**:
+- Current implementation
+- Dependencies and context
+- Related ADRs or documentation
+- Patterns being used
 
-**Reviewer**: [Name], [Title]
-**Target**: [What's being reviewed]
-**Date**: [Date]
+### 4. Conduct Expert Review
 
-## Specialist Perspective
-**Focus**: [What this specialist looks for based on expertise]
+Adopt the specialist's persona and expertise. Apply their unique lens.
 
-## Executive Summary
-[2-3 sentences]
+**Review from specialist's perspective**:
+- Focus on their domain of expertise (security, performance, maintainability, etc.)
+- Provide expert-level insights, not surface-level comments
+- Reference specific files, line numbers, and code
+- Explain impact and provide actionable fixes
 
-**Overall Assessment**: Excellent | Good | Adequate | Needs Improvement | Critical Issues
+**Review structure** (for each specialist):
+- Specialist perspective and focus
+- Executive summary with assessment
+- Current implementation description
+- Strengths identified
+- Concerns with severity and specific fixes
+- Recommendations (immediate, short-term, long-term)
+- Best practices and industry standards
+- Code examples showing issues and improvements
+- Risks if not addressed
+- Success metrics
 
-**Key Findings**:
-- [Finding 1]
-- [Finding 2]
+**Detailed guidance by specialist**: [references/specialist-perspectives.md § Core Specialists](references/specialist-perspectives.md#core-specialists)
 
-## Current Implementation
-[Description with specific file references]
+**Review template**: Load and fill [assets/specialist-review-template.md](assets/specialist-review-template.md)
 
-**Key Components**:
-- `[file:line]`: [Description]
+### 5. Create Review Document
 
-**Pattern Used**: [Pattern name]
-
-## Assessment
-
-### Strengths
-1. **[Strength]**: Why it matters from specialist perspective
-
-### Concerns
-1. **[Concern]** (Severity: Critical | High | Medium | Low)
-   - **Issue**: [What's wrong]
-   - **Location**: [file:line]
-   - **Impact**: [Problems this causes]
-   - **Fix**: [Specific recommendation]
-
-### Observations
-- [Neutral observation 1]
-- [Neutral observation 2]
-
-## Recommendations
-
-### Immediate
-1. **[Recommendation]**
-   - **What**: [Action]
-   - **Why**: [Reason]
-   - **How**: [Implementation]
-   - **Effort**: Small | Medium | Large
-
-### Short-term
-1. **[Recommendation]**: [Details]
-
-### Long-term
-1. **[Recommendation]**: [Details]
-
-## Best Practices
-1. **[Practice]**: [Description and how it applies]
-
-**Industry Standards**: [Relevant standards]
-
-## Code Examples
-
-### Current (Problematic)
-```[language]
-[Example showing concern]
-```
-Issues: [Issue 1], [Issue 2]
-
-### Recommended
-```[language]
-[Example showing improvement]
-```
-Benefits: [Benefit 1], [Benefit 2]
-
-## Risks
-**If not addressed**:
-1. **[Risk]** (Likelihood: High/Medium/Low)
-   - Impact: [Description]
-   - Mitigation: [How to address]
-
-## Follow-up
-**Review Schedule**: [When to re-review]
-**Success Metrics**: [How to measure improvement]
+Load the template:
+```bash
+cat .claude/skills/specialist-review/assets/specialist-review-template.md
 ```
 
-### 5. Save Review
-Save to: `.architecture/reviews/[specialist-role]-[target].md`
+Fill in all sections with detailed, specific findings.
 
-Format: `[role-kebab-case]-[target-kebab-case].md`
+**Save to**: `.architecture/reviews/[specialist-role]-[target].md`
 
-Examples:
-- `security-specialist-api-authentication.md`
-- `performance-specialist-database-queries.md`
+**Format**: `[role-kebab-case]-[target-kebab-case].md`
 
 ### 6. Report to User
+
+Provide concise summary:
+
 ```
 [Specialist Title] Review Complete: [Target]
 
-Reviewer: [Name]
+Reviewer: [Specialist Name]
 Location: .architecture/reviews/[filename].md
 Assessment: [Overall assessment]
 
 Key Findings:
-1. [Finding 1]
-2. [Finding 2]
+1. [Most important finding]
+2. [Second finding]
+3. [Third finding]
 
 Priority Actions:
-1. [Action 1]
-2. [Action 2]
+1. [Critical action 1]
+2. [Critical action 2]
 
 Critical Issues: [Count]
-Recommendations: [Count]
+High Priority: [Count]
+Total Recommendations: [Count]
 
 Next Steps:
 - Address critical issues immediately
-- Review detailed recommendations
-- [Specific next step]
+- Review detailed findings in document
+- [Specific next action based on findings]
 ```
 
-## Common Specialists
+## Specialist Quick Reference
 
-### Security Specialist
-Focus: Authentication, authorization, input validation, encryption, OWASP Top 10, secrets management, compliance
+**Core Specialists** (see [references/specialist-perspectives.md](references/specialist-perspectives.md)):
+- **Security Specialist**: Authentication, authorization, vulnerabilities, OWASP
+- **Performance Specialist**: Query optimization, caching, bottlenecks, scalability
+- **Domain Expert**: Business logic, domain models, ubiquitous language
+- **Maintainability Expert**: Code quality, technical debt, testability
+- **Systems Architect**: Architecture patterns, component interaction, coherence
+- **AI Engineer**: LLM integration, agent orchestration, evaluation
 
-### Performance Specialist
-Focus: Efficiency, query optimization, caching, resource utilization, bottlenecks, load handling
+**Technology Specialists**:
+- **JavaScript/Python/Ruby/Go/Rust Expert**: Language-specific best practices
+- **Framework Specialists**: React, Rails, Django, Spring, etc.
 
-### Domain Expert
-Focus: Business logic, domain models, ubiquitous language, bounded contexts, business rules
-
-### Maintainability Expert
-Focus: Code quality, documentation, testability, code smells, technical debt, refactoring
-
-### Language/Framework Experts (Ruby, JavaScript, etc.)
-Focus: Idiomatic usage, best practices, framework conventions, ecosystem patterns
+**Creating new specialists**: Automatically added to team when requested
 
 ## Related Skills
 
 **Before Specialist Review**:
-- "List architecture members" - See available specialists
-- "What's our architecture status?" - Check if area was previously reviewed
-
-**If Specialist Doesn't Exist**:
-- Specialist is automatically created and added to team
-- View with: "List architecture members"
+- `list-members` - See available specialists
+- `architecture-status` - Check if area previously reviewed
 
 **After Specialist Review**:
-- "Create ADR for [decision]" - Document decisions from review findings
-- "Start architecture review for [scope]" - Include in comprehensive review
-- Request another specialist if concerns span multiple domains
+- `create-adr` - Document decisions from findings
+- `architecture-review` - Include in comprehensive review
+- Request another specialist for different domain perspective
 
 **Workflow Examples**:
-1. Ask Security Specialist → Finds auth issue → Create ADR → Ask Performance Specialist
-2. Ask Ruby Expert → Get Rails-specific guidance → Implement → Ask for follow-up review
-3. Full architecture review → Deep-dive with specialists on specific concerns
+1. Security review → Finds auth issue → Create ADR → Performance review
+2. Ruby Expert review → Rails-specific guidance → Implement → Follow-up review
+3. Full architecture review → Deep-dive with specialists on concerns
 
-## Notes
-- Stay laser-focused within specialist domain
+## Quality Guidelines
+
+**Excellent specialist reviews**:
+- Stay laser-focused within domain
+- Provide expert-level, not generic, insights
 - Reference exact files and line numbers
-- Provide actionable, implementable advice
+- Include code examples (current vs recommended)
 - Explain "why", not just "what"
 - Consider context and constraints
-- New specialists become permanent team members
+- Provide actionable, implementable advice
+- Estimate effort for each recommendation
+
+**Avoid**:
+- Straying outside specialist's domain
+- Vague or surface-level comments
+- Missing specific locations
+- Recommendations without implementation guidance
+
+## Documentation
+
+- **Specialist guidance**: [references/specialist-perspectives.md](references/specialist-perspectives.md)
+- **Review template**: [assets/specialist-review-template.md](assets/specialist-review-template.md)
+- **Common patterns**: [../_patterns.md](../_patterns.md)
