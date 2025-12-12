@@ -5,6 +5,57 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-12-12
+
+### Added
+
+#### Externalizing Senior Engineering Thinking (ADR-010)
+- **Implementation Strategist**: New architecture team member focused on HOW and WHEN (blast radius analysis, reversibility design, team readiness assessment, change sequencing)
+- **Change Impact Awareness Principle**: New Principle #8 systematically captures blast radius, reversibility, timing, social cost, and false confidence detection
+- **Senior Thinking Checklist**: Enhanced review template with framing questions that externalize the "silent checklist" senior engineers use
+- **Implementation Strategy Section**: Enhanced ADR template with systematic impact analysis (blast radius, reversibility, sequencing & timing, social cost, confidence assessment)
+- **Strategic Framework Positioning**: Framework now explicitly creates the "missing corpus" of senior architectural thinking identified by industry thought leaders
+
+#### Framework Capabilities
+- **Knowledge Capture**: Systematically documents invisible architectural reasoning that typically stays undocumented
+- **Progressive Disclosure Compliance**: All enhancements maintain instruction capacity constraints (ADR-005, ADR-006, ADR-008)
+- **Auto-Discovery**: Implementation Strategist automatically available in Skills, MCP server, and all integration points via dynamic member loading
+
+### Changed
+- **Architecture Team**: Expanded from 7 to 8 core members with Implementation Strategist
+- **Architectural Principles**: Enhanced from 7 to 8 principles with Change Impact Awareness
+- **Review Process**: Review template now includes Senior Thinking Checklist for comprehensive impact framing
+- **ADR Process**: ADR template now requires Implementation Strategy analysis before implementation
+- **Directory Structure**: Added `agent_docs/` to standard structure (progressive disclosure pattern)
+
+### Documentation
+- **ADR-010**: Externalizing Senior Engineering Thinking - Documents strategic value and positions framework as solving industry gap
+- **Referenced Work**: Obie Fernandez - "What happens when the coding becomes the least interesting part of the work" (2025)
+- **README**: Updated to reflect Implementation Strategist, senior thinking capture, and agent_docs/ directory
+
+### Technical Details
+
+**New Team Member:**
+```yaml
+implementation_strategist:
+  specialties:
+    - change sequencing
+    - blast radius analysis
+    - reversibility design
+    - team readiness assessment
+  perspective: "Evaluates HOW and WHEN changes should be implemented"
+```
+
+**Enhanced Templates:**
+- Review template: +100 lines (Senior Thinking Checklist)
+- ADR template: +119 lines (Implementation Strategy section)
+- Principles: +38 lines (Principle #8)
+
+**Statistics:**
+- 5 files modified, 486 lines added
+- 1 new ADR created (ADR-010)
+- Framework positioned as strategic knowledge capture system
+
 ## [1.2.0] - 2025-01-20
 
 ### Added

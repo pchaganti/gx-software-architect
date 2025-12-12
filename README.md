@@ -323,6 +323,7 @@ See [UPGRADE.md](UPGRADE.md) for detailed upgrade instructions and troubleshooti
 ├── recalibration/           # Recalibration plans and tracking
 ├── comparisons/             # Version-to-version comparisons
 ├── docs/                    # General architecture documentation
+├── agent_docs/              # Detailed AI assistant guidance (progressive disclosure)
 ├── templates/               # Templates for various documents
 └── members.yml              # Architecture review team members
 ```
@@ -412,7 +413,9 @@ Support for additional AI assistants can be added by creating appropriate config
 
 ### Architectural Wisdom
 
-The framework incorporates wisdom from influential software architects including Martin Fowler, Sandi Metz, Robert C. Martin, Eric Evans, Sarah Mei, and others. These principles are embedded in the architectural documentation.
+The framework incorporates wisdom from influential software architects including Martin Fowler, Sandi Metz, Robert C. Martin, Eric Evans, Sarah Mei, Obie Fernandez, and others. These principles are embedded in the architectural documentation.
+
+**Externalizing Senior Thinking**: The framework systematically captures "senior engineering thinking"—the invisible architectural reasoning about blast radius, reversibility, timing, and social cost that typically stays undocumented. By forcing explicit documentation of these considerations, we're creating the corpus of senior architectural thinking that the industry lacks.
 
 ### Multi-Perspective Reviews
 
@@ -422,6 +425,7 @@ Architecture reviews consider multiple specialized perspectives:
 - Security
 - Performance
 - Maintainability
+- Implementation Strategy (HOW and WHEN)
 - AI Engineering
 - And dynamically created specialists as needed
 
