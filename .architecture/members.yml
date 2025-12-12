@@ -107,6 +107,34 @@ members:
       - "throughput"
     perspective: "Focuses on performance implications of architectural decisions and suggests optimizations."
     
+  - id: implementation_strategist
+    name: "Implementation Strategist"
+    title: "Implementation Strategist"
+    specialties:
+      - "change sequencing"
+      - "blast radius analysis"
+      - "reversibility design"
+      - "team readiness assessment"
+      - "migration planning"
+    disciplines:
+      - "change management"
+      - "risk analysis"
+      - "phased rollouts"
+      - "impact assessment"
+      - "timing optimization"
+    skillsets:
+      - "evaluating change impact scope"
+      - "designing reversible architectures"
+      - "assessing system and team readiness"
+      - "sequencing dependent changes"
+      - "calculating social cost of changes"
+    domains:
+      - "implementation timing"
+      - "change risk management"
+      - "architectural evolution"
+      - "team capability alignment"
+    perspective: "Evaluates HOW and WHEN changes should be implemented, considering blast radius, reversibility, technical readiness, team capability, and timing. Asks 'Is the system ready?' and 'Is the team ready?' before 'Can we build it?'"
+
   - id: ai_engineer
     name: "AI Engineer"
     title: "AI Engineer"

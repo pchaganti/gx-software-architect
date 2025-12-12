@@ -11,6 +11,67 @@ This document contains the comprehensive architectural review for version X.Y.Z,
 - **Review Team**: [NAMES OR ROLES]
 - **Review Methodology**: [DESCRIPTION OF REVIEW PROCESS]
 
+## Senior Thinking Checklist
+
+> **Note**: This checklist frames the architectural review by externalizing the "silent questions" that senior engineers ask before diving into technical details. Each reviewer should consider these questions from their specialist perspective.
+
+Before diving into detailed strengths and weaknesses, reviewers should address these framing questions:
+
+### Change Characterization
+- **Nature of changes in this version**: Are we introducing new ideas, or expressing existing ones in new places?
+- **Architectural depth**: Do changes belong at the surface (API, UX) or deep in the system?
+- **Conceptual alignment**: How well do changes align with existing architectural patterns and domain model?
+
+### Spread Analysis
+- **Pattern propagation**: If the patterns/approaches in this version spread across the codebase, is that desirable or a liability?
+- **Consistency impact**: Do these changes establish patterns we want repeated or should be contained?
+- **Technical debt trajectory**: Are we creating consistency or divergence?
+
+### Blast Radius Assessment
+- **Failure scope**: What's the blast radius if these changes are wrong and need to be undone?
+- **Component coupling**: Which components/services/modules are directly affected?
+- **Team impact**: Which teams need to coordinate if changes fail or evolve?
+- **User impact**: What's the user-facing risk if this goes wrong?
+
+### Reversibility Analysis
+- **Rollback feasibility**: How easily can these changes be reversed if needed?
+- **Migration complexity**: What migration paths exist for reverting or evolving?
+- **Option preservation**: Do these changes keep future options open or close doors?
+- **Commitment level**: Are we making reversible decisions or permanent commitments?
+
+### Timing & Sequencing
+- **System readiness**: Is the system technically ready for these changes?
+  - Do we have adequate observability?
+  - Are dependencies stable?
+  - Is infrastructure sufficient?
+- **Team readiness**: Is the team prepared for these changes?
+  - Do they understand the patterns being introduced?
+  - Do they have necessary skills?
+  - Is documentation adequate?
+- **Sequencing concerns**: Are there prerequisites that should have come first?
+- **Coordination needs**: What cross-team coordination is required?
+
+### Social Cost Evaluation
+- **Complexity burden**: Will these changes confuse more people than they help?
+- **Learning curve**: What's the onboarding impact for new team members?
+- **Cognitive load**: How much mental overhead do these patterns add?
+- **Documentation needs**: What explanation is required for maintainability?
+
+### Confidence Assessment
+- **Model correctness**: Are we confident in the architectural model, not just the implementation?
+- **Test coverage**: Could tests pass while the model is still wrong?
+- **Assumption validation**: What assumptions underpin these changes? How validated are they?
+- **Edge cases**: What edge cases might not be captured by current testing?
+
+### Overall Architectural Direction
+- **Alignment**: Do these changes move us toward or away from target architecture?
+- **Evolution path**: Do they represent progress on our architectural evolution journey?
+- **Technical debt**: Do they add to, reduce, or shift technical debt?
+
+---
+
+*Each specialist reviewer should consider these questions through their domain lens before providing detailed technical analysis.*
+
 ## Executive Summary
 
 [A concise summary of the review's key findings, major recommendations, and overall architectural health assessment. This should highlight critical areas that need attention and strengths to preserve.]
@@ -108,6 +169,45 @@ This document contains the comprehensive architectural review for version X.Y.Z,
 ### Performance Specialist Review
 
 **Reviewer**: [NAME]
+
+**Strengths**:
+- [Strength 1]
+- [Strength 2]
+- [...]
+
+**Weaknesses**:
+- [Weakness 1]
+- [Weakness 2]
+- [...]
+
+**Recommendations**:
+- [Recommendation 1]
+- [Recommendation 2]
+- [...]
+
+### Implementation Strategist Review
+
+**Reviewer**: [NAME]
+
+**Blast Radius Analysis**:
+- [Assessment of change impact scope]
+- [Components/teams/users affected]
+- [Risk level and mitigation strategies]
+
+**Reversibility Assessment**:
+- [How easily changes can be rolled back]
+- [Migration paths for evolution or reversal]
+- [Options preserved vs. doors closed]
+
+**Timing & Readiness**:
+- **System Readiness**: [Technical readiness assessment]
+- **Team Readiness**: [Skill and understanding assessment]
+- **Sequencing Concerns**: [Prerequisites or coordination needs]
+
+**Social Cost**:
+- [Learning curve and cognitive load impact]
+- [Clarity vs. confusion trade-offs]
+- [Documentation and training needs]
 
 **Strengths**:
 - [Strength 1]

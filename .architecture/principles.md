@@ -180,6 +180,44 @@ This document outlines the core architectural principles that guide all design d
 - Design from messages outward, not from classes inward
 - When the future cost of doing nothing is the same as the current cost, postpone the decision
 
+### 8. Change Impact Awareness
+
+**Description**: Every architectural decision should explicitly consider its blast radius, reversibility, timing, and social cost before implementation.
+
+**Rationale**: Senior engineers instinctively evaluate these factors, but this "silent checklist" rarely gets documented. Making change impact explicit enables better decisions and knowledge sharing.
+
+**Wisdom**:
+> "The act of explanation does something important. It slows you down enough to notice when your instincts are off. It also makes your reasoning visible in a way that solo work rarely does."
+> — **Obie Fernandez**
+
+**Application**:
+- **Blast Radius**: Identify the scope of impact if a change fails or needs reversal. Which components, teams, and users are affected?
+- **Reversibility**: Design changes to be reversible when possible. Ask "If we're wrong, how hard is it to undo?" Prefer approaches that keep options open.
+- **Sequencing & Timing**: Consider whether the system and team are ready for a change. A technically correct change can still be wrong if introduced at the wrong time.
+- **Social Cost**: Evaluate whether a solution will confuse more people than it helps. Consider the learning curve and cognitive load on the team.
+- **False Confidence**: Question whether tests passing actually validates the model is correct. Look for places where implementation correctness doesn't guarantee solution correctness.
+- **Change Characterization**: Clarify whether you're introducing a new idea or expressing an existing one in a new place. Understand if changes belong at the surface or deep in the system.
+- **Spread Analysis**: If this pattern or approach spreads across the codebase, is that desirable or a liability?
+
+**Examples**:
+
+*Good - High Impact Awareness:*
+```
+Decision: Introduce new authentication pattern
+Blast Radius: Affects 23 services, 4 teams, requires coordination
+Reversibility: Medium - can rollback but requires migration scripts
+Timing: System ready (observability in place), but Team B needs training
+Social Cost: High learning curve, but improves long-term maintainability
+Decision: Proceed with phased rollout, Team B training first
+```
+
+*Bad - Ignoring Impact:*
+```
+Decision: Introduce new authentication pattern
+Implementation: Changed all services in one release
+Result: Outage across all services, no rollback plan, team confused
+```
+
 ## Implementation Guidelines
 
 ### Documentation

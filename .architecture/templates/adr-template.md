@@ -48,6 +48,125 @@ If superseded, link to the new ADR: [New ADR Link]
 * [Neutral consequence 2]
 * [...]
 
+## Implementation Strategy
+
+> **Note**: This section externalizes the "senior thinking" about HOW and WHEN to implement this decision, not just WHAT to implement.
+
+### Blast Radius
+
+**Impact Scope**: [Describe the scope of impact if this decision fails or needs reversal]
+
+**Affected Components**:
+- [Component/Service 1] - [Impact description]
+- [Component/Service 2] - [Impact description]
+- [...]
+
+**Affected Teams**:
+- [Team 1] - [Coordination needs]
+- [Team 2] - [Coordination needs]
+- [...]
+
+**User Impact**: [Description of user-facing risks or changes]
+
+**Risk Mitigation**:
+- [Mitigation strategy 1]
+- [Mitigation strategy 2]
+- [...]
+
+### Reversibility
+
+**Reversibility Level**: [High | Medium | Low | Irreversible]
+
+**Rollback Feasibility**:
+- [Description of how easily this can be undone]
+- [What makes it reversible or irreversible]
+- [Time and effort required for reversal]
+
+**Migration Paths**:
+- **Forward Migration**: [Path to implement this decision]
+- **Rollback Migration**: [Path to reverse this decision if needed]
+- **Evolution Path**: [How this decision can evolve over time]
+
+**Options Preserved**:
+- [Future options this decision keeps open]
+- [Alternatives that remain viable]
+
+**Commitments Made**:
+- [Decisions this locks us into]
+- [Future options this decision closes]
+
+### Sequencing & Timing
+
+**Prerequisites**:
+- [ ] [Prerequisite 1 - with status]
+- [ ] [Prerequisite 2 - with status]
+- [ ] [...]
+
+**System Readiness**:
+- **Observability**: [Is monitoring/logging adequate for this change?]
+- **Dependencies**: [Are dependent systems stable and ready?]
+- **Infrastructure**: [Is infrastructure sufficient?]
+- **Data Migration**: [Are data migration paths clear and tested?]
+
+**Team Readiness**:
+- **Understanding**: [Does the team understand the patterns being introduced?]
+- **Skills**: [Does the team have necessary skills?]
+- **Training Needs**: [What training or documentation is required?]
+- **Consensus**: [Is there team buy-in for this approach?]
+
+**Sequencing Concerns**:
+- [Should other changes happen first?]
+- [What coordination is required?]
+- [Are there timing dependencies?]
+
+**Readiness Assessment**: [Ready to implement | Needs preparation | Requires prerequisites]
+
+### Social Cost
+
+**Learning Curve**: [Low | Medium | High]
+- [Description of what team members need to learn]
+- [Time estimate for team to become proficient]
+
+**Cognitive Load**:
+- [Mental overhead this pattern/approach adds]
+- [Complexity vs. clarity trade-off analysis]
+
+**Clarity Assessment**:
+- **Will this help more than confuse?**: [Yes | No | Depends]
+- **Explanation required**: [What needs to be documented or explained?]
+- **Onboarding impact**: [Effect on new team members]
+
+**Documentation Needs**:
+- [ ] [Documentation item 1]
+- [ ] [Documentation item 2]
+- [ ] [...]
+
+### Confidence Assessment
+
+**Model Correctness Confidence**: [High | Medium | Low]
+- [Are we confident in the architectural model, not just the implementation?]
+- [What could make tests pass while the model is still wrong?]
+
+**Assumptions**:
+1. [Assumption 1] - **Validation**: [How validated is this?]
+2. [Assumption 2] - **Validation**: [How validated is this?]
+3. [...]
+
+**Uncertainty Areas**:
+- [Area 1 where we're uncertain]
+- [Area 2 where we're uncertain]
+- [...]
+
+**Validation Approach**:
+- [How will we validate the model is correct?]
+- [What experiments or prototypes are needed?]
+- [What feedback loops will verify assumptions?]
+
+**Edge Cases**:
+- [Edge case 1 not captured by testing]
+- [Edge case 2 not captured by testing]
+- [...]
+
 ## Implementation
 
 [Provide a high-level implementation plan, including any phasing or migration strategies.]
