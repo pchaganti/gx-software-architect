@@ -697,6 +697,580 @@ When adjusting intensity calibration:
 
 ---
 
+## README Documentation Improvements (December 2025)
+
+*Source: Architecture Review - README.md Pragmatic Mode and Implementation Guidance Documentation (2025-12-11)*
+
+The following recommendations emerged from the comprehensive architecture review of README.md documentation. Progressive disclosure principles were applied to categorize recommendations as "implement now" vs. "defer with triggers".
+
+### AI Assistant Capabilities Documentation
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Medium
+
+**What Was Deferred**:
+Comprehensive "How AI Assistants Use This" documentation section explaining how AI assistants parse, apply, and handle pragmatic mode and implementation guidance features.
+
+**Original Proposal**:
+AI Engineer recommended adding detailed documentation covering:
+- How AI assistants parse config.yml settings
+- What AI assistants can/cannot do with these features
+- Whether AI can create members.yml members dynamically
+- Whether AI can detect when pragmatic mode should be enabled
+- Error handling when config is invalid/malformed
+- Context loading behavior (when config is read, cached, reloaded)
+
+**Rationale for Deferring**:
+- Necessity score: 6/10 (valuable but not immediately critical)
+- Complexity score: 6/10 (requires comprehensive explanation, examples)
+- Ratio: 1.0 (at threshold for deferral)
+- Cost of waiting: Low - users discovering capabilities through usage
+- No user questions yet about AI behavior or capabilities
+- Features are working without this documentation
+- Real usage will reveal which aspects actually need explanation
+- Risk of documenting speculative concerns vs. actual user questions
+
+**Simpler Current Approach**:
+- Config.yml has extensive inline documentation
+- ADR-002 and ADR-004 explain feature design
+- Natural language commands are intuitive
+- Users can experiment and ask questions as needed
+- Document specific capabilities when users ask
+
+**Trigger Conditions** (Implement when):
+- [ ] 5+ user questions about how AI assistants parse or apply configurations
+- [ ] 3+ user questions about AI capabilities or limitations
+- [ ] Users encounter unexpected AI behavior with features
+- [ ] Support requests about config parsing or application
+- [ ] Confusion about what AI can/cannot do with features
+
+**Implementation Notes**:
+When triggered, add to TROUBLESHOOTING.md:
+- Base on actual user questions, not speculation
+- Include examples of actual AI behaviors observed
+- Clarify capabilities vs. limitations based on real usage
+- Address specific confusion points that emerged
+- Show examples of correct vs. incorrect config usage
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md` (review source)
+- `README.md` (lines 428-492: feature documentation)
+- `.architecture/config.yml` (configuration reference)
+- ADR-002, ADR-004 (feature design decisions)
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Advanced Prompt Patterns Documentation
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Medium
+
+**What Was Deferred**:
+Documentation of advanced prompt patterns and member-specific implementation commands.
+
+**Original Proposal**:
+AI Engineer recommended documenting full prompt pattern space:
+- "Implement as the pragmatic enforcer" (specific member)
+- "Implement as the security specialist" (member-specific methodology)
+- Advanced command variations and combinations
+- Member-specific implementation approaches
+- How to override configured practices for specific implementations
+
+**Rationale for Deferring**:
+- Necessity score: 5/10 (power user feature, not essential for basic use)
+- Complexity score: 3/10 (straightforward documentation once patterns known)
+- Ratio: 0.6 (acceptable for deferral, lower necessity)
+- Cost of waiting: Very low - users discovering patterns naturally
+- No evidence users need these advanced patterns yet
+- Basic "Implement X as the architects" command works well
+- Advanced users discovering variations through experimentation
+- Real usage will show which patterns are actually used vs. speculative
+
+**Simpler Current Approach**:
+- Basic implementation command documented: "Implement X as the architects"
+- Users can experiment with variations
+- Members.yml shows available member perspectives
+- Document specific patterns when users ask about them
+
+**Trigger Conditions** (Implement when):
+- [ ] 5+ user questions asking "Can I implement as [specific member]?"
+- [ ] Users requesting member-specific implementation guidance
+- [ ] Advanced patterns emerge from actual usage
+- [ ] Power users request documentation of advanced capabilities
+- [ ] Evidence that users want more control over implementation approach
+
+**Implementation Notes**:
+When triggered, add to TROUBLESHOOTING.md "Advanced Usage" section:
+- Document patterns users actually want (not all theoretical possibilities)
+- Show examples of member-specific implementations from real usage
+- Explain when to use specific members vs. general architects
+- Include use cases for each pattern variant
+- Based on actual user needs, not speculation
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `README.md` § Implementation Guidance
+- `.architecture/members.yml` (available members)
+- ADR-004 (implementation guidance design)
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Error Handling Documentation
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Medium
+
+**What Was Deferred**:
+Documentation of common error scenarios and resolution steps for pragmatic mode and implementation guidance features.
+
+**Original Proposal**:
+AI Engineer recommended documenting error scenarios:
+- Config file missing or malformed
+- Pragmatic mode enabled but pragmatic_enforcer not in members.yml
+- Invalid YAML syntax in config.yml
+- Conflicting settings between pragmatic mode and implementation guidance
+- Missing required fields in configuration
+- Invalid values for enum fields (intensity, methodology)
+
+**Rationale for Deferring**:
+- Necessity score: 6/10 (helpful when errors occur, not needed if no errors)
+- Complexity score: 5/10 (need to identify and document each error scenario)
+- Ratio: 0.83 (acceptable for deferral)
+- Cost of waiting: Low - no user reports of errors yet
+- Features are working without error documentation
+- YAML validation provides basic error messages
+- No evidence of users encountering these errors
+- Better to document actual errors users encounter vs. speculate
+
+**Simpler Current Approach**:
+- Config.yml template has extensive inline documentation
+- YAML syntax errors caught by parser with standard messages
+- Members.yml includes pragmatic_enforcer by default
+- Template validation catches basic issues
+- Address specific errors when users report them
+
+**Trigger Conditions** (Implement when):
+- [ ] 5+ user support requests about configuration errors
+- [ ] Specific error scenarios encountered multiple times
+- [ ] Users report confusion about error messages
+- [ ] Common configuration mistakes emerge from usage
+- [ ] Error scenarios cause user frustration or blocked usage
+
+**Implementation Notes**:
+When triggered, add to TROUBLESHOOTING.md "Common Errors" section:
+- Document only errors users actually encounter
+- Include error message text users see
+- Provide step-by-step resolution for each error
+- Show correct vs. incorrect configuration examples
+- Link to relevant config.yml sections for reference
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `.architecture/config.yml` (configuration reference)
+- `.architecture/templates/config.yml` (template)
+- `.architecture/members.yml` (members reference)
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Configuration Maintenance Guidance
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Medium
+
+**What Was Deferred**:
+Comprehensive guidance on when and how to review and update config.yml as team practices evolve over time.
+
+**Original Proposal**:
+Maintainability Expert recommended documenting configuration lifecycle:
+- When to review config.yml (quarterly, when practices change, when team grows)
+- How to update configurations as methodologies evolve
+- Process for team consensus on configuration changes
+- Handling configuration evolution across project lifetime
+- Detecting when configuration has become stale
+- Migration strategies for config updates
+
+**Rationale for Deferring**:
+- Necessity score: 6/10 (valuable long-term, not needed immediately)
+- Complexity score: 5/10 (requires thoughtful process documentation)
+- Ratio: 0.83 (acceptable for deferral)
+- Cost of waiting: Low - configs are new, won't be stale for months
+- No evidence of stale configurations yet (features just launched)
+- Teams haven't had time for practices to evolve enough to require updates
+- Don't know yet what triggers config updates in practice
+- Better to document based on real config evolution patterns
+
+**Simpler Current Approach**:
+- Config.yml is version-controlled (changes tracked via git)
+- Teams can update configs as needed
+- No formal process until patterns emerge
+- Document specific maintenance needs when they arise
+
+**Trigger Conditions** (Implement when):
+- [ ] 3+ projects observed with stale configurations (config doesn't match actual practices)
+- [ ] Users ask "how often should we review config?"
+- [ ] Teams report difficulty updating configurations
+- [ ] Config drift becomes problematic for projects
+- [ ] 6+ months have passed since feature launch (natural evolution time)
+
+**Implementation Notes**:
+When triggered, add to TROUBLESHOOTING.md "Maintenance" section:
+- Base guidance on actual config evolution patterns observed
+- Document triggers for config review that emerged from real projects
+- Include examples of config updates from real projects (anonymized)
+- Provide decision framework for when to update vs. keep stable
+- Reference quarterly review process (ADR-005) for alignment
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `.architecture/config.yml` (will evolve over time)
+- ADR-005 § Quarterly Review Process (documentation governance)
+- Future: Real config evolution examples
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### "When NOT to Use" Anti-Patterns
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Low
+
+**What Was Deferred**:
+Guidance on when NOT to enable pragmatic mode or implementation guidance, including contraindications and anti-patterns.
+
+**Original Proposal**:
+Domain Expert recommended documenting:
+- Scenarios where pragmatic mode is inappropriate
+- When implementation guidance might not help
+- Anti-patterns for feature usage
+- Contraindications for enabling features
+- Common misunderstandings about when to use features
+
+**Rationale for Deferring**:
+- Necessity score: 5/10 (helpful to prevent misuse, not critical yet)
+- Complexity score: 3/10 (straightforward once misuse patterns known)
+- Ratio: 0.6 (low enough to defer comfortably)
+- Cost of waiting: Very low - no misuse observed yet
+- Features are well-designed with appropriate defaults
+- No evidence of users enabling features inappropriately
+- Cannot document anti-patterns that haven't been observed
+- Better to identify real misuse vs. speculate about hypothetical problems
+
+**Simpler Current Approach**:
+- README clearly explains what each feature does
+- "When to use" guidance helps set appropriate expectations
+- Exemptions (security, compliance) are clearly documented
+- Monitor for actual misuse patterns
+
+**Trigger Conditions** (Implement when):
+- [ ] 3+ incidents of features being used inappropriately
+- [ ] Users report unexpected results from feature usage
+- [ ] Patterns emerge showing misunderstanding of feature purpose
+- [ ] Support requests indicate confusion about when to enable
+- [ ] Feedback suggests clearer contraindications needed
+
+**Implementation Notes**:
+When triggered, add to README or TROUBLESHOOTING.md:
+- Document only observed anti-patterns, not theoretical ones
+- Include real examples of misuse (anonymized)
+- Explain why the usage was inappropriate
+- Provide guidance on correct usage for those scenarios
+- Keep focused on actionable guidance
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `README.md` § Pragmatic Mode, § Implementation Guidance
+- Future: Actual misuse examples if they emerge
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Command Variations Expansion
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Low
+
+**What Was Deferred**:
+Expanded documentation of alternative phrasings for enabling pragmatic mode and using features.
+
+**Original Proposal**:
+Systems Architect recommended documenting command variations:
+- Alternative ways to say "Enable pragmatic mode"
+- Variations like "Turn on YAGNI enforcement", "Activate pragmatic guard"
+- Similar to how other commands show alternative phrases
+- Help users discover natural language variations
+
+**Rationale for Deferring**:
+- Necessity score: 4/10 (nice to have, not essential)
+- Complexity score: 2/10 (very simple to add)
+- Ratio: 0.5 (borderline, but low necessity tips toward deferral)
+- Cost of waiting: Very low - users finding commands successfully
+- Natural language commands are working well
+- No user questions about alternative phrasings
+- Simple addition if users request it
+- Users discovering variations through experimentation
+
+**Simpler Current Approach**:
+- Primary commands documented clearly
+- AI assistants understand natural language variations
+- Users can experiment with phrasings
+- Add variations if users request them
+
+**Trigger Conditions** (Implement when):
+- [ ] Users request more command examples
+- [ ] Support questions about how to phrase commands
+- [ ] Feedback indicates command discovery is difficult
+- [ ] Consistency with other sections demands this addition
+
+**Implementation Notes**:
+When triggered, add to README pragmatic mode section:
+- List 3-5 alternative phrasings
+- Similar to command variations shown for other features
+- Keep concise (1-2 lines maximum)
+- Based on phrasings users actually try
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `README.md` § Pragmatic Mode
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Multi-Language Configuration Examples
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Low
+
+**What Was Deferred**:
+Example showing how to configure implementation guidance for polyglot projects (multiple programming languages).
+
+**Original Proposal**:
+Maintainability Expert recommended adding example:
+- Show Ruby + JavaScript configuration in same project
+- Clarify how to handle different languages simultaneously
+- Demonstrate language-specific practices configuration
+- Support polyglot codebases explicitly
+
+**Rationale for Deferring**:
+- Necessity score: 6/10 (valuable for polyglot projects, not universal)
+- Complexity score: 2/10 (simple example to add)
+- Ratio: 0.33 (low ratio, but necessity not universal enough for immediate addition)
+- Cost of waiting: Low - single-language examples generalize well
+- Most projects are primarily single-language
+- Config.yml template shows multiple language examples (commented out)
+- Users can extrapolate from single-language examples
+- No user questions about multi-language configuration yet
+
+**Simpler Current Approach**:
+- Config template shows structure for multiple languages
+- Example shows one language clearly
+- Users can add additional language sections following same pattern
+- Add explicit multi-language example if users request it
+
+**Trigger Conditions** (Implement when):
+- [ ] 3+ users ask about multi-language configuration
+- [ ] Polyglot project support requests
+- [ ] Users report confusion about configuring multiple languages
+- [ ] Multi-language projects become more common in user base
+
+**Implementation Notes**:
+When triggered, add to README Implementation Guidance section:
+- Show realistic 2-language example (e.g., Ruby backend + React frontend)
+- Demonstrate how practices differ between languages
+- Keep example concise (5-10 lines)
+- Reference config.yml template for full options
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `README.md` § Implementation Guidance
+- `.architecture/templates/config.yml` (has multi-language structure)
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Progressive Disclosure Performance Benefits
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Low
+
+**What Was Deferred**:
+Explanation in README of how progressive disclosure pattern (ADR-005) optimizes AI assistant performance.
+
+**Original Proposal**:
+Performance Specialist recommended brief callout:
+- Explain why documentation is structured progressively
+- Connect to instruction capacity constraints (ADR-005)
+- Help users understand framework documentation design
+- Show how respecting LLM limits improves AI performance
+
+**Rationale for Deferring**:
+- Necessity score: 4/10 (interesting context, not essential for feature use)
+- Complexity score: 2/10 (brief explanation, simple to add)
+- Ratio: 0.5 (low complexity, but also low necessity)
+- Cost of waiting: Very low - feature works without this explanation
+- Users don't need to understand why documentation is structured this way to use it
+- Meta-explanation of documentation strategy may add cognitive load
+- ADR-005 exists for those interested in the rationale
+- Documentation structure speaks for itself through usage
+
+**Simpler Current Approach**:
+- Documentation works well without explaining why it's structured this way
+- ADR-005 thoroughly documents progressive disclosure rationale
+- Users can read ADRs if interested in design decisions
+- Focus README on "what" and "how", not "why structured this way"
+
+**Trigger Conditions** (Implement when):
+- [ ] Users ask why documentation is structured this way
+- [ ] Confusion emerges about information distribution across files
+- [ ] Users interested in framework design principles behind structure
+- [ ] Educational value justifies meta-documentation
+
+**Implementation Notes**:
+When triggered, consider adding brief note to README or AGENTS.md:
+- Keep very concise (1-2 sentences maximum)
+- Link to ADR-005 for detailed explanation
+- Focus on user benefit, not technical implementation
+- Place where it provides context without disrupting flow
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- ADR-005 (progressive disclosure pattern and rationale)
+- `README.md`, `AGENTS.md` (documentation structure)
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Config Parsing Performance Clarification
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Documentation
+**Priority**: Low
+
+**What Was Deferred**:
+Brief note clarifying that config.yml parsing has negligible performance overhead.
+
+**Original Proposal**:
+Performance Specialist recommended adding clarification:
+- Note that YAML parsing is fast
+- Config parsed once per session, negligible overhead
+- Address potential user concerns about performance cost
+- Reassure users that configuration-driven approach has no meaningful latency
+
+**Rationale for Deferring**:
+- Necessity score: 3/10 (addresses concern that may not exist)
+- Complexity score: 1/10 (single sentence addition)
+- Ratio: 0.33 (very low complexity, but also very low necessity)
+- Cost of waiting: Zero - no users have raised performance concerns
+- Config parsing is clearly fast in practice
+- No evidence users are worried about this
+- Speculative concern, not actual user question
+- Only add if users actually worry about performance
+
+**Simpler Current Approach**:
+- Config parsing works well without explanation
+- Performance is obviously fine in practice
+- Address if users raise concerns
+
+**Trigger Conditions** (Implement when):
+- [ ] User asks about config parsing performance
+- [ ] Concerns raised about configuration overhead
+- [ ] Performance-sensitive users question approach
+
+**Implementation Notes**:
+When triggered, add brief parenthetical note:
+- Single sentence or parenthetical
+- "(Config parsed once per session, negligible overhead)"
+- Place in Implementation Guidance section if added
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- `README.md` § Implementation Guidance
+
+**Last Reviewed**: 2025-12-11
+
+---
+
+### Version Consistency Verification
+
+**Status**: Deferred
+**Deferred Date**: 2025-12-11
+**Category**: Maintenance
+**Priority**: Low
+
+**What Was Deferred**:
+Audit of all framework documentation files to ensure version number consistency (verify all show 1.2.0).
+
+**Original Proposal**:
+Systems Architect recommended verification:
+- Audit all docs for version 1.2.0
+- Ensure consistency across README, config templates, ADRs
+- Catch any stale version references
+- Professional consistency check
+
+**Rationale for Deferring**:
+- Necessity score: 4/10 (good practice, not critical to function)
+- Complexity score: 2/10 (simple grep and update task)
+- Ratio: 0.5 (low on both dimensions)
+- Cost of waiting: Very low - version inconsistency is cosmetic
+- No user confusion from version references
+- Can be done during next regular documentation audit
+- Part of normal documentation maintenance
+- Not blocking any functionality
+
+**Simpler Current Approach**:
+- Address version consistency during quarterly documentation review
+- Update as part of normal maintenance cycle
+- Fix if noticed during other updates
+
+**Trigger Conditions** (Implement when):
+- [ ] Quarterly documentation review cycle
+- [ ] User reports version inconsistency
+- [ ] Preparing for new version release (1.3.0)
+- [ ] General documentation audit performed
+
+**Implementation Notes**:
+When triggered:
+- Grep for version references across all docs
+- Update to current version (1.2.0 or later)
+- Document version number convention for future
+- Consider automation if becomes recurring issue
+
+**Related Documents**:
+- `.architecture/reviews/readme-pragmatic-implementation-docs.md`
+- All framework documentation (README, config.yml, ADRs, etc.)
+- ADR-005 § Quarterly Review Process
+
+**Last Reviewed**: 2025-12-11
+
+---
+
 ## Review Process
 
 This document should be reviewed:
@@ -731,8 +1305,8 @@ Track deferral outcomes to improve decision-making:
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Total deferrals | 12 | All-time count (3 Phase 2B + 4 Phase 3B + 5 Phase 4B) |
-| Active deferrals | 12 | Currently deferred |
+| Total deferrals | 22 | All-time count (3 Phase 2B + 4 Phase 3B + 5 Phase 4B + 10 README docs) |
+| Active deferrals | 22 | Currently deferred |
 | Triggered awaiting implementation | 0 | Need to address |
 | Implemented | 0 | Were eventually needed |
 | Cancelled | 0 | Were never needed |

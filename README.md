@@ -21,7 +21,7 @@ This framework provides a structured approach to:
 4. **Progress Tracking** - Tools for monitoring the implementation of architectural changes
 5. **AI Integration** - Seamless collaboration with AI coding assistants
 
-For detailed usage instructions, see [USAGE.md](USAGE.md).
+For detailed usage instructions, see [USAGE.md](USAGE.md). For troubleshooting and advanced usage, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 ## Installation
 
@@ -444,12 +444,21 @@ Pragmatic Mode helps prevent over-engineering by adding a "Pragmatic Enforcer" w
 - **Balanced**: Thoughtful challenges, accepts justified complexity (recommended)
 - **Lenient**: Raises concerns without blocking
 
+**Exemptions for Critical Areas**:
+Pragmatic Mode maintains rigorous standards for:
+- **Security-critical features**: Authentication, authorization, encryption, input validation
+- **Data integrity**: Database transactions, data validation, backup strategies
+- **Compliance requirements**: GDPR, HIPAA, PCI-DSS, audit logging
+- **Accessibility**: WCAG compliance, screen reader support
+
 Enable with:
 ```
 Enable pragmatic mode
 ```
 
 See [ADR-002](/.architecture/decisions/adrs/ADR-002-pragmatic-guard-mode.md) and [Pragmatic Mode Summary](/.architecture/decisions/PRAGMATIC-MODE-SUMMARY.md) for details.
+
+**Using with Implementation Guidance**: When using both Pragmatic Mode and Implementation Guidance together, pragmatic mode respects your configured security practices and methodological choices while challenging unnecessary complexity in other areas. The pragmatic enforcer ensures implementations remain simple while still following your team's documented standards for security, testing, and code quality.
 
 ### Implementation Guidance
 
@@ -472,7 +481,7 @@ Implement authentication as the architects
 ```
 
 **Benefits**:
-- **90% prompt reduction**: 4 words instead of 40+
+- **90% prompt reduction**¹: 4 words instead of 40+
 - **Consistent quality**: Methodology applied systematically
 - **Team standards**: Documented practices in version control
 - **Cross-session persistence**: Configuration always applied
@@ -488,6 +497,8 @@ Use with:
 ```
 Implement [feature] as the architects
 ```
+
+¹ *Measurement methodology documented in [ADR-004 § Validation](/.architecture/decisions/adrs/ADR-004-implementation-command-configuration.md#validation)*
 
 See [ADR-004](/.architecture/decisions/adrs/ADR-004-implementation-command-configuration.md) for details.
 
