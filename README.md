@@ -29,9 +29,29 @@ Choose the installation method for your AI assistant:
 
 ### Claude Code Installation
 
-Claude Code supports three installation methods:
+Claude Code supports four installation methods:
 
-**Option 1: Claude Skills (Recommended for Claude Code)**
+**Option 1: Claude Code Plugin (Recommended)** 🆕
+
+Install via the Claude Code plugin system with automatic updates:
+
+```bash
+# In Claude Code, run these commands:
+/plugin marketplace add anthropics/ai-software-architect
+/plugin install ai-software-architect@ai-software-architect
+```
+
+That's it! The framework is now available in all your projects.
+
+See [USAGE-WITH-CLAUDE-PLUGIN.md](USAGE-WITH-CLAUDE-PLUGIN.md) for detailed installation guide, troubleshooting, and comparison with other methods.
+
+**Benefits**: Simplest installation, automatic updates, works across all projects, no manual file management
+
+**When to use**: You use Claude Code and want the most streamlined experience with automatic updates.
+
+---
+
+**Option 2: Claude Skills**
 
 Install as reusable skills that work across all your projects:
 
@@ -50,9 +70,13 @@ Setup ai-software-architect
 
 See [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILLS.md) for detailed instructions.
 
-**Benefits**: Simpler setup, no dependencies, automatic skill invocation, portable
+**Benefits**: No dependencies, automatic skill invocation, portable, works offline
 
-**Option 2: MCP Server**
+**When to use**: You want manual control over updates or need offline availability.
+
+---
+
+**Option 3: MCP Server**
 
 ```bash
 npm install -g ai-software-architect
@@ -70,9 +94,13 @@ Then configure in `~/.claude/config.json`:
 }
 ```
 
-**Benefits**: Programmatic automation, external tool integration
+**Benefits**: Programmatic automation, external tool integration, advanced project analysis
 
-**Option 3: Traditional Setup**
+**When to use**: You need programmatic access or integration with other MCP-compatible tools.
+
+---
+
+**Option 4: Traditional Setup**
 
 ```
 Setup architecture using: https://github.com/codenamev/ai-software-architect
@@ -80,7 +108,9 @@ Setup architecture using: https://github.com/codenamev/ai-software-architect
 
 See [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) for detailed instructions.
 
-**Benefits**: No installation required, works immediately
+**Benefits**: No installation required, works immediately, maximum flexibility
+
+**When to use**: Quick experiments, no installation permissions, or maximum customization needs.
 
 ### Cursor Installation  
 
@@ -118,70 +148,107 @@ Setup architecture using: https://github.com/codenamev/ai-software-architect
 
 See [USAGE-WITH-CODEX.md](USAGE-WITH-CODEX.md) for detailed setup instructions. The framework will be configured with context files that GitHub Copilot and Codex can automatically understand.
 
-## Integration Method Comparison
+## Installation Method Comparison
 
-Choose the right integration method for your workflow:
+Choose the right installation method for your workflow:
 
-| Feature | Claude Skills | MCP Server | Traditional | Best For |
-|---------|---------------|------------|-------------|----------|
-| **Installation** | Copy skills to ~/.claude/ | npm install -g | Clone repo | Skills: Reusable across projects<br>MCP: Programmatic use<br>Traditional: Quick start |
-| **Setup Complexity** | ⭐ Simple | ⭐⭐ Medium | ⭐ Simple | Skills & Traditional easiest |
-| **AI Assistants** | Claude Code | Claude, Cursor | All assistants | Skills: Claude only<br>MCP: Claude, Cursor<br>Traditional: Universal |
-| **Invocation** | Automatic | Programmatic tools | Natural language | Skills: Most seamless<br>MCP: Most precise<br>Traditional: Most flexible |
-| **Dependencies** | None | Node.js ≥18 | None | Skills & Traditional: No deps |
-| **Core Features** | ✅ All 7 | ✅ All 7 | ✅ All 7 | All methods support core features |
-| **Advanced Features** | ⚠️ 60% | ⚠️ 33% | ✅ 100% | Traditional most feature-complete |
-| **Input Validation** | ✅ Yes | ⚠️ Basic | ❌ No | Skills has best validation |
-| **Pragmatic Mode** | ✅ Yes | ✅ Yes | ✅ Yes | All methods support YAGNI enforcement |
-| **Dynamic Members** | ✅ Yes | ❌ No | ✅ Yes | Skills & Traditional auto-create specialists |
-| **Recalibration** | ⚠️ Planned | ❌ No | ✅ Yes | Traditional fully supports |
-| **Project Analysis** | ⚠️ Basic | ✅ Advanced | ⚠️ Basic | MCP has best analysis |
-| **Error Handling** | ✅ Explicit | ✅ Explicit | ⚠️ Implicit | Skills & MCP clearest |
-| **Documentation** | ✅ Detailed | ✅ Detailed | ✅ Detailed | All well-documented |
-| **Customization** | ⚠️ Edit skills | ⚠️ Fork code | ✅ Easy | Traditional most customizable |
-| **Updates** | Re-copy files | npm update | Git pull | Each has update path |
-| **Portability** | ✅ High | ⚠️ Medium | ✅ High | Skills & Traditional most portable |
+| Feature | Plugin 🆕 | Skills | MCP Server | Traditional | Best For |
+|---------|----------|--------|------------|-------------|----------|
+| **Installation** | Two commands | Copy to ~/.claude/ | npm install -g | Clone repo | Plugin: Simplest<br>Skills: Portable<br>MCP: Programmatic<br>Traditional: Quick |
+| **Setup Complexity** | ⭐ Simplest | ⭐ Simple | ⭐⭐ Medium | ⭐ Simple | Plugin easiest |
+| **AI Assistants** | Claude Code | Claude Code | Claude, Cursor | All assistants | Plugin & Skills: Claude only<br>MCP: Claude, Cursor<br>Traditional: Universal |
+| **Invocation** | Automatic (MCP) | Automatic (Skills) | Programmatic tools | Natural language | Plugin & Skills: Seamless<br>MCP: Precise<br>Traditional: Flexible |
+| **Dependencies** | Node.js ≥18 (auto) | None | Node.js ≥18 | None | Skills & Traditional: No deps<br>Plugin & MCP: Node auto-managed |
+| **Auto-Updates** | ✅ `/plugin update` | ❌ Manual re-copy | ✅ `npm update` | ❌ Git pull | Plugin & MCP: Auto-update |
+| **Offline Use** | ⚠️ Needs npm | ✅ Full | ⚠️ Needs npm | ✅ Full | Skills & Traditional: Offline ready |
+| **Core Features** | ✅ All 7 | ✅ All 7 | ✅ All 7 | ✅ All 7 | All methods identical |
+| **Advanced Features** | ⚠️ 33% | ⚠️ 60% | ⚠️ 33% | ✅ 100% | Traditional most complete |
+| **Input Validation** | ⚠️ Basic | ✅ Yes | ⚠️ Basic | ❌ No | Skills best |
+| **Pragmatic Mode** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | All support YAGNI |
+| **Dynamic Members** | ❌ No | ✅ Yes | ❌ No | ✅ Yes | Skills & Traditional auto-create |
+| **Recalibration** | ❌ No | ⚠️ Planned | ❌ No | ✅ Yes | Traditional only |
+| **Project Analysis** | ✅ Advanced | ❌ Basic | ✅ Advanced | ⚠️ Basic | Plugin & MCP: Advanced |
+| **Error Handling** | ✅ Explicit | ✅ Explicit | ✅ Explicit | ⚠️ Implicit | Plugin, Skills, MCP clearest |
+| **Documentation** | ✅ Detailed | ✅ Detailed | ✅ Detailed | ✅ Detailed | All well-documented |
+| **Customization** | ⚠️ Fork npm pkg | ⚠️ Edit skills | ⚠️ Fork npm pkg | ✅ Easy | Traditional most flexible |
+| **Multi-Project** | ✅ Automatic | ✅ Automatic | ✅ Automatic | ⚠️ Per-project | Plugin, Skills, MCP global |
+| **Version Control** | ❌ External | ⚠️ Can track | ❌ External | ✅ In repo | Traditional best for VCS |
 
 ### Recommendation by Use Case
 
+**Choose Plugin if** (Recommended for most Claude Code users):
+- ✅ You use Claude Code exclusively
+- ✅ You want the absolute simplest installation (2 commands)
+- ✅ You want automatic updates (`/plugin update`)
+- ✅ You're okay with internet dependency for updates
+- ✅ You want zero manual file management
+
 **Choose Claude Skills if**:
 - You use Claude Code exclusively
-- You want the simplest setup
-- You want automatic skill invocation
-- You value portability across projects
+- You want offline availability
+- You prefer manual control over updates
+- You want to track skills in version control
+- You want automatic skill invocation with dynamic members
 
 **Choose MCP Server if**:
 - You use Claude Code or Cursor
 - You want programmatic automation
 - You need advanced project analysis
 - You're building integrations
+- You prefer npm-based package management
 
 **Choose Traditional if**:
-- You use multiple AI assistants
-- You want maximum flexibility
-- You need all advanced features (pragmatic mode, recalibration)
-- You want easy customization
+- You use multiple AI assistants (Copilot, Codex, etc.)
+- You want maximum flexibility and customization
+- You need all advanced features (dynamic members, recalibration)
+- You want the framework files in your repository
+- You need offline capability with full features
 
 ### Feature Availability Matrix
 
-| Feature | Claude Skills | MCP Server | Traditional |
-|---------|---------------|------------|-------------|
-| Setup Architecture | ✅ | ✅ | ✅ |
-| Create ADR | ✅ | ✅ | ✅ |
-| Architecture Review | ✅ | ✅ | ✅ |
-| Specialist Review | ✅ | ✅ | ✅ |
-| List Members | ✅ | ✅ | ✅ |
-| Get Status | ✅ | ✅ | ✅ |
-| Pragmatic Mode (YAGNI) | ✅ | ✅ | ✅ |
-| Dynamic Member Creation | ✅ | ❌ | ✅ |
-| Recalibration Process | ⚠️ | ❌ | ✅ |
-| Initial System Analysis | ❌ | ✅ | ✅ |
-| Input Validation | ✅ | ⚠️ | ❌ |
-| Tool Restrictions | ✅ | N/A | N/A |
+| Feature | Plugin 🆕 | Skills | MCP Server | Traditional |
+|---------|----------|--------|------------|-------------|
+| Setup Architecture | ✅ | ✅ | ✅ | ✅ |
+| Create ADR | ✅ | ✅ | ✅ | ✅ |
+| Architecture Review | ✅ | ✅ | ✅ | ✅ |
+| Specialist Review | ✅ | ✅ | ✅ | ✅ |
+| List Members | ✅ | ✅ | ✅ | ✅ |
+| Get Status | ✅ | ✅ | ✅ | ✅ |
+| Pragmatic Mode (YAGNI) | ✅ | ✅ | ✅ | ✅ |
+| Dynamic Member Creation | ❌ | ✅ | ❌ | ✅ |
+| Recalibration Process | ❌ | ⚠️ | ❌ | ✅ |
+| Initial System Analysis | ✅ | ❌ | ✅ | ✅ |
+| Input Validation | ⚠️ | ✅ | ⚠️ | ❌ |
+| Tool Restrictions | N/A | ✅ | N/A | N/A |
+| Auto-Update | ✅ | ❌ | ✅ | ❌ |
 
 **Legend**: ✅ Fully supported, ⚠️ Partially supported, ❌ Not supported, N/A Not applicable
 
+**Note**: Plugin and MCP Server share the same core implementation (delegated to npm package). Skills and Traditional have independent implementations with different feature sets.
+
 See [Feature Parity Analysis](.architecture/reviews/feature-parity-analysis.md) for detailed comparison.
+
+### Quick Installation Decision Tree
+
+```
+Do you use Claude Code?
+├─ Yes → Do you want automatic updates?
+│        ├─ Yes → Do you need offline capability?
+│        │        ├─ No  → ✅ Choose Plugin (simplest)
+│        │        └─ Yes → Choose Skills (portable)
+│        └─ No  → Choose Skills (manual control)
+│
+└─ No → Do you use multiple AI assistants?
+         ├─ Yes → Do you need advanced features?
+         │        ├─ Yes → ✅ Choose Traditional (most flexible)
+         │        └─ No  → Choose Traditional (works everywhere)
+         │
+         └─ No → Do you use Cursor?
+                  ├─ Yes → ✅ Choose MCP Server (Cursor compatible)
+                  └─ No  → Choose Traditional (universal)
+```
+
+**Still unsure?** Start with Plugin if you use Claude Code. It's the easiest to set up and you can always switch later. All methods provide identical core functionality.
 
 ## Getting Started
 
