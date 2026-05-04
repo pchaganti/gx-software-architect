@@ -5,6 +5,30 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-05-03
+
+### Changed
+
+#### Plugin Distribution Hardening (ADR-012)
+- **Skills relocated to plugin root**: `.claude/skills/` → `skills/`. Claude Code plugins load skills from `skills/` at the plugin root, so installations via `/plugin marketplace add` now correctly receive all seven skills (previously only the MCP server was delivered).
+- **Plugin marketplace install is the canonical Claude Code distribution.** The README's installation methods drop from four to three (Plugin / MCP / Traditional); the comparison tables and decision tree are updated accordingly.
+- **Plugin/marketplace metadata corrected**: `homepage` and `repository` URLs in `plugin.json` and `marketplace.json` now point to `codenamev/ai-software-architect` (previously misconfigured to `anthropics/`).
+
+### Removed
+
+- **Legacy "Claude Skills" cp-based install path retired.** The pre-plugin `git clone … && cp -r .../skills ~/.claude/skills/` recipe was a strict subset of plugin installation (skills only, no MCP server, settings, hooks, or subagents). `USAGE-WITH-CLAUDE-SKILLS.md` is now a redirect pointing at `USAGE-WITH-CLAUDE-PLUGIN.md`.
+
+### Migration
+
+If you previously installed via the cp recipe, install the plugin instead:
+
+```bash
+/plugin marketplace add codenamev/ai-software-architect
+/plugin install ai-software-architect@ai-software-architect
+```
+
+Optionally clean up the manually-copied directories under `~/.claude/skills/`. No changes are required for users who installed via the plugin or MCP server.
+
 ## [1.3.0] - 2025-12-12
 
 ### Added

@@ -30,7 +30,7 @@ If you need to update Claude Code, see the [official documentation](https://code
 
 In Claude Code, run:
 ```bash
-/plugin marketplace add anthropics/ai-software-architect
+/plugin marketplace add codenamev/ai-software-architect
 ```
 
 **What this does**: Adds the AI Software Architect plugin marketplace to your Claude Code installation. This is a one-time setup.
@@ -192,7 +192,7 @@ This design means:
 
 **Error**: "Marketplace not found"
 - **Solution**: Verify marketplace was added: `/plugin marketplace list`
-- If missing, re-add: `/plugin marketplace add anthropics/ai-software-architect`
+- If missing, re-add: `/plugin marketplace add codenamev/ai-software-architect`
 
 **Error**: "Plugin not found in marketplace"
 - **Solution**: Check marketplace is correct: `ai-software-architect@ai-software-architect`
