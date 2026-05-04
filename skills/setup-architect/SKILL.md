@@ -1,7 +1,8 @@
 ---
 name: setup-architect
 description: Sets up and installs the AI Software Architect framework in a NEW project for the FIRST time. Use when the user requests "Setup .architecture", "Setup ai-software-architect", "Initialize architecture framework", "Install software architect", or similar setup/installation phrases. Do NOT use for checking status (use architecture-status), creating documents (use create-adr or reviews), or when framework is already set up.
-allowed-tools: Read,Write,Edit,Glob,Grep,Bash
+allowed-tools: Read,Write,Edit,Glob,Grep,Bash(git:*,npm:*,node:*,mkdir:*,cp:*,ls:*,test:*)
+disable-model-invocation: true
 ---
 
 # Setup AI Software Architect Framework
