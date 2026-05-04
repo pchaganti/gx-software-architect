@@ -12,25 +12,39 @@ Sets up and customizes the AI Software Architect framework for a project.
 ## Overview
 
 This skill performs a complete framework installation:
-1. Verifies prerequisites (framework cloned, project root confirmed)
-2. Analyzes project (languages, frameworks, structure, patterns)
-3. Installs framework files and directory structure
-4. Customizes team members and principles for detected tech stack
-5. Performs initial system analysis
-6. Reports customizations and findings
+1. Locates the framework source (plugin install dir or legacy clone)
+2. Analyzes the target project (languages, frameworks, structure, patterns)
+3. Scaffolds `.architecture/` in the target project from framework templates
+4. Customizes team members and principles for the detected tech stack
+5. Performs an initial system analysis
+6. Reports customizations and findings, with explicit next steps
 
 **Detailed procedures**: [references/installation-procedures.md](references/installation-procedures.md)
 **Customization guide**: [references/customization-guide.md](references/customization-guide.md)
 
+## What happens when you run `Setup ai-software-architect`
+
+The skill creates a `.architecture/` directory in your **target project** (not in this plugin's repo) and populates it with templates customized for your tech stack. After it finishes you'll have:
+
+- `.architecture/decisions/adrs/` — empty, ready for `create-adr`
+- `.architecture/reviews/initial-system-analysis.md` — your team's first pass at the codebase
+- `.architecture/members.yml` — team customized for your detected stack
+- `.architecture/principles.md` — principles tailored to your frameworks
+- `.architecture/config.yml` — operational config (pragmatic mode, etc.)
+- `.architecture/templates/` — ADR + review templates ready to use
+
+The skill writes **only into your target project's `.architecture/`**. It does not modify code outside that directory.
+
 ## High-Level Workflow
 
-### 1. Verify Prerequisites
+### 1. Locate framework source
 
-Check requirements before installation:
-- `.architecture/.architecture/` directory exists (cloned framework)
-- Currently in project root directory
+The skill needs to know where to source templates from. Two paths:
 
-**If missing**: Guide user to clone framework first.
+- **Plugin path (canonical, 1.4.0+):** the framework templates live inside the installed plugin (typically under `~/.claude/plugins/marketplaces/codenamev-ai-software-architect/plugins/ai-software-architect/.architecture/templates/`). Use this when it's available.
+- **Legacy clone path:** `.architecture/.architecture/` exists in the target project (a manual `git clone` of the framework). Used when the plugin isn't installed.
+
+**Discovery order:** check plugin install location first (via `find ~/.claude/plugins -type d -name ai-software-architect 2>/dev/null` or env-var hints), then fall back to `.architecture/.architecture/`. If neither exists, stop and guide the user to install the plugin.
 
 ### 2. Analyze Project
 
@@ -45,13 +59,13 @@ Use `Glob` and `Grep` to detect technologies, `Read` to examine configs.
 ### 3. Install Framework
 
 Execute installation steps (see [references/installation-procedures.md](references/installation-procedures.md)):
-- Copy framework files to `.architecture/`
-- Remove clone directory
+- Copy framework templates from the source location identified in step 1 into the target project's `.architecture/`
 - Create directory structure (decisions/adrs, reviews, recalibration, etc.)
-- Initialize configuration from templates
+- Initialize `.architecture/config.yml` from `templates/config.yml`
 - Set up agent documentation (ADR-006 progressive disclosure)
+- **Legacy clone path only:** remove `.architecture/.architecture/` and (with safeguards) the cloned `.git/` directory. **Plugin path:** no clone removal needed.
 
-**Critical**: Follow safety procedures when removing `.git/` directory.
+**Critical (legacy clone path only):** Follow safety procedures when removing `.git/` directory. See [references/installation-procedures.md § Cleanup Procedures](references/installation-procedures.md#cleanup-procedures).
 
 ### 4. Customize Architecture Team
 
@@ -138,13 +152,18 @@ Next Steps:
 
 ## Error Handling
 
-**Framework not cloned**:
+**Framework source not found**:
 ```
-The framework must be cloned first. Please run:
+I can't find the framework templates. Two installation options:
 
-git clone https://github.com/codenamev/ai-software-architect .architecture/.architecture
+  Recommended (plugin):
+    /plugin marketplace add codenamev/ai-software-architect
+    /plugin install ai-software-architect@ai-software-architect
 
-Then run setup again.
+  Legacy (clone):
+    git clone https://github.com/codenamev/ai-software-architect .architecture/.architecture
+
+After installing, run "Setup ai-software-architect" again.
 ```
 
 **Already set up**:

@@ -1,55 +1,69 @@
 # Architecture Team Member Template
 #
-# Use this template to add new team members to .architecture/members.yml
+# To add a member: copy the minimum-viable example below into
+# .architecture/members.yml under the `members:` array, customize, and
+# run `node tools/cli.js generate-subagents` to refresh agents/<id>.md.
 #
-# Copy this entire member block and customize for your technology stack
+# .architecture/members.yml is protected by a PreToolUse hook (see
+# ADR-013) — to edit it, set CLAUDE_ALLOW_PROTECTED=1 in your env.
 
-- id: [unique_identifier]  # lowercase with underscores, e.g., javascript_expert
-  name: "[Full Name]"  # Display name, e.g., "Alex Rivera"
-  title: "[Role Title]"  # Professional title, e.g., "JavaScript Expert"
+# ----------------------------------------------------------------------------
+# MINIMUM-VIABLE EXAMPLE — start here
+# ----------------------------------------------------------------------------
+# All seven fields are required. Each list should have at least one entry.
+# Generate-subagents uses these fields verbatim; missing values produce
+# unhelpful subagent files.
 
-  # Specialties: Main areas of expertise (3-5 items)
+- id: javascript_expert
+  name: "Alex Rivera"
+  title: "JavaScript Expert"
   specialties:
-    - "[Specialty 1]"  # e.g., "Modern JavaScript/TypeScript"
-    - "[Specialty 2]"  # e.g., "Frontend architecture"
-    - "[Specialty 3]"  # e.g., "Build tools"
-
-  # Disciplines: Professional disciplines and practices (3-5 items)
+    - "Modern JavaScript/TypeScript"
+    - "Frontend architecture"
+    - "Build tools"
   disciplines:
-    - "[Discipline 1]"  # e.g., "Clean code"
-    - "[Discipline 2]"  # e.g., "Performance optimization"
-    - "[Discipline 3]"  # e.g., "Test-driven development"
-
-  # Skillsets: Specific technical skills (3-5 items)
+    - "Clean code"
+    - "Performance optimization"
+    - "Test-driven development"
   skillsets:
-    - "[Skill 1]"  # e.g., "ES6+"
-    - "[Skill 2]"  # e.g., "Async programming"
-    - "[Skill 3]"  # e.g., "Module systems"
-
-  # Domains: Application domains and contexts (3-5 items)
+    - "ES6+"
+    - "Async programming"
+    - "Module systems"
   domains:
-    - "[Domain 1]"  # e.g., "Web applications"
-    - "[Domain 2]"  # e.g., "API services"
-    - "[Domain 3]"  # e.g., "Cloud infrastructure"
+    - "Web applications"
+    - "Node.js backends"
+    - "Build pipelines"
+  perspective: "Focuses on JavaScript best practices and modern language features."
 
-  # Perspective: Unique viewpoint in 1-2 sentences
-  perspective: "[Description of how this member approaches architecture reviews and what lens they bring]"
+# ----------------------------------------------------------------------------
+# FIELD GUIDANCE
+# ----------------------------------------------------------------------------
+# id          Lowercase with underscores. Becomes agents/<kebab-id>.md.
+#             Good: javascript_expert, react_specialist, python_expert
+#             Bad:  JavaScriptExpert, react-specialist, "Python Expert"
+#
+# name        Real-sounding first + last (e.g., "Alex Rivera"). Used in
+#             review headers and "X said:" attributions. Avoid robotic
+#             names like "JS Guy" — they read poorly in review docs.
+#
+# title       Professional role title (e.g., "JavaScript Expert").
+#             Used in subagent descriptions for triggering.
+#
+# specialties List of 3-5 main areas of expertise. The first three become
+#             trigger keywords in the generated subagent's description.
+#
+# disciplines List of 3-5 professional practices/disciplines.
+# skillsets   List of 3-5 specific technical skills.
+# domains     List of 3-5 application domains/contexts.
+#
+# perspective One or two sentences describing the unique lens this member
+#             brings to reviews. Surfaces verbatim in the subagent body.
 
-# ============================================================================
-# EXAMPLES BY TECHNOLOGY STACK
-# ============================================================================
+# ----------------------------------------------------------------------------
+# ADDITIONAL EXAMPLES BY STACK (copy + customize as needed)
+# ----------------------------------------------------------------------------
 
-# JavaScript/TypeScript Example:
-# - id: javascript_expert
-#   name: "Alex Rivera"
-#   title: "JavaScript Expert"
-#   specialties: ["Modern JavaScript/TypeScript", "Frontend architecture", "Build tools"]
-#   disciplines: ["Clean code", "Performance", "Cross-browser compatibility"]
-#   skillsets: ["ES6+", "Async programming", "Module systems"]
-#   domains: ["Web applications", "Node.js backends", "Build pipelines"]
-#   perspective: "Focuses on JavaScript best practices and modern language features"
-
-# Python Example:
+# Python:
 # - id: python_expert
 #   name: "Dr. Sarah Chen"
 #   title: "Python Expert"
@@ -57,9 +71,9 @@
 #   disciplines: ["Pythonic code", "Testing patterns", "Performance"]
 #   skillsets: ["Modern Python (3.10+)", "Async/await", "Data structures"]
 #   domains: ["Backend services", "Data processing", "APIs"]
-#   perspective: "Advocates for clean, Pythonic solutions following PEP guidelines"
+#   perspective: "Advocates for clean, Pythonic solutions following PEP guidelines."
 
-# Ruby Example:
+# Ruby:
 # - id: ruby_expert
 #   name: "Marcus Johnson"
 #   title: "Ruby Expert"
@@ -67,9 +81,9 @@
 #   disciplines: ["Convention over configuration", "DRY", "Expressive code"]
 #   skillsets: ["Ruby 3.x", "Rails architecture", "Gem development"]
 #   domains: ["Web applications", "API services", "Background jobs"]
-#   perspective: "Emphasizes Ruby's elegance and Rails conventions"
+#   perspective: "Emphasizes Ruby's elegance and Rails conventions."
 
-# Go Example:
+# Go:
 # - id: go_expert
 #   name: "Dmitri Ivanov"
 #   title: "Go Expert"
@@ -77,9 +91,9 @@
 #   disciplines: ["Simplicity", "Composition", "Clear error handling"]
 #   skillsets: ["Goroutines/channels", "Standard library", "Performance"]
 #   domains: ["Microservices", "Cloud-native", "CLI tools"]
-#   perspective: "Advocates for Go's simplicity and effective concurrency"
+#   perspective: "Advocates for Go's simplicity and effective concurrency."
 
-# Rust Example:
+# Rust:
 # - id: rust_expert
 #   name: "Katya Volkov"
 #   title: "Rust Expert"
@@ -87,9 +101,9 @@
 #   disciplines: ["Ownership/borrowing", "Type-driven design", "Performance"]
 #   skillsets: ["Rust idioms", "Async Rust", "Unsafe code"]
 #   domains: ["Systems software", "Performance-critical code", "Embedded"]
-#   perspective: "Emphasizes Rust's safety guarantees and performance"
+#   perspective: "Emphasizes Rust's safety guarantees and performance."
 
-# React Specialist Example:
+# React:
 # - id: react_specialist
 #   name: "Emma Rodriguez"
 #   title: "React Specialist"
@@ -97,9 +111,9 @@
 #   disciplines: ["Hooks", "Performance optimization", "Accessibility"]
 #   skillsets: ["React 18+", "Context/Redux", "Testing Library"]
 #   domains: ["SPAs", "Component libraries", "Web apps"]
-#   perspective: "Focuses on modern React patterns and component reusability"
+#   perspective: "Focuses on modern React patterns and component reusability."
 
-# Django Specialist Example:
+# Django:
 # - id: django_specialist
 #   name: "Rajesh Patel"
 #   title: "Django Specialist"
@@ -107,32 +121,18 @@
 #   disciplines: ["Explicit over implicit", "Reusable apps", "DRY"]
 #   skillsets: ["Django 4.x", "DRF", "Celery integration"]
 #   domains: ["Web applications", "REST APIs", "Admin interfaces"]
-#   perspective: "Leverages Django's batteries-included philosophy effectively"
+#   perspective: "Leverages Django's batteries-included philosophy effectively."
 
-# ============================================================================
-# NAMING CONVENTIONS
-# ============================================================================
-#
-# IDs: Use lowercase with underscores
-#   - Good: javascript_expert, react_specialist, python_expert
-#   - Bad: JavaScriptExpert, react-specialist, Python Expert
-#
-# Names: Use real-sounding names (first and last)
-#   - Good: "Alex Rivera", "Dr. Sarah Chen", "Marcus Johnson"
-#   - Bad: "JavaScript Expert", "Python Dev", "The Architect"
-#
-# Titles: Professional role titles
-#   - Good: "JavaScript Expert", "React Specialist", "Python Expert"
-#   - Bad: "JS Guy", "The React Person", "Python Dev"
-#
-# ============================================================================
-# TIPS FOR GOOD MEMBERS
-# ============================================================================
-#
-# 1. Be specific: "Modern JavaScript/TypeScript" not just "JavaScript"
-# 2. Match your stack: Add specialists for YOUR technologies
-# 3. Don't overload: 5-7 technology specialists + core members is plenty
-# 4. Unique perspectives: Each member should bring a distinct viewpoint
-# 5. Balance depth and breadth: Mix deep specialists with generalists
-# 6. Consider project phase: Startups need different members than enterprises
-# 7. Team size matters: Larger teams can support more specialists
+# ----------------------------------------------------------------------------
+# TIPS
+# ----------------------------------------------------------------------------
+# - Be specific: "Modern JavaScript/TypeScript" not just "JavaScript".
+# - Match your stack: add specialists for YOUR technologies, not every
+#   possible one.
+# - Don't overload: 5-7 technology specialists plus the core members is
+#   usually plenty. Past ~12 total members, reviews become noisy.
+# - Each member should bring a distinct lens. If two members would say
+#   the same thing, merge them.
+# - Sanity-check by running `node tools/cli.js generate-subagents` after
+#   editing — if the resulting agents/<id>.md doesn't read sensibly, the
+#   member entry probably needs more specificity.

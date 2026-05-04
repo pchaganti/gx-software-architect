@@ -168,7 +168,7 @@ Choose the right installation method for your workflow:
 **Choose Traditional if**:
 - You use multiple AI assistants (Copilot, Codex, etc.)
 - You want maximum flexibility and customization
-- You need all advanced features (dynamic members, recalibration)
+- You need recalibration (only the Traditional path implements it)
 - You want the framework files in your repository
 - You need offline capability with full features
 
@@ -362,7 +362,7 @@ For general usage instructions, see [USAGE.md](USAGE.md).
 
 ### Claude Code
 
-For Claude Code users, see [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILLS.md) (Skills method) or [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) (Traditional method) for detailed instructions.
+For Claude Code users, see [USAGE-WITH-CLAUDE-PLUGIN.md](USAGE-WITH-CLAUDE-PLUGIN.md) (recommended plugin-based install) or [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) (traditional clone-based path) for detailed instructions.
 
 **Available Skills** (when using Claude Skills installation):
 - **setup-architect**: Automatically sets up and customizes the framework
@@ -387,7 +387,7 @@ For Claude Code users, see [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILL
 - Reviews: "Conduct architecture review", "Review architecture for [scope]"
 - Specialist: "Get [specialist]'s opinion on [topic]", "Have [role] review [component]"
 
-Claude can dynamically create new specialist roles if they don't exist in your `members.yml` file.
+**Adding new specialists**: edit `.architecture/members.yml` directly and run `node tools/cli.js generate-subagents` to refresh the corresponding `agents/<id>.md` subagent. Auto-creation during `specialist-review` was removed in 1.5.0 (see [ADR-013](.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md)) — the trade-off keeps the generated subagents and `members.yml` in sync at all times.
 
 ### Cursor
 

@@ -1,6 +1,6 @@
 # Usage Guide
 
-This document explains how to use the AI Software Architect framework in your project. For installation instructions, see [INSTALL.md](INSTALL.md). For AI assistant-specific guides, see [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) and [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md).
+This document explains how to use the AI Software Architect framework in your project. For installation, see the [Installation section in README.md](README.md#installation). For AI assistant-specific guides, see [USAGE-WITH-CLAUDE-PLUGIN.md](USAGE-WITH-CLAUDE-PLUGIN.md) (recommended for Claude Code), [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) (traditional Claude path), and [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md).
 
 ## Architecture Process Overview
 
@@ -48,10 +48,10 @@ Start architecture recalibration for version X.Y.Z
 ## Working with AI Assistants
 
 This framework is optimized for AI assistant collaboration. For detailed assistant-specific instructions, see:
-- [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILLS.md) - For Claude Skills (recommended)
-- [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) - For Claude Code (traditional method)
-- [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md) - For Cursor users
-- [USAGE-WITH-CODEX.md](USAGE-WITH-CODEX.md) - For GitHub Copilot/Codex users
+- [USAGE-WITH-CLAUDE-PLUGIN.md](USAGE-WITH-CLAUDE-PLUGIN.md) — Claude Code via the plugin marketplace (recommended)
+- [USAGE-WITH-CLAUDE.md](USAGE-WITH-CLAUDE.md) — Claude Code via the traditional clone-based path
+- [USAGE-WITH-CURSOR.md](USAGE-WITH-CURSOR.md) — Cursor users
+- [USAGE-WITH-CODEX.md](USAGE-WITH-CODEX.md) — GitHub Copilot / Codex users
 
 ### Standard Commands
 

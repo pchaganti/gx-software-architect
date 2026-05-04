@@ -88,7 +88,7 @@ Ask [Specialist Name] to review [target]
 - "Have [specialist] review [target]"
 - "Get [specialist]'s opinion on [topic]"
 
-**Note**: Claude will dynamically create new specialist roles if they don't exist in your members.yml file.
+**Note**: If the requested specialist isn't in `members.yml`, the skill (post-1.5.0) stops and tells you how to add them — edit `.architecture/members.yml` and run `node tools/cli.js generate-subagents`. The PreToolUse hook protects `members.yml` from accidental edits; set `CLAUDE_ALLOW_PROTECTED=1` to allow the edit. Dynamic auto-creation was removed in [ADR-013](.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md) to keep generated subagents in sync with the source of truth.
 
 ### List Architecture Team
 

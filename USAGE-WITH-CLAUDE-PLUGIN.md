@@ -272,14 +272,12 @@ This design means:
 
 | Aspect | Plugin | Skills |
 |--------|--------|--------|
-| **Installation** | 2 commands | Manual file copy |
-| **Updates** | `/plugin update` | Manual re-copy |
-| **Dependencies** | Node.js (auto) | None |
-| **Offline** | Needs npm cache | Full offline |
-| **Features** | MCP-based (33%) | Skills-based (60%) |
+| **Installation** | 2 commands | _(retired in 1.4.0 — see below)_ |
+| **Updates** | `/plugin update` | n/a |
+| **Dependencies** | Node.js (auto) | n/a |
+| **Offline** | Needs npm cache | n/a |
 
-**Choose Plugin if**: You want simplest setup and automatic updates
-**Choose Skills if**: You need offline capability or dynamic member creation
+The standalone "Claude Skills" install path (`cp -r .../skills ~/.claude/skills/`) was retired in 1.4.0. The plugin now ships skills, MCP server, generated subagents, and the ADR-validation hook as a single unit. See [USAGE-WITH-CLAUDE-SKILLS.md](USAGE-WITH-CLAUDE-SKILLS.md) for the migration path.
 
 ### Plugin vs. MCP Server
 

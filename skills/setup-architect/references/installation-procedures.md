@@ -2,10 +2,12 @@
 
 This document provides detailed step-by-step procedures for installing the AI Software Architect framework in a project.
 
+> **Two installation paths.** As of 1.4.0, the **Claude Code plugin** (`/plugin marketplace add codenamev/ai-software-architect && /plugin install ai-software-architect@ai-software-architect`) is the canonical install. With the plugin, framework templates ship as part of the plugin and the `setup-architect` skill discovers them at runtime — there is no manual clone step. Most of this document describes the **traditional clone-based path**, kept for users who can't use the plugin (e.g., other AI assistants, offline environments). Plugin users follow the same logical steps but the skill handles source discovery automatically.
+
 ## Table of Contents
 
-1. [Prerequisites Verification](#prerequisites-verification)
-2. [Framework Installation](#framework-installation)
+1. [Prerequisites Verification (traditional path)](#prerequisites-verification)
+2. [Framework Installation (traditional path)](#framework-installation)
 3. [Agent Documentation Setup](#agent-documentation-setup)
 4. [Cleanup Procedures](#cleanup-procedures)
 5. [Troubleshooting](#troubleshooting)
@@ -14,7 +16,9 @@ This document provides detailed step-by-step procedures for installing the AI So
 
 ## Prerequisites Verification
 
-Before installing, verify the environment is ready.
+> **Plugin path:** the skill discovers the plugin install location (typically `~/.claude/plugins/marketplaces/codenamev-ai-software-architect/plugins/ai-software-architect/`) and uses templates from there. No clone is needed. Skip to step "Customize Architecture Team" in the parent SKILL.md.
+
+The remainder of this section describes the **traditional clone-based path**.
 
 ### Check Framework is Cloned
 
