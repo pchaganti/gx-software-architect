@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(node tools/cli.js validate:*)",
+      "Bash(node tools/cli.js count:*)",
+      "Skill(architecture-status)",
+      "Skill(architecture-review)",
+      "Skill(create-adr)",
+      "Skill(setup-architect)",
+      "Skill(specialist-review)",
+      "Skill(list-members)",
+      "Skill(pragmatic-guard)",
+      "mcp__ai-software-architect__create_adr",
+      "mcp__ai-software-architect__get_architecture_status",
+      "mcp__ai-software-architect__list_architecture_members",
+      "mcp__ai-software-architect__setup_architecture",
+      "mcp__ai-software-architect__specialist_review",
+      "mcp__ai-software-architect__start_architecture_review"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
