@@ -2,9 +2,10 @@
 
 ## Status
 
-Proposed
+Implemented
 
 **Decision Date**: 2026-05-03
+**Implementation Date**: 2026-05-03
 **Extends**: [ADR-012](ADR-012-claude-plugin-distribution-hardening.md) — closes the loop on Phase 4 (subagent generation)
 
 ## Context

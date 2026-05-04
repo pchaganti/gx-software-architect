@@ -1,132 +1,151 @@
 ---
 name: architecture-review
 description: Conducts a comprehensive multi-perspective architecture review using ALL architecture team members. Use when the user requests "Start architecture review", "Full architecture review", "Review architecture for version X.Y.Z", "Conduct comprehensive review", or when they want assessment from multiple perspectives. Do NOT use for single-specialist reviews (use specialist-review instead) or for status checks (use architecture-status instead).
-allowed-tools: Read,Write,Glob,Grep,Bash(git:*)
+allowed-tools: Read,Write,Glob,Grep,Bash(git:*),Agent
 ---
 
-# Architecture Review
+# Architecture Review (orchestrator)
 
-Conducts comprehensive multi-perspective architecture reviews with all team members.
+Comprehensive multi-perspective architecture review. This skill is an **orchestrator** — it dispatches one subagent invocation per active team member in parallel, then aggregates the returned reviews into a consolidated document. The deep-perspective work happens in the subagents (`agents/<id>.md`), not in this skill's main thread.
 
-## Process Overview
+See [ADR-013](../../.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md) for the rationale.
 
-1. **Determine Scope** - Identify what to review (version, feature, or component)
-2. **Load Team** - Read members from `.architecture/members.yml` and check pragmatic mode
-3. **Analyze System** - Examine architecture using Read, Glob, Grep, and git tools
-4. **Individual Reviews** - Each member reviews from their specialized perspective
-5. **Collaborative Discussion** - Synthesize findings and establish priorities
-6. **Create Document** - Generate comprehensive review using template
-7. **Report Results** - Summarize findings and next steps for user
+## Process
 
-**Detailed guidance**: [references/review-process.md](references/review-process.md)
+### 1. Determine scope
 
-## Workflow Steps
+Identify the review target from the user's request:
+- **Version** — "version 2.0.0" → filename `2-0-0.md`
+- **Feature** — "authentication feature" → filename `feature-authentication.md`
+- **Component** — "payments module" → filename `component-payments-module.md`
 
-### 1. Determine Scope
+Apply input sanitization from [`../_patterns.md`](../_patterns.md). If the scope is ambiguous, ask one clarifying question and stop.
 
-Identify review target and create filename:
-- **Version**: "version X.Y.Z" → `X-Y-Z.md`
-- **Feature**: "feature name" → `feature-kebab-case.md`
-- **Component**: "component name" → `component-kebab-case.md`
+### 2. Load team and config
 
-Apply input validation (see `_patterns.md` § Filename Sanitization).
+Read `.architecture/config.yml` and `.architecture/members.yml`:
 
-### 2. Load Configuration and Team
+- `config.yml.pragmatic_mode.enabled` decides whether to include the `pragmatic_enforcer` subagent.
+- `members.yml.members[]` is the list of subagents to dispatch.
 
-```bash
-cat .architecture/config.yml     # Check pragmatic_mode.enabled
-cat .architecture/members.yml    # Load all members
+Each member's `id` (e.g., `security_specialist`) maps to `agents/<kebab-id>.md` (e.g., `agents/security-specialist.md`). The drift check in CI guarantees these files exist and are in sync.
+
+**Active set**: every member in `members.yml`, **excluding** `pragmatic_enforcer` if `config.yml.pragmatic_mode.enabled == false`.
+
+### 3. Optional pre-analysis (orchestrator-side)
+
+For broad reviews, an initial scan helps the orchestrator give every subagent a shared starting context. Use `Glob`, `Grep`, and `Bash(git:*)` (e.g., `git log --oneline -20`, `git diff main...HEAD --stat`) to assemble a short brief: target description, recent activity, key files. Keep this brief under ~500 tokens — it's a shared header, not a review.
+
+If the review target is narrow (a single feature or ADR), this step can be skipped.
+
+### 4. Dispatch subagents in parallel
+
+Issue **one Agent call per active member, all in the same response** (parallel dispatch is the documented best practice for independent work):
+
+```
+Agent({
+  subagent_type: "<kebab-id>",
+  description: "<Title> review of <target>",
+  prompt: <see template below>
+})
 ```
 
-Include Pragmatic Enforcer if pragmatic mode enabled for reviews.
+**Prompt template** (used for every subagent — vary only the `<target>` and the optional shared brief):
 
-### 3. Analyze the Target
+```
+Conduct a focused review of: <target>.
 
-Use available tools to examine the system:
-- `Read` - Code, configs, documentation
-- `Glob` - Find files by pattern
-- `Grep` - Search for specific patterns
-- `Bash(git:*)` - Git history and status
+<optional shared brief from step 3>
 
-Focus based on review type:
-- **Version**: Overall architecture, components, patterns, technical debt
-- **Feature**: Implementation, integration, security, performance
-- **Component**: Structure, dependencies, boundaries, interfaces
+Apply your perspective (your subagent file lists your specialty,
+disciplines, skillsets, and domains). Stay within your specialty —
+other team members are reviewing concurrently and will cover their
+own areas.
 
-### 4. Conduct Individual Member Reviews
-
-For each member in `members.yml`, write a review including:
-- Perspective statement
+Return a markdown review with:
+- Perspective statement (1-2 sentences from your unique vantage)
 - Key observations (3-5)
-- Strengths (3-5)
-- Concerns with impact and recommendations (3-7)
-- Prioritized recommendations with effort estimates (3-7)
+- Strengths within your domain (3-5)
+- Concerns with severity (critical / high / medium / low), each with
+  location (file:line where applicable), why-it-matters, concrete fix
+- Recommendations, ordered: immediate / short-term / long-term, with
+  rough effort estimates (S/M/L)
+- Risks if unaddressed
 
-**Format details**: [references/review-process.md § Individual Member Review Format](references/review-process.md#individual-member-review-format)
-
-**Pragmatic integration**: If enabled, add pragmatic analysis after each member. See [references/pragmatic-integration.md](references/pragmatic-integration.md)
-
-### 5. Facilitate Collaborative Discussion
-
-Synthesize findings:
-- Identify common concerns
-- Discuss disagreements
-- Establish consensus
-- Prioritize: Critical (0-2 weeks) | Important (2-8 weeks) | Nice-to-Have (2-6 months)
-
-**Discussion format**: [references/review-process.md § Collaborative Discussion](references/review-process.md#collaborative-discussion-process)
-
-### 6. Create Review Document
-
-Load template and fill in all sections:
-```bash
-cat .claude/skills/architecture-review/assets/review-template.md
+Read code, configs, and ADRs as needed via your scoped tools. Cite
+exact file paths and line numbers. Do not range outside your
+specialty.
 ```
 
-Include:
-- Executive summary and overall assessment
-- Individual member reviews
-- Collaborative discussion
-- Consolidated findings (strengths, improvements, debt, risks)
-- Recommendations (immediate, short-term, long-term)
+For `pragmatic_enforcer` (when included), append: `Apply the Pragmatic Enforcer Analysis structure from .architecture/templates/adr-template.md (Necessity, Complexity, Ratio, Recommendation).`
+
+### 5. Aggregate
+
+When all subagent calls return, build the consolidated review:
+
+1. **Cross-cut analysis** — identify themes that appear in 3+ subagent reviews (these are the high-leverage findings).
+2. **Conflict resolution** — when two subagents disagree (e.g., security wants strict validation, performance wants minimal overhead), surface the disagreement explicitly under "Trade-offs" rather than picking a winner. Naming the trade-off is the value.
+3. **Prioritization** — bucket every concern into Critical (0-2 weeks) / Important (2-8 weeks) / Nice-to-Have (2-6 months) based on the subagents' severity ratings and the cross-cut analysis.
+4. **Verbatim per-perspective sections** — preserve each subagent's full review under a per-member section. This is the source data; aggregation summarizes but does not replace it.
+
+### 6. Write the consolidated review
+
+Use [the review template](assets/review-template.md). Key sections:
+
+- Executive summary (3-5 sentences, overall assessment + top concerns)
+- Individual member reviews (verbatim from step 5.4)
+- Cross-cutting themes (from step 5.1)
+- Trade-offs and disagreements (from step 5.2)
+- Prioritized recommendations (from step 5.3)
+- Risks if unaddressed (highest-severity items)
 - Success metrics and follow-up plan
 
-Save to `.architecture/reviews/[filename].md`
+Save to `.architecture/reviews/<filename>` (filename from step 1).
 
-**Template**: [assets/review-template.md](assets/review-template.md)
+If pragmatic mode is enabled, ensure the `pragmatic_enforcer` review's Necessity / Complexity / Ratio analysis is surfaced in the executive summary, not buried in the member section. See [`references/pragmatic-integration.md`](references/pragmatic-integration.md).
 
-### 7. Report to User
+### 7. Report to the user
 
 ```
-Architecture Review Complete: [Target]
+Architecture Review Complete: <target>
 
-Location: .architecture/reviews/[filename].md
-Overall Assessment: [Strong | Adequate | Needs Improvement]
+Location: .architecture/reviews/<filename>
+Overall Assessment: <Strong | Adequate | Needs Improvement>
 
-Top 3 Priorities:
-1. [Priority 1]
-2. [Priority 2]
-3. [Priority 3]
+Top 3 priorities:
+1. <Critical priority>
+2. <Critical priority>
+3. <Important priority>
 
-Immediate Actions:
-- [Action 1]
-- [Action 2]
+Immediate actions:
+- <Highest-severity concrete fix>
+- <Next>
 
-Next Steps:
+Cross-cutting themes:
+- <Theme that appeared in 3+ specialist reviews>
+
+Next steps:
 - Review with team
-- "Start architecture recalibration for [target]"
-- Create ADRs for key decisions
+- `create-adr` for the priorities that need a decision recorded
+- `specialist-review` to deep-dive any concern that needs more work
 ```
 
-## Related Skills
+## Why this skill is small
 
-**Before**: `architecture-status`, `list-members`
-**During**: `specialist-review`, `create-adr`
-**After**: `architecture-recalibration`, `create-adr`
+The previous version (~130 lines) inlined the review process for each persona. With subagents, persona and per-perspective review structure live in `agents/<id>.md` (generated from `members.yml`). This skill's job is the orchestration layer: scope, dispatch, aggregate, write, report.
 
-## Documentation
+**One source of truth per concept** — the framework principle holds. Specialist behavior lives in the subagent files, not duplicated here.
 
-- **Process guide**: [references/review-process.md](references/review-process.md)
-- **Pragmatic mode**: [references/pragmatic-integration.md](references/pragmatic-integration.md)
-- **Template**: [assets/review-template.md](assets/review-template.md)
-- **Patterns**: [../_patterns.md](../_patterns.md)
+## Related skills
+
+**Before**: `architecture-status` (what's already documented), `list-members` (who is on the team)
+**During**: `specialist-review` (deep-dive any single subagent's findings)
+**After**: `create-adr` (record decisions arising from priorities), `architecture-recalibration` (translate findings into a plan)
+
+## References
+
+- [ADR-013](../../.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md) — orchestrator pattern rationale
+- [Review process](references/review-process.md) — process guidance the orchestrator follows
+- [Pragmatic integration](references/pragmatic-integration.md) — how pragmatic mode shapes the review
+- [Review template](assets/review-template.md) — consolidated document structure
+- [Common patterns](../_patterns.md) — input sanitization

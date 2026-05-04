@@ -1,199 +1,133 @@
 ---
 name: specialist-review
 description: Conducts a focused review from ONE specific specialist's perspective (e.g., Security Specialist, Performance Expert). Use when the user requests "Ask [specialist role] to review [target]", "Get [specialist]'s opinion on [topic]", "Have [role] review [code/component]", or when they want deep expertise in ONE specific domain. Do NOT use for comprehensive multi-perspective reviews (use architecture-review instead) or for listing available specialists (use list-members instead).
-allowed-tools: Read,Write,Glob,Grep
+allowed-tools: Read,Write,Glob,Grep,Agent
 ---
 
-# Specialist Review
+# Specialist Review (orchestrator)
 
-Conducts focused reviews from a specific specialist's perspective.
+Single-specialist deep-dive review. This skill is an **orchestrator** — it identifies the right specialist and delegates the review to that specialist's subagent (`agents/<id>.md`). The deep-perspective work happens in the subagent's isolated context, not in this skill's main thread.
 
-## Overview
+See [ADR-013](../../.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md) for the rationale.
 
-This skill performs a deep-dive review from one specialist's expertise:
-1. Parses which specialist and what target to review
-2. Loads or creates the specialist in the team
-3. Analyzes the target from that specialist's unique lens
-4. Conducts expert-level review with specific findings
-5. Generates detailed review document
-6. Reports key findings and recommendations
+## Process
 
-**Specialist guidance**: [references/specialist-perspectives.md](references/specialist-perspectives.md)
-**Review template**: [assets/specialist-review-template.md](assets/specialist-review-template.md)
+### 1. Parse the request
 
-## High-Level Workflow
+Extract from the user's request:
+- **Specialist role** (e.g., "Security Specialist", "Performance Expert")
+- **Target** (e.g., "API authentication", "the payments module", "ADR-007")
 
-### 1. Parse Request
+If either is unclear, ask one focused clarifying question and stop.
 
-Extract from user request:
-- **Specialist role**: Which expert? (e.g., "Security Specialist", "Performance Expert")
-- **Target**: What to review? (e.g., "API authentication", "database queries")
+### 2. Resolve the specialist
 
-**Input validation**: Apply sanitization from `_patterns.md`:
-- Specialist role: Alphanumeric + spaces/hyphens only, convert to kebab-case for filename
-- Target: Remove dangerous characters, convert to kebab-case
-- Combined filename length: max 100 characters
+Read `.architecture/members.yml` and find the member whose `name` or `title` matches the requested role (case-insensitive, allow common abbreviations like "security" → "Security Specialist").
 
-**Examples**:
-- "Security Specialist" + "API authentication" → `security-specialist-api-authentication.md`
-- "Ruby Expert" + "ActiveRecord models" → `ruby-expert-activerecord-models.md`
+The member's `id` (e.g., `security_specialist`) maps to a subagent at `agents/<kebab-id>.md` (e.g., `agents/security-specialist.md`). The drift check in CI (`generate-subagents --check`) guarantees that file exists if the member exists.
 
-### 2. Load or Create Specialist
+**If the requested specialist is not in `members.yml`:**
 
-Check `.architecture/members.yml` for the requested specialist.
+The previous version of this skill auto-created new members on the fly. That is no longer supported because `.architecture/members.yml` is now protected by a PreToolUse hook (see [ADR-013 Pragmatic Analysis](../../.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md#pragmatic-enforcer-analysis)). Instead:
 
-**If exists**: Load their profile (specialties, disciplines, domains, perspective)
+1. Tell the user: "<Role> is not in your architecture team. To add them: edit `.architecture/members.yml` (the PreToolUse hook will refuse the write — set `CLAUDE_ALLOW_PROTECTED=1` to override), add a member entry following the existing schema, then run `node tools/cli.js generate-subagents`."
+2. Stop. Do not attempt the review until the member exists.
 
-**If doesn't exist**: Create new member and add to `members.yml`:
-```yaml
-- id: [specialist_id]
-  name: "[Person Name]"
-  title: "[Specialist Title]"
-  specialties: ["[Specialty 1]", "[Specialty 2]", "[Specialty 3]"]
-  disciplines: ["[Discipline 1]", "[Discipline 2]"]
-  skillsets: ["[Skill 1]", "[Skill 2]"]
-  domains: ["[Domain 1]", "[Domain 2]"]
-  perspective: "[Their unique viewpoint]"
-```
+### 3. Delegate to the subagent
 
-Inform user: "I've added [Name] ([Title]) to your architecture team."
-
-**Specialist guidance**: See [references/specialist-perspectives.md § Creating New Specialists](references/specialist-perspectives.md#creating-new-specialists)
-
-### 3. Analyze Target
-
-Use available tools to examine the target:
-- `Glob` to find relevant files
-- `Grep` to search for patterns
-- `Read` to examine code, configs, documentation
-
-**Understand**:
-- Current implementation
-- Dependencies and context
-- Related ADRs or documentation
-- Patterns being used
-
-### 4. Conduct Expert Review
-
-Adopt the specialist's persona and expertise. Apply their unique lens.
-
-**Review from specialist's perspective**:
-- Focus on their domain of expertise (security, performance, maintainability, etc.)
-- Provide expert-level insights, not surface-level comments
-- Reference specific files, line numbers, and code
-- Explain impact and provide actionable fixes
-
-**Review structure** (for each specialist):
-- Specialist perspective and focus
-- Executive summary with assessment
-- Current implementation description
-- Strengths identified
-- Concerns with severity and specific fixes
-- Recommendations (immediate, short-term, long-term)
-- Best practices and industry standards
-- Code examples showing issues and improvements
-- Risks if not addressed
-- Success metrics
-
-**Detailed guidance by specialist**: [references/specialist-perspectives.md § Core Specialists](references/specialist-perspectives.md#core-specialists)
-
-**Review template**: Load and fill [assets/specialist-review-template.md](assets/specialist-review-template.md)
-
-### 5. Create Review Document
-
-Load the template:
-```bash
-cat .claude/skills/specialist-review/assets/specialist-review-template.md
-```
-
-Fill in all sections with detailed, specific findings.
-
-**Save to**: `.architecture/reviews/[specialist-role]-[target].md`
-
-**Format**: `[role-kebab-case]-[target-kebab-case].md`
-
-### 6. Report to User
-
-Provide concise summary:
+Dispatch a single `Agent` call:
 
 ```
-[Specialist Title] Review Complete: [Target]
-
-Reviewer: [Specialist Name]
-Location: .architecture/reviews/[filename].md
-Assessment: [Overall assessment]
-
-Key Findings:
-1. [Most important finding]
-2. [Second finding]
-3. [Third finding]
-
-Priority Actions:
-1. [Critical action 1]
-2. [Critical action 2]
-
-Critical Issues: [Count]
-High Priority: [Count]
-Total Recommendations: [Count]
-
-Next Steps:
-- Address critical issues immediately
-- Review detailed findings in document
-- [Specific next action based on findings]
+Agent({
+  subagent_type: "<kebab-id>",
+  description: "<Role> review of <target>",
+  prompt: <see template below>
+})
 ```
 
-## Specialist Quick Reference
+**Prompt template** for the subagent call:
 
-**Core Specialists** (see [references/specialist-perspectives.md](references/specialist-perspectives.md)):
-- **Security Specialist**: Authentication, authorization, vulnerabilities, OWASP
-- **Performance Specialist**: Query optimization, caching, bottlenecks, scalability
-- **Domain Expert**: Business logic, domain models, ubiquitous language
-- **Maintainability Expert**: Code quality, technical debt, testability
-- **Systems Architect**: Architecture patterns, component interaction, coherence
-- **AI Engineer**: LLM integration, agent orchestration, evaluation
+```
+You are conducting a focused review of: <target>.
 
-**Technology Specialists**:
-- **JavaScript/Python/Ruby/Go/Rust Expert**: Language-specific best practices
-- **Framework Specialists**: React, Rails, Django, Spring, etc.
+Apply your perspective (see your subagent file for your specialty,
+disciplines, and domains). Do not range outside your specialty —
+other specialists will cover their own areas.
 
-**Creating new specialists**: Automatically added to team when requested
+Produce a review with these sections:
+- Executive summary (2-3 sentences, overall assessment)
+- Strengths (what is working well within your domain)
+- Concerns (with severity: critical / high / medium / low)
+  - For each concern: location (file:line), why it matters, concrete fix
+- Recommendations (ordered: immediate / short-term / long-term)
+- Risks if unaddressed
+- Success metrics (how to verify the recommendations land)
 
-## Related Skills
+If the target requires you to read code, configs, or ADRs, do so via
+your Read/Grep/Glob tools. Reference exact files and line numbers.
 
-**Before Specialist Review**:
-- `list-members` - See available specialists
-- `architecture-status` - Check if area previously reviewed
+Return the review as markdown. Do not write to disk; the orchestrator
+will save it.
+```
 
-**After Specialist Review**:
-- `create-adr` - Document decisions from findings
-- `architecture-review` - Include in comprehensive review
-- Request another specialist for different domain perspective
+### 4. (Optional) Save the review
 
-**Workflow Examples**:
-1. Security review → Finds auth issue → Create ADR → Performance review
-2. Ruby Expert review → Rails-specific guidance → Implement → Follow-up review
-3. Full architecture review → Deep-dive with specialists on concerns
+If the user asked to persist the review (e.g., "save to reviews/" or "create a review document"):
 
-## Quality Guidelines
+1. Filename format: `<specialist-id>-<target-slug>.md` (kebab-case, max 100 chars total). Example: `security-specialist-api-authentication.md`.
+2. Apply input sanitization from [`../_patterns.md`](../_patterns.md) to the target slug.
+3. Wrap the subagent's returned markdown in the [review template](assets/specialist-review-template.md) header (reviewer name, date, target).
+4. Write to `.architecture/reviews/<filename>`.
 
-**Excellent specialist reviews**:
-- Stay laser-focused within domain
-- Provide expert-level, not generic, insights
-- Reference exact files and line numbers
-- Include code examples (current vs recommended)
-- Explain "why", not just "what"
-- Consider context and constraints
-- Provide actionable, implementable advice
-- Estimate effort for each recommendation
+If the user did not ask to persist, return the review inline.
 
-**Avoid**:
-- Straying outside specialist's domain
-- Vague or surface-level comments
-- Missing specific locations
-- Recommendations without implementation guidance
+### 5. Report
 
-## Documentation
+Concise summary back to the user:
 
-- **Specialist guidance**: [references/specialist-perspectives.md](references/specialist-perspectives.md)
-- **Review template**: [assets/specialist-review-template.md](assets/specialist-review-template.md)
-- **Common patterns**: [../_patterns.md](../_patterns.md)
+```
+<Title> Review Complete: <target>
+
+Reviewer: <Name>
+Location: <path or "inline">
+Assessment: <executive summary first sentence>
+
+Key concerns:
+1. <highest-severity concern>
+2. <next>
+3. <next>
+
+Counts: <critical>/<high>/<medium>/<low>
+
+Suggested next:
+- <immediate action from recommendations>
+- <follow-up specialist if cross-cutting concern surfaced>
+```
+
+## Why this skill is small
+
+The previous version (~200 lines) inlined detailed review-process instructions because Claude was expected to *be* the specialist mid-conversation. With subagents, the specialist's persona, perspective, and tool scoping live in `agents/<id>.md` (generated from `members.yml`). This skill's job is just to route the request and assemble the response.
+
+Specialist-specific guidance (how a Security Specialist thinks vs a Performance Specialist) lives in the subagent files themselves, not duplicated here. The framework principle: one source of truth per concept.
+
+## Related skills
+
+**Before**:
+- `list-members` — see who is available
+- `architecture-status` — check what's already been reviewed
+
+**After**:
+- `create-adr` — document decisions arising from findings
+- `architecture-review` — fold this finding into a multi-perspective review
+
+**Workflow examples**:
+1. Security review surfaces auth issue → `create-adr` for the fix → re-review
+2. Performance review identifies bottleneck → ADR for caching strategy → implementation
+3. Specialist review on one slice → comprehensive `architecture-review` for the full version cut
+
+## References
+
+- [ADR-013](../../.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md) — orchestrator pattern rationale
+- [Specialist perspectives](references/specialist-perspectives.md) — high-level reference (subagents are the source of truth for runtime behavior)
+- [Review template](assets/specialist-review-template.md) — used when the review is persisted
+- [Common patterns](../_patterns.md) — input sanitization

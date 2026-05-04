@@ -5,6 +5,25 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-05-03
+
+### Added
+
+#### ADR Validation Drives the Plugin Surface (ADR-012 follow-on)
+- **PreToolUse hook protects framework source-of-truth files.** `.architecture/{members.yml, principles.md, config.yml}` now reject Write/Edit operations with a tailored explanation pointing at the correct workflow (regenerator, ADR, pragmatic-guard skill). Override with `CLAUDE_ALLOW_PROTECTED=1` for intentional one-off edits. Logic in `tools/lib/protected-files.js` (TDD, 11 tests).
+- **`disable-model-invocation: true`** added to side-effect skills (`create-adr`, `setup-architect`, `pragmatic-guard`). These workflows now require explicit user invocation; the model will not auto-fire on inferred intent.
+
+### Changed
+
+#### Skill Orchestrator Pattern (ADR-013)
+- **`architecture-review` and `specialist-review` now delegate to subagents.** Both skills became orchestrators that dispatch `Agent({subagent_type: ...})` calls to the `agents/*.md` files generated in 1.4.0, instead of adopting personas inline. Reviews run in forked subagent contexts, preserving main-thread tokens and eliminating mid-review persona drift. See [ADR-013](.architecture/decisions/adrs/ADR-013-skill-orchestrator-subagent-delegation.md).
+- **`setup-architect` `allowed-tools` scoped.** Was unscoped `Bash`; now `Bash(git:*,npm:*,node:*,mkdir:*,cp:*,ls:*,test:*)` — matches what the skill actually runs.
+- **`create-adr` drops `Bash(grep:*)`** in favor of the `Grep`/`Glob` tools, per the project's own convention.
+
+### Removed
+
+- **Dynamic specialist creation in `specialist-review` is no longer auto-applied.** The previous behavior wrote new members to `members.yml` on the fly; the new PreToolUse hook makes that an explicit two-step (override the hook, edit `members.yml`, regenerate subagents). Trade-off: one-step convenience for stable, drift-free framework source files. See ADR-013 § Pragmatic Analysis.
+
 ## [1.4.0] - 2026-05-03
 
 ### Changed
