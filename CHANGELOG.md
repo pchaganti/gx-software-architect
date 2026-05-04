@@ -5,6 +5,30 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2026-05-03
+
+### Changed
+
+#### Setup-Process DevX Pass (no behavior change)
+A targeted pass through the setup user-journey based on a fresh DevX audit. No behavior changes — purely doc and template clarity. Targets the post-1.4.0 plugin-install path, where the previous docs still described the legacy clone-based flow.
+
+- **`setup-architect/SKILL.md`** gained a "What happens when you run this" walkthrough at the top, a "Setup successful when..." checklist users can verify against, and a "Recovery" section for partial installs. The verify-prerequisites step now describes plugin source-discovery alongside the legacy clone path; error messages surface both install options.
+- **`installation-procedures.md`** marks the `.architecture/.architecture/` clone-based flow as the **traditional path** and adds an upfront note about the canonical plugin path.
+- **`member-template.yml`** leads with a single minimum-viable example showing all seven required fields filled, before the stack-specific examples. Adds explicit pointer to the PreToolUse hook so users know how to actually save edits.
+- **`initial-analysis-template.md`** annotates each section as either *required for minimum viable analysis* or *optional on first pass*, so first-time users aren't overwhelmed by a 400-line template.
+- **`USAGE-WITH-CLAUDE-PLUGIN.md`** gains a "First 5 minutes after setup" quick-start with four concrete steps that exercise the full plugin (list-members, read analysis, create-adr, specialist-review).
+
+### Fixed
+
+- **Reconciled dynamic-specialist-creation references** across `USAGE-WITH-CLAUDE.md`, `README.md`, and `USAGE-WITH-CLAUDE-PLUGIN.md`. ADR-013 removed auto-creation; the docs now describe the post-1.5.0 reality (edit `members.yml` + override the PreToolUse hook + regenerate).
+- **Dead `INSTALL.md` link** in `USAGE.md` retired (the file never existed); replaced with a pointer to README.md's Installation section.
+- **Stale `USAGE-WITH-CLAUDE-SKILLS.md` references** in `USAGE.md` and `README.md` redirected to `USAGE-WITH-CLAUDE-PLUGIN.md`, the actual canonical install doc.
+- **Confusing "33% / 60%" feature percentages** in `USAGE-WITH-CLAUDE-PLUGIN.md`'s comparison table replaced with prose noting the Skills install path was retired in 1.4.0.
+
+### Notes
+
+The DevX audit also identified a P2 candidate — a `setup-architect --dry-run` mode and resume-from-checkpoint — which is real behavior change and queued for ADR-014. The P0+P1 work shipped in 1.5.1 is corrective + narrative only; no risk of behavior regression.
+
 ## [1.5.0] - 2026-05-03
 
 ### Added

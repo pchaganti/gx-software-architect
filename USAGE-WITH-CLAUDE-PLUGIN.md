@@ -76,10 +76,54 @@ Setup ai-software-architect
 ```
 
 This will:
-- Create the `.architecture/` directory structure
-- Install configuration files
-- Set up templates for ADRs and reviews
-- Configure team members and principles
+- Create the `.architecture/` directory structure in your target project
+- Customize `members.yml` and `principles.md` for the detected tech stack
+- Generate an initial system analysis at `.architecture/reviews/initial-system-analysis.md`
+- Set up `templates/` ready for `create-adr` and review skills
+
+The skill writes only into `.architecture/`. It does not modify code outside that directory.
+
+**Setup successful when** all of the following are true:
+
+- [ ] `.architecture/decisions/adrs/` exists (empty, ready for ADRs)
+- [ ] `.architecture/reviews/initial-system-analysis.md` exists and is non-empty
+- [ ] `.architecture/members.yml` and `.architecture/principles.md` show stack-specific entries (not just defaults)
+- [ ] `.architecture/config.yml` exists
+- [ ] `Check architecture status` returns a coherent summary
+
+If any check fails, see the recovery section in [skills/setup-architect/SKILL.md](skills/setup-architect/SKILL.md#recovery).
+
+### First 5 minutes after setup
+
+In order, these are the smallest steps that demonstrate the framework end-to-end and surface any setup issues:
+
+**1. (~30s) Verify the team and config**
+```
+List architecture members
+```
+You should see the seven core members plus any technology specialists the setup added for your stack.
+
+**2. (~1 min) Read the initial analysis**
+
+Open `.architecture/reviews/initial-system-analysis.md` in your editor. Skim the strengths, concerns, and recommendations — they're your team's first read on your codebase. If the analysis looks generic or the wrong stack, the customization step missed something; edit `members.yml` and re-run setup recovery (see SKILL.md).
+
+**3. (~2 min) Document one decision you've already made**
+
+Pick something concrete from your codebase — a database choice, an auth approach, the framework you picked — and run:
+```
+Create ADR for [that decision]
+```
+This produces a real ADR you can keep, and verifies `create-adr` is wired up. You can ask Claude to expand it later or commit it as-is.
+
+**4. (~1.5 min) Get a focused specialist read**
+
+Pick the strongest concern from the initial analysis and ask the specialist who raised it for a deeper take:
+```
+Ask [Specialist] to review [the area they flagged]
+```
+This dispatches one of the generated subagents (post-1.5.0 orchestrator pattern, see ADR-013) and produces a focused review.
+
+If all four steps work, your install is healthy. If any step errors, the setup recovery section in `skills/setup-architect/SKILL.md` covers re-running cleanly without disturbing project code.
 
 ### Common Operations
 

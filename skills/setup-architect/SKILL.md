@@ -125,6 +125,8 @@ Save to `.architecture/reviews/initial-system-analysis.md`.
 
 ### 9. Report to User
 
+Provide a setup summary using the template below, then the success checklist so the user can verify the install end-to-end.
+
 Provide setup summary:
 
 ```
@@ -149,6 +151,33 @@ Next Steps:
 - "Create ADR for [first decision]" to start documenting
 - "What's our architecture status?" to verify setup
 ```
+
+## Setup successful when...
+
+A first-time user can verify the install by checking that **all of these are true**:
+
+- [ ] `.architecture/decisions/adrs/` exists and is empty
+- [ ] `.architecture/reviews/initial-system-analysis.md` exists and is non-empty
+- [ ] `.architecture/members.yml` lists at least the seven core members plus any technology specialists added in step 4
+- [ ] `.architecture/principles.md` exists and includes any framework-specific principles added in step 5
+- [ ] `.architecture/config.yml` exists (pragmatic mode flag visible)
+- [ ] `.architecture/templates/` contains `adr-template.md` and `review-template.md`
+- [ ] No leftover `.architecture/.architecture/` directory (legacy clone path only)
+- [ ] Running `What's our architecture status?` returns a coherent summary
+- [ ] Running `List architecture members` shows the customized team
+
+If any of these fail, see [the recovery section](#recovery) below.
+
+## Recovery
+
+**If setup fails partway through** (e.g., framework files copied but customization didn't run):
+
+1. Inspect `.architecture/` to see what landed.
+2. If only a few files copied, the simplest recovery is `rm -rf .architecture/` and re-run `Setup ai-software-architect` (no project code is touched outside `.architecture/`).
+3. If most files are in place but `members.yml` or `principles.md` weren't customized, you can re-run setup; the skill will detect the partial install and offer to complete the customization step rather than restart.
+4. If the initial analysis didn't run, ask: `Generate initial system analysis at .architecture/reviews/initial-system-analysis.md` — the orchestrator will dispatch the team without redoing the file install.
+
+**If setup ran but the team isn't right for your project**, you don't need to re-run setup. Edit `.architecture/members.yml` directly (set `CLAUDE_ALLOW_PROTECTED=1` to satisfy the PreToolUse hook) and run `node tools/cli.js generate-subagents` to refresh the corresponding `agents/<id>.md` files.
 
 ## Error Handling
 

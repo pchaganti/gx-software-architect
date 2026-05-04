@@ -1,5 +1,20 @@
 # Initial System Analysis
 
+> **Reading this template for the first time?** It is intentionally comprehensive — most teams won't fill every section on their first pass. The **minimum viable initial analysis** fills only:
+>
+> - Executive Summary (with Overall Assessment + Key Findings)
+> - System Overview → Project Information + Technology Stack
+> - Individual Member Analyses (one paragraph per active team member)
+> - Collaborative Synthesis (cross-cutting themes that emerged)
+> - Recommendations (the top 3-5, prioritized)
+> - Suggested Next Steps
+>
+> The remaining sections (Architectural Health Assessment, Technical Debt Inventory, Risk Assessment, Success Metrics, Appendix) are valuable for **mature teams revisiting the analysis** or for high-stakes systems. Skip them on the first pass — they can be filled in later as the framework gets used.
+>
+> The orchestrator (`setup-architect` skill, post-1.5.0) populates this document by dispatching subagent calls and aggregating the returned reviews. You should not need to write it by hand.
+
+---
+
 **Project**: [Project Name]
 **Date**: [YYYY-MM-DD]
 **Analysis Type**: Initial Setup Assessment
@@ -8,6 +23,8 @@
 ---
 
 ## Executive Summary
+
+> _Required for minimum viable analysis._
 
 [Write 2-3 paragraphs providing a high-level overview of the system being analyzed. Include:
 - What the system does (purpose and domain)
@@ -30,6 +47,8 @@
 ---
 
 ## System Overview
+
+> _Required for minimum viable analysis (Project Information + Technology Stack subsections)._
 
 ### Project Information
 
@@ -85,6 +104,8 @@
 
 ## Individual Member Analyses
 
+> _Required for minimum viable analysis. One paragraph per active team member is enough on a first pass._
+
 ### [Member Name] - [Title]
 
 **Perspective**: [Their specialized viewpoint]
@@ -133,6 +154,8 @@
 
 ## Collaborative Synthesis
 
+> _Required for minimum viable analysis. Surface 2-4 cross-cutting themes that appeared in 3+ member analyses._
+
 [After individual analyses, synthesize findings across all members]
 
 ### Common Themes
@@ -168,6 +191,8 @@
 ---
 
 ## Architectural Health Assessment
+
+> _Optional on first pass. Recommended for mature teams revisiting the analysis or for high-stakes systems._
 
 ### Code Quality
 
@@ -253,6 +278,8 @@
 
 ## Technical Debt Inventory
 
+> _Optional on first pass. Most useful for established systems where debt has accumulated._
+
 ### High Priority Debt
 
 1. **[Debt Item]**
@@ -274,6 +301,8 @@
 ---
 
 ## Risk Assessment
+
+> _Optional on first pass._
 
 ### Technical Risks
 
@@ -298,6 +327,8 @@
 ---
 
 ## Recommendations
+
+> _Required for minimum viable analysis. Top 3-5 prioritized recommendations is sufficient for a first pass._
 
 ### Immediate Actions (0-2 Weeks)
 
@@ -336,6 +367,8 @@
 
 ## Success Metrics
 
+> _Optional on first pass. Useful when the recommendations have known measurable outcomes; most first-pass analyses defer this._
+
 Define measurable targets to track improvement:
 
 1. **[Metric Name]**
@@ -358,6 +391,8 @@ Define measurable targets to track improvement:
 
 ## Suggested Next Steps
 
+> _Required for minimum viable analysis._
+
 Based on this initial analysis:
 
 1. **[Step 1]**: [Specific actionable next step]
@@ -377,6 +412,8 @@ Based on this initial analysis:
 ---
 
 ## Appendix
+
+> _Optional on first pass. Use for raw notes, code samples, or evidence supporting findings above._
 
 ### Analysis Methodology
 
