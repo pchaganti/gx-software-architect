@@ -7,6 +7,7 @@
     "test": "node --test test/**/*.test.js",
     "test:watch": "node --test --watch test/**/*.test.js",
     "validate": "node cli.js validate",
+    "validate-adr": "node cli.js validate-adr",
     "count": "node cli.js count"
   },
   "keywords": ["documentation", "validation", "architecture"],

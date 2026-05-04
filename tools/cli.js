@@ -7,14 +7,16 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, resolve, basename } from 'node:path';
 import { validateLinks, checkLinks } from './lib/link-validator.js';
 import { countInstructions } from './lib/instruction-counter.js';
+import { validateAdr } from './lib/adr-validator.js';
 
 const [,, command, ...args] = process.argv;
 
 const COMMANDS = {
   validate: validateCommand,
+  'validate-adr': validateAdrCommand,
   count: countCommand,
   help: helpCommand
 };
@@ -79,6 +81,46 @@ function validateCommand(args) {
 }
 
 /**
+ * Validate ADR file(s) against the framework template rules.
+ * Accepts one or more file paths, or defaults to all ADRs in the repo.
+ */
+function validateAdrCommand(args) {
+  const targets = args.length > 0
+    ? args.map(a => resolve(a))
+    : findAdrFiles(resolve('../.architecture/decisions/adrs'));
+
+  let totalFailed = 0;
+
+  for (const file of targets) {
+    const filename = basename(file);
+    const content = readFileSync(file, 'utf8');
+    const result = validateAdr(filename, content);
+
+    if (result.valid) {
+      console.log(`✅ ${filename}`);
+    } else {
+      console.log(`❌ ${filename}`);
+      for (const err of result.errors) {
+        console.log(`   - ${err}`);
+      }
+      totalFailed++;
+    }
+  }
+
+  if (totalFailed > 0) {
+    console.log(`\n${totalFailed} ADR(s) failed validation.\n`);
+    process.exit(1);
+  }
+  console.log(`\n✨ All ${targets.length} ADR(s) valid.\n`);
+}
+
+function findAdrFiles(dir) {
+  return readdirSync(dir)
+    .filter(name => name.endsWith('.md'))
+    .map(name => join(dir, name));
+}
+
+/**
  * Count instructions in key documentation files
  */
 function countCommand(args) {
@@ -139,8 +181,9 @@ function helpCommand() {
 Documentation Governance Tools
 
 Usage:
-  npm run validate [dir]    Validate markdown links (default: ../.architecture)
-  npm run count [files...]  Count instructions (default: ../AGENTS.md ../CLAUDE.md)
+  npm run validate [dir]        Validate markdown links (default: ../.architecture)
+  node cli.js validate-adr [files...]  Validate ADRs against template rules
+  npm run count [files...]      Count instructions (default: ../AGENTS.md ../CLAUDE.md)
 
 Examples:
   npm run validate

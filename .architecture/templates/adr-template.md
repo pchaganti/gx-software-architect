@@ -2,7 +2,7 @@
 
 ## Status
 
-[Draft | Proposed | Accepted | Deprecated | Superseded]
+[Draft | Proposed | Accepted | Implemented | Deprecated | Superseded]
 
 If superseded, link to the new ADR: [New ADR Link]
 
