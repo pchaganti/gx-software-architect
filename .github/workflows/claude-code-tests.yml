@@ -139,9 +139,14 @@ jobs:
             "List the names of every skill loaded from this plugin, one per line." \
             --max-turns 1 || true)
           echo "$OUTPUT"
-          for skill in setup-architect architecture-review create-adr \
-                       list-members architecture-status specialist-review \
-                       pragmatic-guard; do
+          # The skills with disable-model-invocation: true (setup-architect,
+          # create-adr, pragmatic-guard) deliberately do not appear in
+          # "list loaded skills" output - they are user-invoked only. SKILL.md
+          # presence for all seven is verified by validate-plugin's "required
+          # plugin layout" step. This smoke asserts only on the auto-invocable
+          # subset so the assertion stays consistent with documented behavior.
+          for skill in architecture-review architecture-status \
+                       list-members specialist-review; do
             echo "$OUTPUT" | grep -q "$skill" \
               || { echo "Skill '$skill' not present in CLI output"; exit 1; }
           done

@@ -5,6 +5,18 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.3] - 2026-05-04
+
+### Fixed
+
+#### CI Repairs from First Live `claude-smoke` Run
+- **`tools/` `npm test` works on bash CI runners.** The script was `node --test test/**/*.test.js` — that glob is expanded by zsh on macOS but passed literally on bash, breaking CI. Switched to `node --test` (Node 22+ auto-discovers `*.test.js` files in cwd recursively), making the script shell-agnostic.
+- **`claude-smoke` job no longer asserts on disable-model-invocation skills.** The smoke test prompted Claude to "list every skill loaded from this plugin" and asserted all seven appeared. This was wrong: `setup-architect`, `create-adr`, and `pragmatic-guard` are marked `disable-model-invocation: true` in 1.5.0 — Claude deliberately excludes them from "list loaded skills" output (they're user-invoked only). SKILL.md presence for all seven is already verified by `validate-plugin`'s required-layout check; the smoke now asserts only on the four auto-invocable skills, with an inline comment explaining the partition.
+
+### Notes
+
+The first live `claude-smoke` run successfully loaded the plugin and surfaced the four auto-invocable skills, validating ADR-013's orchestrator pattern and ADR-014's plugin source discovery end-to-end. Both failures in the first run were CI infrastructure bugs surfaced **by** the live test, not framework regressions.
+
 ## [1.5.2] - 2026-05-03
 
 ### Fixed
