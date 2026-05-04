@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT:-.}/tools/hooks/protect-files-hook.js"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
