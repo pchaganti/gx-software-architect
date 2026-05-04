@@ -2,9 +2,10 @@
 
 ## Status
 
-Proposed
+Implemented
 
 **Decision Date**: 2026-04-14
+**Implementation Date**: 2026-05-03
 **Supersedes**: None
 **Extends**: [ADR-011](ADR-011-claude-marketplace-plugin-implementation.md) — Claude Marketplace Plugin Implementation
 
