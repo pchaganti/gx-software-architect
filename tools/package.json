@@ -8,9 +8,13 @@
     "test:watch": "node --test --watch test/**/*.test.js",
     "validate": "node cli.js validate",
     "validate-adr": "node cli.js validate-adr",
+    "generate-subagents": "node cli.js generate-subagents",
     "count": "node cli.js count"
   },
   "keywords": ["documentation", "validation", "architecture"],
   "author": "AI Software Architect",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.3.4"
+  }
 }

@@ -6,17 +6,19 @@
  * Tools for maintaining documentation quality per ADR-005/006
  */
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve, basename } from 'node:path';
 import { validateLinks, checkLinks } from './lib/link-validator.js';
 import { countInstructions } from './lib/instruction-counter.js';
 import { validateAdr } from './lib/adr-validator.js';
+import { generateAll } from './lib/subagent-generator.js';
 
 const [,, command, ...args] = process.argv;
 
 const COMMANDS = {
   validate: validateCommand,
   'validate-adr': validateAdrCommand,
+  'generate-subagents': generateSubagentsCommand,
   count: countCommand,
   help: helpCommand
 };
@@ -121,6 +123,44 @@ function findAdrFiles(dir) {
 }
 
 /**
+ * Generate Claude Code subagents from .architecture/members.yml.
+ * --check exits non-zero if generated files would differ from committed ones.
+ */
+function generateSubagentsCommand(args) {
+  const check = args.includes('--check');
+  const membersPath = resolve('../.architecture/members.yml');
+  const outDir = resolve('../agents');
+
+  const yaml = readFileSync(membersPath, 'utf8');
+  const generated = generateAll(yaml);
+
+  if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
+
+  let drift = 0;
+  for (const { filename, content } of generated) {
+    const outPath = join(outDir, filename);
+    const existing = existsSync(outPath) ? readFileSync(outPath, 'utf8') : null;
+    if (existing === content) {
+      console.log(`= ${filename}`);
+      continue;
+    }
+    if (check) {
+      console.log(`✗ ${filename} (drift)`);
+      drift++;
+      continue;
+    }
+    writeFileSync(outPath, content);
+    console.log(`${existing === null ? '+' : '~'} ${filename}`);
+  }
+
+  if (check && drift > 0) {
+    console.log(`\n${drift} subagent file(s) drift from members.yml. Run \`node tools/cli.js generate-subagents\` to regenerate.\n`);
+    process.exit(1);
+  }
+  console.log(`\n✨ ${generated.length} subagent(s) ${check ? 'in sync' : 'written'}.\n`);
+}
+
+/**
  * Count instructions in key documentation files
  */
 function countCommand(args) {
@@ -181,9 +221,10 @@ function helpCommand() {
 Documentation Governance Tools
 
 Usage:
-  npm run validate [dir]        Validate markdown links (default: ../.architecture)
-  node cli.js validate-adr [files...]  Validate ADRs against template rules
-  npm run count [files...]      Count instructions (default: ../AGENTS.md ../CLAUDE.md)
+  npm run validate [dir]                   Validate markdown links (default: ../.architecture)
+  node cli.js validate-adr [files...]      Validate ADRs against template rules
+  node cli.js generate-subagents [--check] Generate agents/*.md from members.yml
+  npm run count [files...]                 Count instructions (default: ../AGENTS.md ../CLAUDE.md)
 
 Examples:
   npm run validate
