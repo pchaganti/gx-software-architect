@@ -2,9 +2,10 @@
 
 ## Status
 
-Proposed
+Accepted
 
 **Decision Date**: 2026-05-03
+**Implementation status**: Change A implemented (1.5.2). Change B conditional, evaluated post-A. Change C deferred until triggered by user reports.
 **Extends**: [ADR-012](ADR-012-claude-plugin-distribution-hardening.md), [ADR-013](ADR-013-skill-orchestrator-subagent-delegation.md)
 **Triggered by**: 2026-05-03 setup-process DevX audit (1.5.1 release notes)
 

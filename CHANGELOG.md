@@ -5,6 +5,23 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2026-05-03
+
+### Fixed
+
+#### Plugin-Aware Setup Source Discovery (ADR-014 Change A)
+- **`setup-architect` now works correctly on plugin installs.** The skill previously instructed users to clone the framework into `.architecture/.architecture/` even when the plugin was already installed and the templates were on disk under `~/.claude/plugins/`. The skill now performs deterministic source discovery via the new `find-source` CLI subcommand, falling back through three sources in order: `${CLAUDE_PLUGIN_ROOT}` env var → `~/.claude/plugins/` recursive search → `.architecture/.architecture/` legacy clone path.
+
+### Added
+
+- **`node tools/cli.js find-source`** — discovers and prints the framework source location. Returns the resolved path on stdout (exit 0) or a dual-option error message (exit 1) directing the user to either `/plugin marketplace add codenamev/ai-software-architect` or the legacy `git clone` path. Supports `--json` for structured output.
+- **`tools/lib/setup-source-discovery.js`** — deterministic discovery logic, 12 unit tests covering env var, plugin candidates (in order), legacy clone fallback, and absent-source error path.
+- **CI verifies discovery resolves correctly** — the `validate-plugin` job runs `find-source` with `CLAUDE_PLUGIN_ROOT` set to the workspace and asserts it returns the workspace path.
+
+### Notes
+
+ADR-014 scopes three changes; only Change A ships in 1.5.2. Change B (`--dry-run` preview) is conditional and will be evaluated based on Change A's smoke-test outcomes. Change C (partial-install recovery) is deferred until triggered by real user reports. See [ADR-014 § Pragmatic Enforcer Analysis](.architecture/decisions/adrs/ADR-014-plugin-aware-setup-dry-run-recovery.md#pragmatic-enforcer-analysis) for the per-change scoring.
+
 ## [1.5.1] - 2026-05-03
 
 ### Changed

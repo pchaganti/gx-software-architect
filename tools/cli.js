@@ -8,10 +8,12 @@
 
 import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve, basename } from 'node:path';
+import { homedir } from 'node:os';
 import { validateLinks, checkLinks } from './lib/link-validator.js';
 import { countInstructions } from './lib/instruction-counter.js';
 import { validateAdr } from './lib/adr-validator.js';
 import { generateAll } from './lib/subagent-generator.js';
+import { discoverSource, PLUGIN_NAME } from './lib/setup-source-discovery.js';
 
 const [,, command, ...args] = process.argv;
 
@@ -19,6 +21,7 @@ const COMMANDS = {
   validate: validateCommand,
   'validate-adr': validateAdrCommand,
   'generate-subagents': generateSubagentsCommand,
+  'find-source': findSourceCommand,
   count: countCommand,
   help: helpCommand
 };
@@ -123,6 +126,73 @@ function findAdrFiles(dir) {
 }
 
 /**
+ * Discover the framework source location for setup-architect.
+ * Prints the resolved path on stdout (exit 0) or a guidance message on stderr (exit 1).
+ * --json emits a structured result.
+ */
+function findSourceCommand(args) {
+  const json = args.includes('--json');
+  const pluginsDir = join(homedir(), '.claude', 'plugins');
+
+  const result = discoverSource({
+    envRoot: process.env.CLAUDE_PLUGIN_ROOT,
+    pluginsDir: existsSync(pluginsDir) ? pluginsDir : undefined,
+    legacyClone: resolve('.architecture/.architecture'),
+    exists: existsSync,
+    listPluginCandidates: dir => findPluginCandidates(dir),
+  });
+
+  if (json) {
+    console.log(JSON.stringify(result, null, 2));
+    process.exit(result.found ? 0 : 1);
+  }
+
+  if (result.found) {
+    console.log(result.path);
+    return;
+  }
+
+  console.error(
+    `Framework source for "${PLUGIN_NAME}" not found. Either:\n` +
+      `  1. Install the plugin (recommended):\n` +
+      `       /plugin marketplace add codenamev/ai-software-architect\n` +
+      `       /plugin install ai-software-architect@ai-software-architect\n` +
+      `  2. Clone manually (legacy):\n` +
+      `       git clone https://github.com/codenamev/ai-software-architect .architecture/.architecture`
+  );
+  process.exit(1);
+}
+
+function findPluginCandidates(pluginsDir, maxDepth = 5) {
+  const matches = [];
+  const stack = [{ path: pluginsDir, depth: 0 }];
+
+  while (stack.length > 0) {
+    const { path, depth } = stack.pop();
+    if (depth > maxDepth) continue;
+
+    let entries;
+    try {
+      entries = readdirSync(path, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const child = join(path, entry.name);
+      if (entry.name === PLUGIN_NAME) {
+        matches.push(child);
+      } else {
+        stack.push({ path: child, depth: depth + 1 });
+      }
+    }
+  }
+
+  return matches;
+}
+
+/**
  * Generate Claude Code subagents from .architecture/members.yml.
  * --check exits non-zero if generated files would differ from committed ones.
  */
@@ -224,6 +294,7 @@ Usage:
   npm run validate [dir]                   Validate markdown links (default: ../.architecture)
   node cli.js validate-adr [files...]      Validate ADRs against template rules
   node cli.js generate-subagents [--check] Generate agents/*.md from members.yml
+  node cli.js find-source [--json]         Discover the framework source for setup-architect
   npm run count [files...]                 Count instructions (default: ../AGENTS.md ../CLAUDE.md)
 
 Examples:

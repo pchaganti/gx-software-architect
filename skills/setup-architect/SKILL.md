@@ -39,12 +39,38 @@ The skill writes **only into your target project's `.architecture/`**. It does n
 
 ### 1. Locate framework source
 
-The skill needs to know where to source templates from. Two paths:
+The framework templates can live in two places: inside the installed Claude Code plugin (canonical, 1.4.0+) or under a legacy `.architecture/.architecture/` clone in the target project. Discovery is deterministic — run the framework's own CLI:
 
-- **Plugin path (canonical, 1.4.0+):** the framework templates live inside the installed plugin (typically under `~/.claude/plugins/marketplaces/codenamev-ai-software-architect/plugins/ai-software-architect/.architecture/templates/`). Use this when it's available.
-- **Legacy clone path:** `.architecture/.architecture/` exists in the target project (a manual `git clone` of the framework). Used when the plugin isn't installed.
+```bash
+# Locate the plugin install on disk first; tools/cli.js lives inside it.
+TOOLS_CLI=""
+if [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -f "$CLAUDE_PLUGIN_ROOT/tools/cli.js" ]; then
+  TOOLS_CLI="$CLAUDE_PLUGIN_ROOT/tools/cli.js"
+else
+  TOOLS_CLI=$(find ~/.claude/plugins -type f -name cli.js -path '*ai-software-architect/tools/*' 2>/dev/null | head -1)
+fi
 
-**Discovery order:** check plugin install location first (via `find ~/.claude/plugins -type d -name ai-software-architect 2>/dev/null` or env-var hints), then fall back to `.architecture/.architecture/`. If neither exists, stop and guide the user to install the plugin.
+if [ -z "$TOOLS_CLI" ] && [ -f ".architecture/.architecture/tools/cli.js" ]; then
+  # Legacy clone path: the cli ships in the cloned repo.
+  TOOLS_CLI=".architecture/.architecture/tools/cli.js"
+fi
+
+if [ -z "$TOOLS_CLI" ]; then
+  echo "Framework not found. Install the plugin or clone manually — see error message below."
+  exit 1
+fi
+
+# Resolve the framework source via the canonical discovery logic.
+FRAMEWORK_ROOT=$(node "$TOOLS_CLI" find-source)
+```
+
+Discovery order (encoded in `tools/lib/setup-source-discovery.js` and tested via `tools/test/setup-source-discovery.test.js`):
+
+1. `${CLAUDE_PLUGIN_ROOT}` env var (if set and contains `.architecture/templates/adr-template.md`).
+2. Recursive search of `~/.claude/plugins/` for any `ai-software-architect/` directory containing the sentinel.
+3. `.architecture/.architecture/` in the target project (legacy clone path).
+
+If `find-source` exits non-zero, surface its error message verbatim — it tells the user exactly which install option to take.
 
 ### 2. Analyze Project
 
@@ -59,11 +85,25 @@ Use `Glob` and `Grep` to detect technologies, `Read` to examine configs.
 ### 3. Install Framework
 
 Execute installation steps (see [references/installation-procedures.md](references/installation-procedures.md)):
-- Copy framework templates from the source location identified in step 1 into the target project's `.architecture/`
+
+```bash
+# $FRAMEWORK_ROOT is from step 1.
+cp -r "$FRAMEWORK_ROOT/.architecture/templates" .architecture/templates
+cp "$FRAMEWORK_ROOT/.architecture/principles.md" .architecture/principles.md
+cp "$FRAMEWORK_ROOT/.architecture/members.yml" .architecture/members.yml
+cp "$FRAMEWORK_ROOT/.architecture/config.yml" .architecture/config.yml
+
+mkdir -p .architecture/decisions/adrs
+mkdir -p .architecture/reviews
+mkdir -p .architecture/recalibration
+mkdir -p .architecture/comparisons
+mkdir -p .architecture/agent_docs
+```
+
 - Create directory structure (decisions/adrs, reviews, recalibration, etc.)
-- Initialize `.architecture/config.yml` from `templates/config.yml`
+- Initialize `.architecture/config.yml` from the source location's templates
 - Set up agent documentation (ADR-006 progressive disclosure)
-- **Legacy clone path only:** remove `.architecture/.architecture/` and (with safeguards) the cloned `.git/` directory. **Plugin path:** no clone removal needed.
+- **Legacy clone path only:** remove `.architecture/.architecture/` and (with safeguards) the cloned `.git/` directory. **Plugin path:** no clone removal needed — the plugin's install dir stays where it is under `~/.claude/plugins/`.
 
 **Critical (legacy clone path only):** Follow safety procedures when removing `.git/` directory. See [references/installation-procedures.md § Cleanup Procedures](references/installation-procedures.md#cleanup-procedures).
 

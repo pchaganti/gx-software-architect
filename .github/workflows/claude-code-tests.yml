@@ -45,6 +45,15 @@ jobs:
         working-directory: tools
         run: node cli.js generate-subagents --check
 
+      - name: Verify framework source discovery resolves to the repo root
+        env:
+          CLAUDE_PLUGIN_ROOT: ${{ github.workspace }}
+        working-directory: tools
+        run: |
+          RESOLVED=$(node cli.js find-source)
+          test "$RESOLVED" = "${{ github.workspace }}" \
+            || { echo "find-source returned $RESOLVED, expected ${{ github.workspace }}"; exit 1; }
+
       - name: Verify documentation links resolve
         working-directory: tools
         run: node cli.js validate
