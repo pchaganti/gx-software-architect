@@ -192,7 +192,7 @@ Claude Code users can access framework operations as reusable skills:
 - `architecture-review`: Conduct multi-perspective reviews
 - `create-adr`: Create Architectural Decision Records
 
-**See [AGENTS.md](AGENTS.md#installation-options) for installation instructions.**
+**See [AGENTS.md](../AGENTS.md#installation-options) for installation instructions.**
 ```
 
 **Instruction Count:**
@@ -255,7 +255,7 @@ Claude Code users can access framework operations as reusable skills:
 
 **Text:**
 ```
-"See [.architecture/agent_docs/workflows.md](.architecture/agent_docs/workflows.md) for detailed procedures"
+"See [.architecture/agent_docs/workflows.md](agent_docs/workflows.md) for detailed procedures"
 ```
 
 **Question**: Is this an instruction?

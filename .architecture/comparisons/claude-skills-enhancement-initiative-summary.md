@@ -143,7 +143,7 @@ Our architecture review identified **three enhancement opportunities**:
 ### Documentation
 
 - Updated `_patterns.md` v1.1 with tool permission pattern
-- Created [.claude/skills/ARCHITECTURE.md](../../.claude/skills/ARCHITECTURE.md)
+- Created [skills/ARCHITECTURE.md](../../skills/ARCHITECTURE.md)
 - Documented permission guidelines by skill type
 
 ### Results
@@ -275,13 +275,13 @@ specialist-review/
 
 ### Files Updated
 
-1. **[.claude/skills/ARCHITECTURE.md](../../.claude/skills/ARCHITECTURE.md)**
+1. **[skills/ARCHITECTURE.md](../../skills/ARCHITECTURE.md)**
    - Updated skill structure showing refactored skills
    - Added proven benefits with actual Phase 2 results
    - Updated migration path marking Phase 2 complete
    - Updated decision records showing ADR-008 as Implemented
 
-2. **[.claude/skills/_patterns.md](../../.claude/skills/_patterns.md) v1.2**
+2. **[skills/_patterns.md](../../skills/_patterns.md) v1.2**
    - Added comprehensive Progressive Disclosure Pattern section
    - Documented when to use / when not to use
    - Included Phase 2 proven results
@@ -552,8 +552,8 @@ specialist-review/
 
 ### Documentation
 
-- [.claude/skills/ARCHITECTURE.md](../../.claude/skills/ARCHITECTURE.md)
-- [.claude/skills/_patterns.md](../../.claude/skills/_patterns.md)
+- [skills/ARCHITECTURE.md](../../skills/ARCHITECTURE.md)
+- [skills/_patterns.md](../../skills/_patterns.md)
 
 ### External References
 

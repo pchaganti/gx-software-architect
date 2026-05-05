@@ -195,7 +195,7 @@ We are enhancing the AI Software Architect framework to **systematically externa
 ## References
 
 * [Obie Fernandez - What happens when the coding becomes the least interesting part of the work (2025)](https://obie.medium.com/what-happens-when-the-coding-becomes-the-least-interesting-part-of-the-work-ab10c213c660)
-* [ADR-002: Pragmatic Guard Mode](.architecture/decisions/adrs/ADR-002-pragmatic-guard-mode.md) - Related concern about preventing over-engineering
-* [ADR-005: LLM Instruction Capacity Constraints](.architecture/decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md) - Context for template design
+* [ADR-002: Pragmatic Guard Mode](./ADR-002-pragmatic-guard-mode.md) - Related concern about preventing over-engineering
+* [ADR-005: LLM Instruction Capacity Constraints](./ADR-005-llm-instruction-capacity-constraints.md) - Context for template design
 * `.architecture/principles.md` - Existing architectural principles
 * `.architecture/members.yml` - Architecture team member definitions

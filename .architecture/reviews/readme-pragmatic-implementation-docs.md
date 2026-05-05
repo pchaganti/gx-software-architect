@@ -563,7 +563,7 @@ The team agrees on:
      - Defer error handling scenarios
      - Defer advanced prompt patterns
      - Defer configuration maintenance detailed guidance
-     - Link from README: "For troubleshooting and advanced usage, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)"
+     - Link from README: a markdown link from "TROUBLESHOOTING.md" pointing to `TROUBLESHOOTING.md` (relative path; resolves correctly from README at repo root).
   3. **Track deferred items** in deferrals.md with clear triggers:
      - Trigger: 5+ support questions on same topic → add to FAQ
      - Trigger: User confusion patterns emerge → document in troubleshooting
@@ -793,7 +793,7 @@ The team agrees on:
        - "Common Errors and Resolutions"
        - "Configuration Maintenance"
        - "Advanced Prompt Patterns"
-     - Add link from README: "For troubleshooting and advanced usage, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)"
+     - Add link from README: a markdown link from "TROUBLESHOOTING.md" pointing to `TROUBLESHOOTING.md` (relative path; resolves correctly from README at repo root).
      - Populate initial content for highest-priority items
    - **Owner**: Maintainability Expert, AI Engineer
    - **Success Criteria**: TROUBLESHOOTING.md created; linked from README; initial content for key topics; structure supports future additions

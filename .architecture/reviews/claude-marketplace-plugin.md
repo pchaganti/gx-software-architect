@@ -1837,14 +1837,14 @@ This will assess:
 **Architectural Decision Records**:
 - [ADR-001: CLI Functional Requirements](../decisions/adrs/ADR-001-cli-functional-requirements.md) - Foundation for Skills/MCP architecture
 - [ADR-002: Pragmatic Guard Mode](../decisions/adrs/ADR-002-pragmatic-guard-mode.md) - YAGNI enforcement relevant to marketplace feature scope
-- [ADR-003: Adoption of Agents.md Standard](../decisions/adrs/ADR-003-adoption-agents-md-standard.md) - Cross-platform documentation approach
+- [ADR-003: Adoption of Agents.md Standard](../decisions/adrs/ADR-003-agents-md-standard-adoption.md) - Cross-platform documentation approach
 - [ADR-004: Implementation Command with Configuration](../decisions/adrs/ADR-004-implementation-command-configuration.md) - Methodology guidance system
 - [ADR-005: LLM Instruction Capacity Constraints](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md) - Progressive disclosure pattern (marketplace advantage)
 - **[NEW]** ADR-006: Claude Marketplace Strategy - Should document final decision from this review
 
 **Previous Reviews**:
 - [Feature Parity Analysis](./feature-parity-analysis.md) - Comparison across Skills, MCP, Traditional channels
-- [Version 1.3.0 Release Review](./1-3-0.md) - Recent release context and stability assessment
+- Version 1.3.0 Release Review _(referenced as `1-3-0.md`; not present in this repo at review time — release-cut review not produced)_
 
 **Referenced Documents**:
 - [AGENTS.md](../../AGENTS.md) - Framework overview and core workflows

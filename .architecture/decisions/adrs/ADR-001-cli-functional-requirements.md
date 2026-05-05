@@ -132,7 +132,7 @@ Create a CLI tool with the following functional requirements:
 
 ## References
 
-* [AI Software Architect README](../../../../README.md)
-* [Installation Guide](../../../../INSTALL.md)
-* [Usage Guide](../../../../USAGE.md)
+* [AI Software Architect README](../../../README.md)
+* Installation Guide _(see README § Installation; standalone INSTALL.md was never created)_
+* [Usage Guide](../../../USAGE.md)
 * [Architecture Considerations](../ArchitectureConsiderations.md)

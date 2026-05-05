@@ -341,8 +341,8 @@ After Pragmatic Enforcer's analysis, the architecture team reconvened to discuss
 
 ## References
 
-* [Pragmatic Guard Mode Configuration](.architecture/config.yml)
-* [Deferrals Tracking](.architecture/deferrals.md)
+* [Pragmatic Guard Mode Configuration](../../config.yml)
+* [Deferrals Tracking](../../deferrals.md)
 * Related ADRs: None yet (first ADR with pragmatic analysis)
 
 ---

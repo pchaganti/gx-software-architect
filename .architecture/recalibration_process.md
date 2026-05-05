@@ -111,11 +111,11 @@ After each major or minor version release, create a version comparison document 
 
 The following templates are used in the recalibration process:
 
-1. [Recalibration Plan Template](./.architecture/templates/recalibration_plan.md)
-2. [Architectural Decision Record Template](./.architecture/templates/adr-template.md)
-3. [Version Comparison Template](./.architecture/templates/version_comparison.md)
-4. [Implementation Roadmap Template](./.architecture/templates/implementation_roadmap.md)
-5. [Progress Tracking Template](./.architecture/templates/progress_tracking.md)
+1. [Recalibration Plan Template](templates/recalibration_plan.md)
+2. [Architectural Decision Record Template](templates/adr-template.md)
+3. [Version Comparison Template](templates/version_comparison.md)
+4. [Implementation Roadmap Template](templates/implementation_roadmap.md)
+5. [Progress Tracking Template](templates/progress_tracking.md)
 
 ## Roles and Responsibilities
 

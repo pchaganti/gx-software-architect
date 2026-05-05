@@ -116,7 +116,7 @@ After deciding on Path A, comprehensive research of official Claude Code documen
 - **Higher reversibility**: Fully under our control (our GitHub repo), no external approval to unwind
 - **Different discovery model**: No centralized search/ratings; discovery via GitHub, SEO, community
 
-See [Research Document](./../research/claude-marketplace-requirements.md) for complete findings.
+See [Research Document](../../research/claude-marketplace-requirements.md) for complete findings.
 
 ### Path B: Phased Approach (Two-Phase Strategy) [Not Chosen]
 
@@ -1620,16 +1620,16 @@ The marketplace decision represents reasonable, slightly aggressive growth strat
 
 ## References
 
-* **Research Findings**: [Claude Marketplace Requirements Research](./../research/claude-marketplace-requirements.md) - Post-decision research revealing distributed marketplace model, significantly reducing implementation timeline from 6-10 weeks to 2-3 weeks
-* **Architecture Review**: [Claude Marketplace Plugin Architecture Review](./../reviews/claude-marketplace-plugin.md) - Comprehensive architecture team evaluation with unanimous two-phase recommendation
+* **Research Findings**: [Claude Marketplace Requirements Research](../../research/claude-marketplace-requirements.md) - Post-decision research revealing distributed marketplace model, significantly reducing implementation timeline from 6-10 weeks to 2-3 weeks
+* **Architecture Review**: [Claude Marketplace Plugin Architecture Review](../../reviews/claude-marketplace-plugin.md) - Comprehensive architecture team evaluation with unanimous two-phase recommendation
 * **Related ADRs**:
-  - [ADR-002: Pragmatic Guard Mode](./../decisions/adrs/ADR-002-pragmatic-guard-mode.md) - YAGNI principles and complexity analysis framework applied in this decision
-  - [ADR-005: LLM Instruction Capacity Constraints](./../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md) - Progressive disclosure pattern provides marketplace competitive advantage for semantic search
-  - [ADR-010: Externalizing Senior Engineering Thinking](./../decisions/adrs/ADR-010-externalizing-senior-engineering-thinking.md) - Implementation Strategy framework guides this ADR's structure (blast radius, reversibility, sequencing, social cost, confidence)
+  - [ADR-002: Pragmatic Guard Mode](./ADR-002-pragmatic-guard-mode.md) - YAGNI principles and complexity analysis framework applied in this decision
+  - [ADR-005: LLM Instruction Capacity Constraints](./ADR-005-llm-instruction-capacity-constraints.md) - Progressive disclosure pattern provides marketplace competitive advantage for semantic search
+  - [ADR-010: Externalizing Senior Engineering Thinking](./ADR-010-externalizing-senior-engineering-thinking.md) - Implementation Strategy framework guides this ADR's structure (blast radius, reversibility, sequencing, social cost, confidence)
 * **Framework Artifacts**:
-  - [.architecture/principles.md](./../principles.md) - Architectural principles guiding this decision (Pragmatic Simplicity, Livable Code, Change Impact Awareness, Evolvability)
-  - [.architecture/members.yml](./../members.yml) - Architecture team member definitions (Systems Architect, Implementation Strategist, Pragmatic Enforcer, etc.)
-  - [.architecture/config.yml](./../config.yml) - Pragmatic mode configuration (balanced intensity, 1.5 ratio threshold)
+  - [.architecture/principles.md](../../principles.md) - Architectural principles guiding this decision (Pragmatic Simplicity, Livable Code, Change Impact Awareness, Evolvability)
+  - [.architecture/members.yml](../../members.yml) - Architecture team member definitions (Systems Architect, Implementation Strategist, Pragmatic Enforcer, etc.)
+  - [.architecture/config.yml](../../config.yml) - Pragmatic mode configuration (balanced intensity, 1.5 ratio threshold)
 * **Official Claude Code Documentation**:
   - [Plugin Marketplaces Overview](https://code.claude.com/docs/en/plugin-marketplaces.md) - Understanding Claude marketplace ecosystem, discovery, and curation
   - [Plugin Creation Guide](https://code.claude.com/docs/en/plugins.md) - How to build and structure Claude plugins

@@ -111,9 +111,9 @@ CLAUDE.md (< 100 lines, < 30 instructions)
 
 | Task | Guide | Quick Description |
 |------|-------|-------------------|
-| Setup Framework | [.architecture/agent_docs/setup-guide.md](.architecture/agent_docs/setup-guide.md) | Initial framework installation and customization |
-| Architecture Reviews | [.architecture/agent_docs/review-workflows.md](.architecture/agent_docs/review-workflows.md) | Multi-perspective architectural analysis |
-| Create ADRs | [.architecture/agent_docs/adr-creation.md](.architecture/agent_docs/adr-creation.md) | Document architectural decisions |
+| Setup Framework | `.architecture/agent_docs/workflows.md` § Setup | Initial framework installation and customization |
+| Architecture Reviews | `.architecture/agent_docs/workflows.md` § Reviews | Multi-perspective architectural analysis |
+| Create ADRs | `.architecture/agent_docs/workflows.md` § ADRs | Document architectural decisions |
 ```
 
 **Architectural Components Affected:**
@@ -504,7 +504,7 @@ This represents appropriate engineering with a minor over-engineering tendency. 
 ## References
 
 * [ADR-005: LLM Instruction Capacity Constraints](./ADR-005-llm-instruction-capacity-constraints.md)
-* [Architecture Review: CLAUDE.md Best Practices](./../reviews/claude-md-best-practices-humanlayer-article.md)
+* [Architecture Review: CLAUDE.md Best Practices](../../reviews/claude-md-best-practices-humanlayer-article.md)
 * [HumanLayer Blog - Writing a Good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
 * Progressive Disclosure in UX Design (general UX principle)
 * Information Architecture best practices

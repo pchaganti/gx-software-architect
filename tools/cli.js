@@ -322,8 +322,14 @@ function findMarkdownFiles(dir) {
       const stat = statSync(fullPath);
 
       if (stat.isDirectory()) {
-        // Skip node_modules and hidden dirs
-        if (!entry.startsWith('.') && entry !== 'node_modules') {
+        // Skip node_modules, hidden dirs, and templates/.
+        // Templates are designed to be copied elsewhere; their paths are
+        // intentionally relative to the install location, not the source.
+        if (
+          !entry.startsWith('.') &&
+          entry !== 'node_modules' &&
+          entry !== 'templates'
+        ) {
           walk(fullPath);
         }
       } else if (entry.endsWith('.md')) {

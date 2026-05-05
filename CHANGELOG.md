@@ -5,6 +5,28 @@ All notable changes to the AI Software Architect framework will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.4] - 2026-05-04
+
+### Fixed
+
+#### Link Rot Cleanup (driven by validate-plugin CI)
+The first live `validate-plugin` CI run surfaced 63 broken internal markdown links accumulated across ADRs, reviews, comparisons, and meta-docs. All 63 are now fixed:
+
+- **Wrong-depth paths in ADRs.** ADR-001 used `../../../../README.md` (4 ups from `decisions/adrs/`); corrected to `../../../README.md` (3 ups). Standalone `INSTALL.md` reference removed (file was never created — see 1.5.1 cleanup notes).
+- **Filename typos in ADR cross-references.** ADR-007 and ADR-008 referenced `ADR-006-progressive-disclosure-documentation.md`; the actual file is `ADR-006-progressive-disclosure-pattern.md`. ADR-003's filename was inverted in `reviews/claude-marketplace-plugin.md` (`adoption-agents-md-standard` → `agents-md-standard-adoption`).
+- **Repo-root paths used as relative.** Many docs used `.architecture/foo` from inside `.architecture/...` (resolves to `.architecture/.architecture/foo`). Corrected to proper relative paths in ADR-010, ADR-011, `example-pragmatic-caching-layer.md`, `instruction-counting-methodology.md`, `recalibration_process.md`, `progressive-disclosure-categorization.md`.
+- **`./../X` pattern in ADR-011.** Nine link targets used `./../X` (resolves to `decisions/X` not `<root>/X`). Corrected to `../../X` for cross-directory references and `./X` for sibling ADRs.
+- **Stale `.claude/skills/` paths from 1.4.0 rename.** ADR-008 and `comparisons/claude-skills-enhancement-initiative-summary.md` referenced `.claude/skills/` for `ARCHITECTURE.md` and `_patterns.md`; updated to `skills/` with explanatory note about the relocation.
+- **Quoted markdown link snippets in prose.** Three documents contained `[TROUBLESHOOTING.md](TROUBLESHOOTING.md)` as example text the validator couldn't distinguish from real markdown. Reframed as plain prose describing the link without the literal `[X](Y)` pattern.
+
+### Changed
+
+- **Link validator skips `.architecture/templates/`.** Templates contain placeholder links (`link-to-adr`, `link-to-review`) by design and structural paths intended for the install location, not the source repo. Validating against the source repo's filesystem was a category error. The skip is documented inline in `tools/cli.js`.
+
+### Notes
+
+After this cleanup, `node cli.js validate` reports **237 valid links, 0 broken**. The full validate-plugin CI job (tests + ADR validation + subagent drift + find-source + link validation + plugin layout) now passes end-to-end alongside `claude-smoke`.
+
 ## [1.5.3] - 2026-05-04
 
 ### Fixed

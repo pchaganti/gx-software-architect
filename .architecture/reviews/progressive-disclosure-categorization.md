@@ -275,7 +275,7 @@ This categorization exercise demonstrates that **pragmatic mode principles apply
 
 4. **Link TROUBLESHOOTING.md from README** (10 min)
    - Add reference in documentation resources or getting help section
-   - Single line: "For troubleshooting and advanced usage, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)"
+   - Single line: a markdown link from "TROUBLESHOOTING.md" pointing to `TROUBLESHOOTING.md` (relative path; the file lives at repo root next to README).
 
 **Total Effort**: ~85 minutes
 **Total Lines Added**: ~14
@@ -325,10 +325,10 @@ This categorization exercise demonstrates that **pragmatic mode principles apply
 
 ## Related Documents
 
-- **Source Review**: [.architecture/reviews/readme-pragmatic-implementation-docs.md](.architecture/reviews/readme-pragmatic-implementation-docs.md)
-- **Deferrals**: [.architecture/deferrals.md](.architecture/deferrals.md) (10 new entries added)
+- **Source Review**: [readme-pragmatic-implementation-docs.md](./readme-pragmatic-implementation-docs.md)
+- **Deferrals**: [deferrals.md](../deferrals.md) (10 new entries added)
 - **TROUBLESHOOTING**: [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md) (structure created)
-- **ADR-005**: [.architecture/decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md](.architecture/decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)
+- **ADR-005**: [ADR-005-llm-instruction-capacity-constraints.md](../decisions/adrs/ADR-005-llm-instruction-capacity-constraints.md)
 
 ---
 

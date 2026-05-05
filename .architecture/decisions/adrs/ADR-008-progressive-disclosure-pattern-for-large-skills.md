@@ -320,7 +320,7 @@ The 3K word threshold is reasonable (supported by blog's 5K limit recommendation
 * [Claude Skills Deep Dive Comparison](../../comparisons/claude-skills-deep-dive-comparison.md)
 * [Claude Skills Deep Dive Takeaways](../../comparisons/claude-skills-takeaways.md)
 * [First Principles Deep Dive to Claude Agent Skills](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/) (External)
-* [ADR-006: Progressive Disclosure Documentation Pattern](./ADR-006-progressive-disclosure-documentation.md) - Same principle applied to framework documentation
+* [ADR-006: Progressive Disclosure Pattern](./ADR-006-progressive-disclosure-pattern.md) - Same principle applied to framework documentation
 * [ADR-007: Tool Permission Restrictions for Claude Skills](./ADR-007-tool-permission-restrictions-for-skills.md)
 
 ---
@@ -348,8 +348,8 @@ The 3K word threshold is reasonable (supported by blog's 5K limit recommendation
 **Pattern Status**: ✅ Validated and Recommended for future complex skills
 
 **Documentation Updated:**
-- [.claude/skills/ARCHITECTURE.md](../../../.claude/skills/ARCHITECTURE.md) - Updated with Phase 2 results
-- [.claude/skills/_patterns.md](../../../.claude/skills/_patterns.md) - Added progressive disclosure pattern (v1.2)
+- [skills/ARCHITECTURE.md](../../../skills/ARCHITECTURE.md) - Updated with Phase 2 results _(relocated from `.claude/skills/` in 1.4.0)_
+- [skills/_patterns.md](../../../skills/_patterns.md) - Added progressive disclosure pattern (v1.2) _(relocated from `.claude/skills/` in 1.4.0)_
 
 **Detailed Results:**
 - [Progressive Disclosure PoC Results](../../comparisons/progressive-disclosure-poc-results.md)

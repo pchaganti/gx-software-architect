@@ -289,7 +289,7 @@ Rare case where complexity ratio is extremely favorable (0.22). High necessity d
 * [Claude Skills Deep Dive Comparison](../../comparisons/claude-skills-deep-dive-comparison.md)
 * [Claude Skills Deep Dive Takeaways](../../comparisons/claude-skills-takeaways.md)
 * [First Principles Deep Dive to Claude Agent Skills](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/) (External)
-* [ADR-006: Progressive Disclosure Documentation Pattern](./ADR-006-progressive-disclosure-documentation.md)
+* [ADR-006: Progressive Disclosure Pattern](./ADR-006-progressive-disclosure-pattern.md)
 
 ---
 

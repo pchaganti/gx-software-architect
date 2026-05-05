@@ -19,7 +19,7 @@
   - MCP Server: Option 2 → Option 3
   - Traditional: Option 3 → Option 4
 - Added installation commands for plugin
-- Added link to detailed plugin guide ([USAGE-WITH-CLAUDE-PLUGIN.md](USAGE-WITH-CLAUDE-PLUGIN.md))
+- Added link to detailed plugin guide ([USAGE-WITH-CLAUDE-PLUGIN.md](../../USAGE-WITH-CLAUDE-PLUGIN.md))
 - Added "Benefits" and "When to use" sections for each option
 
 #### Installation Method Comparison Table (Lines 149-173)

@@ -258,6 +258,6 @@ This represents appropriate engineering for a current need. The constraint drive
 ## References
 
 * [HumanLayer Blog - Writing a Good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md)
-* [Architecture Review: CLAUDE.md Best Practices](./../reviews/claude-md-best-practices-humanlayer-article.md)
+* [Architecture Review: CLAUDE.md Best Practices](../../reviews/claude-md-best-practices-humanlayer-article.md)
 * [ADR-006: Progressive Disclosure Pattern](./ADR-006-progressive-disclosure-pattern.md)
 * Research on LLM instruction-following capacity (referenced in HumanLayer article)
